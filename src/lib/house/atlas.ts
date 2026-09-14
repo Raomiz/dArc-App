@@ -67,11 +67,23 @@ export const ATLAS_NODES: AtlasNode[] = [
     status: "threshold",
   },
   {
+    id: "o",
+    precinct: "field",
+    kicker: "Watch",
+    title: "ō",
+    summary:
+      "Digital companion in the field. Equal product alternative to Raz. Pocket door — named, not built.",
+    kind: "watch",
+    status: "named",
+    featured: true,
+  },
+  {
     id: "raz",
     precinct: "field",
     kicker: "Watch",
     title: "Raz",
-    summary: "Private UE5.8 island world. Field watch + interest.",
+    summary:
+      "Private UE5.8 island world. Equal product alternative to ō. Field watch + interest.",
     kind: "watch",
     status: "seated",
     featured: true,

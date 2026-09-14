@@ -7,6 +7,8 @@
 - d’ Arc: private atlas + public threshold; information not public [2026-09-08]
 - Vercel project d-arc under raomizs-projects (team_Tv6v8opf3fVEsJS7LIhPWi1w); apex d-arc.io is DEPLOYMENT_NOT_FOUND; connector needs team-scope re-auth to attach domain and disable protection [2026-09-12]
 - Raz: private UE5.8 island world repo Raomiz/Raz; field watch + interest on the atlas [2026-09-14]
+- ō: equal Field watch to Raz; named, not built; this repo is TanStack atlas not Flutter [2026-09-14]
+- Next ō ship: docs/NEXT_SHIP.md — pocket demo of this atlas on a phone; do not flutter-create here [2026-09-14]
 - Site palette 2026-09-14: gold + jade green + Byzantine purple; atmosphere is looking into the distance (aerial perspective), not a brown desk
 - Named miss 2026-09-14: atlas should feel like looking across a field not paper cards; sign-in must be a real gate not an email box
 - PR #4 (ready-seat contrast) was dirty vs main; intent landed on main 2f53660; PR closed [2026-09-14]

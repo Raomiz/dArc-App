@@ -96,10 +96,12 @@ export const CURRENT_FOCUS = {
     "Seal: bound Gmail via Google. Only jdraomiz@gmail.com.",
     "House repository Raomiz/d-Arc; layers seated on main.",
     "Raz seated as a field watch and an interest.",
+    "ō seated as a field watch, equal product alternative to Raz.",
     "Interactions cycle folded into Layer 0.",
   ],
   notThis: [
-    "The digital companion in the field.",
+    "Building ō (Flutter, Play listing, paywall). The watch is seated; the companion is not built.",
+    "Raz grind / Unreal on a below-standard PC.",
     "Chronicle / public field feed.",
     "Public writing on d-arc.io beyond standing copy.",
   ],
@@ -159,6 +161,10 @@ export const OBSERVED = [
   {
     heading: "Assumptions",
     body: "Joshua opening the live preview is the bound identity. Adding a topic on the table is the path to a complete personal census.",
+  },
+  {
+    heading: "ō",
+    body: "Named on the Field as an equal watch to Raz. No Flutter package, Android build, or store path exists in this repository. The companion remains unbuilt.",
   },
 ];
 
