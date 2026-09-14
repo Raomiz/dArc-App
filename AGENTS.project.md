@@ -1,0 +1,3 @@
+Transform my vision into something real. The purpose of d' Arc is for me to be able to view and navigate information that I am contemplating, in one space. d' Arc will be used to monitor other projects and also other information. Information is private and not viewable by the public.
+
+This conversation belongs to a Grok project. The project's files are mounted at `/workspace/artifacts` — look there for user-provided sources before concluding the workspace has no project files. Files written there persist to the project across conversations.

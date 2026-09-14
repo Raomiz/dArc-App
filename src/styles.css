@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+@theme {
+  --color-void: #0c0712;
+  --color-void-mid: #160b1e;
+  --color-void-lit: #22112c;
+  --color-gold: #c9a227;
+  --color-gold-soft: #e6d08a;
+  --color-jade: #2f6f5e;
+  --color-jade-lit: #7dba9a;
+  --color-jade-deep: #16382f;
+  --color-byzantine: #702963;
+  --color-byzantine-lit: #9a4a86;
+  --color-byzantine-deep: #3a1540;
+  --color-frost: #e8eef4;
+  --color-mist: #c5c0d0;
+  --color-closed: #d07a7a;
+  --color-ink: #12161d;
+  --font-display: "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
+  --font-sans: Georgia, "Iowan Old Style", Palatino, "Times New Roman", serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: var(--color-void);
+    color: var(--color-frost);
+  }
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background: var(--color-void);
+    color: var(--color-frost);
+    font-family: var(--font-sans);
+  }
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+    font-family: var(--font-display);
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+.haze-field {
+  background:
+    radial-gradient(ellipse 80% 46% at 50% 12%, rgba(112, 41, 99, 0.34), transparent 62%),
+    radial-gradient(ellipse 90% 40% at 48% 28%, rgba(125, 186, 154, 0.1), transparent 58%),
+    linear-gradient(180deg, rgba(12, 7, 18, 0.1) 0%, rgba(12, 7, 18, 0.55) 55%, #0c0712 100%);
+}
+
+.horizon-line {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(201, 162, 39, 0.2),
+    rgba(125, 186, 154, 0.32),
+    rgba(201, 162, 39, 0.14),
+    transparent
+  );
+}
+
+.cycle-flow {
+  stroke-dasharray: 6 10;
+  animation: cycle-dash 1.8s linear infinite;
+}
+
+.cycle-flow-rev {
+  stroke-dasharray: 6 10;
+  animation: cycle-dash 2.2s linear infinite reverse;
+}
+
+@keyframes cycle-dash {
+  to {
+    stroke-dashoffset: -64;
+  }
+}
+
+.atlas-who span.text-sm {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .atlas-who span.text-sm {
+    display: inline-block;
+    max-width: 7.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+.atlas-who span.grid {
+  background: var(--color-byzantine);
+  color: var(--color-gold-soft);
+}
