@@ -8,8 +8,6 @@ abstract class OStore {
 }
 
 class PrefsOStore implements OStore {
-  PrefsOStore({SharedPreferences? prefs}) : _prefs = prefs;
-
   SharedPreferences? _prefs;
 
   Future<SharedPreferences> _ready() async {
