@@ -1,1 +1,0 @@
-import{a as e,i as t,r as n}from"./index-DbbX7WAP.js";import{i as r,n as i,o as a,r as o,t as s}from"./void-skeleton-C5NIqMGy.js";var c=e();function l(){let{previewOwner:e}=n({from:`__root__`}),{user:l,isPending:u}=a();return u?(0,c.jsx)(s,{}):l&&r(l.primaryEmail,e)?(0,c.jsx)(t,{to:`/`}):l?(0,c.jsx)(o,{user:l}):(0,c.jsx)(i,{})}export{l as component};
