@@ -22,14 +22,24 @@ A thin vertical slice, not a social network:
 
 1. **Placeholder session** — a local name on device. No accounts, no auth backend.
 2. **Purpose** — why you act with other people (Byzantine purple).
-3. **Intention** — what you commit to do with them (jade Commit). User-facing word is Intention / Purpose, never “plan”.
-4. **Sam** — in-app navigator for the user. Not a game creature. Not Raz.
-5. **ō coordinator** — `OCompanion` interface with `StubOCompanion`. Replies are mock and labeled **STUB**. When live, in-app chat is **Grok**. No API keys. No OpenAI / GPT.
+3. **Intention** — what you commit to do with them (jade). User-facing word is Intention / Purpose, never “plan”.
+4. **Commit** — gold threshold (`#c9a227`), burst + haptic. Not a bland submit.
+5. **Sam** — ambient gold-soft wisp navigator. Not a game creature. Not Raz. Not a chat destination.
+6. **ō coordinator** — `OCompanion` interface with `StubOCompanion`. Replies are mock and labeled **STUB**. When live, in-app chat is **Grok**. No API keys. No OpenAI / GPT.
 
 Package / application id: `io.darc.o`  
 Dart package name: `darc_o`  
-UI copy uses **ō**.  
-Night colour: `#050505`.
+UI copy uses **ō**.
+
+Locked colour (Dennis — do not swap for grey dark mode or `#050505`):
+
+| Token | Hex | Use |
+| --- | --- | --- |
+| Ground | `#0c0712` | Obsidian vault, not flat dark-mode grey |
+| Surface | `#160b1e` | Cards, sheets, stepped surfaces |
+| Purpose | `#702963` / `#3a1540` | Byzantine / deep |
+| Intention | `#2f6f5e` / `#7dba9a` | Jade / lit |
+| Commit | `#c9a227` / `#e6d08a` | Gold threshold / soft |
 
 iOS project files exist because Flutter generates them. **Android is the ship target.**
 

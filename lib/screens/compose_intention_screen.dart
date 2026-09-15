@@ -77,7 +77,7 @@ class _ComposeIntentionScreenState extends State<ComposeIntentionScreen> {
               decoration: const InputDecoration(
                 labelText: 'Intention',
                 hintText: 'Evening walk',
-                labelStyle: TextStyle(color: OColors.jadeSoft),
+                labelStyle: TextStyle(color: OColors.intentionLit),
               ),
             ),
             const SizedBox(height: 14),
@@ -121,8 +121,8 @@ class _ComposeIntentionScreenState extends State<ComposeIntentionScreen> {
             FilledButton(
               onPressed: _save,
               style: FilledButton.styleFrom(
-                backgroundColor: OColors.jade,
-                foregroundColor: OColors.night,
+                backgroundColor: OColors.intention,
+                foregroundColor: OColors.ground,
                 minimumSize: const Size.fromHeight(54),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),

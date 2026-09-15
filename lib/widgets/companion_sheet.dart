@@ -23,7 +23,7 @@ Future<void> openCompanionSheet({
   return showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
-    backgroundColor: OColors.field,
+    backgroundColor: OColors.surface,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
@@ -138,7 +138,7 @@ class _CompanionPanelState extends State<CompanionPanel> {
           width: 40,
           height: 4,
           decoration: BoxDecoration(
-            color: const Color(0xFF3D3450),
+            color: OColors.outline,
             borderRadius: BorderRadius.circular(2),
           ),
         ),
@@ -149,7 +149,7 @@ class _CompanionPanelState extends State<CompanionPanel> {
               Text(
                 'ō',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  color: OColors.gold,
+                  color: OColors.commit,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -169,12 +169,7 @@ class _CompanionPanelState extends State<CompanionPanel> {
                 ),
                 child: Text(
                   state.companion.isStub ? 'STUB' : state.companion.id,
-                  style: const TextStyle(
-                    color: OColors.stub,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 1.1,
-                  ),
+                  style: OType.whisper.copyWith(color: OColors.stub),
                 ),
               ),
             ],
@@ -201,7 +196,11 @@ class _CompanionPanelState extends State<CompanionPanel> {
                 label: Text(prompt),
                 backgroundColor: OColors.ridge,
                 side: BorderSide.none,
-                labelStyle: const TextStyle(color: OColors.paper, fontSize: 13),
+                labelStyle: const TextStyle(
+                  color: OColors.paper,
+                  fontSize: 13,
+                  fontFamily: OType.uiSans,
+                ),
                 onPressed: _busy ? null : () => _ask(prompt),
               );
             },
@@ -233,7 +232,7 @@ class _CompanionPanelState extends State<CompanionPanel> {
                   constraints: const BoxConstraints(maxWidth: 340),
                   padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
                   decoration: BoxDecoration(
-                    color: turn.fromUser ? OColors.byzantineDeep : OColors.ridge,
+                    color: turn.fromUser ? OColors.purposeDeep : OColors.ridge,
                     borderRadius: BorderRadius.circular(16),
                     border: turn.stub
                         ? Border.all(color: OColors.stub.withValues(alpha: 0.45))
@@ -268,8 +267,8 @@ class _CompanionPanelState extends State<CompanionPanel> {
               IconButton.filled(
                 onPressed: _busy ? null : _send,
                 style: IconButton.styleFrom(
-                  backgroundColor: OColors.gold,
-                  foregroundColor: OColors.night,
+                  backgroundColor: OColors.commit,
+                  foregroundColor: OColors.ground,
                   minimumSize: const Size(52, 52),
                 ),
                 icon: const Icon(Icons.arrow_upward_rounded),

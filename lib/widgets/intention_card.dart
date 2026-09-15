@@ -12,13 +12,13 @@ class IntentionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final statusColor = switch (intention.status) {
-      IntentionStatus.brewing => OColors.gold,
-      IntentionStatus.committed => OColors.jadeSoft,
+      IntentionStatus.brewing => OColors.commit,
+      IntentionStatus.committed => OColors.intentionLit,
       IntentionStatus.done => OColors.muted,
     };
 
     return Material(
-      color: OColors.field,
+      color: OColors.surface,
       borderRadius: BorderRadius.circular(20),
       child: InkWell(
         onTap: onTap,
@@ -26,7 +26,7 @@ class IntentionCard extends StatelessWidget {
         child: Ink(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: const Color(0xFF2A2438)),
+            border: Border.all(color: OColors.intention.withValues(alpha: 0.45)),
           ),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(18, 16, 18, 16),
@@ -46,12 +46,7 @@ class IntentionCard extends StatelessWidget {
                     const SizedBox(width: 8),
                     Text(
                       intention.status.label.toUpperCase(),
-                      style: TextStyle(
-                        color: statusColor,
-                        fontSize: 11,
-                        letterSpacing: 1.2,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: OType.whisper.copyWith(color: statusColor),
                     ),
                     const Spacer(),
                     if (intention.whenLabel != null)
@@ -60,6 +55,7 @@ class IntentionCard extends StatelessWidget {
                         style: const TextStyle(
                           color: OColors.muted,
                           fontSize: 12,
+                          fontFamily: OType.uiSans,
                         ),
                       ),
                   ],
@@ -70,6 +66,7 @@ class IntentionCard extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w600,
                     letterSpacing: -0.3,
+                    fontFamily: OType.uiSans,
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -80,6 +77,7 @@ class IntentionCard extends StatelessWidget {
                   style: const TextStyle(
                     color: OColors.muted,
                     height: 1.4,
+                    fontFamily: OType.uiSans,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -88,8 +86,9 @@ class IntentionCard extends StatelessWidget {
                       ? 'No one named yet'
                       : intention.people.join(' · '),
                   style: const TextStyle(
-                    color: OColors.goldSoft,
+                    color: OColors.commitSoft,
                     fontSize: 13,
+                    fontFamily: OType.uiSans,
                   ),
                 ),
               ],

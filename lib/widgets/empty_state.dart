@@ -11,6 +11,7 @@ class EmptyState extends StatelessWidget {
     this.onPrimary,
     this.secondaryLabel,
     this.onSecondary,
+    this.accent,
   });
 
   final String title;
@@ -19,9 +20,11 @@ class EmptyState extends StatelessWidget {
   final VoidCallback? onPrimary;
   final String? secondaryLabel;
   final VoidCallback? onSecondary;
+  final Color? accent;
 
   @override
   Widget build(BuildContext context) {
+    final accentColor = accent ?? OColors.purpose;
     return Padding(
       padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
       child: Column(
@@ -31,7 +34,7 @@ class EmptyState extends StatelessWidget {
             width: 44,
             height: 3,
             decoration: BoxDecoration(
-              color: OColors.gold,
+              color: accentColor,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -41,6 +44,7 @@ class EmptyState extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.w600,
               letterSpacing: -0.4,
+              fontFamily: OType.uiSans,
             ),
           ),
           const SizedBox(height: 10),
@@ -49,6 +53,7 @@ class EmptyState extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               color: OColors.muted,
               height: 1.45,
+              fontFamily: OType.uiSans,
             ),
           ),
           const SizedBox(height: 28),
@@ -56,11 +61,17 @@ class EmptyState extends StatelessWidget {
             FilledButton(
               onPressed: onPrimary,
               style: FilledButton.styleFrom(
-                backgroundColor: OColors.gold,
-                foregroundColor: OColors.night,
+                backgroundColor: accentColor,
+                foregroundColor: accentColor == OColors.purpose
+                    ? OColors.paper
+                    : OColors.ground,
                 minimumSize: const Size.fromHeight(52),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
+                ),
+                textStyle: const TextStyle(
+                  fontFamily: OType.uiSans,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               child: Text(primaryLabel!),
@@ -72,7 +83,7 @@ class EmptyState extends StatelessWidget {
               style: OutlinedButton.styleFrom(
                 foregroundColor: OColors.paper,
                 minimumSize: const Size.fromHeight(52),
-                side: const BorderSide(color: Color(0xFF3D3450)),
+                side: const BorderSide(color: OColors.outline),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),

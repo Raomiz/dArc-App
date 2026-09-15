@@ -46,8 +46,8 @@ class PurposeDetailScreen extends StatelessWidget {
                         ),
                       );
                     },
-                    backgroundColor: OColors.jade,
-                    foregroundColor: OColors.night,
+                    backgroundColor: OColors.intention,
+                    foregroundColor: OColors.ground,
                     icon: const Icon(Icons.how_to_reg_outlined),
                     label: const Text('Commit an intention'),
                   ),
@@ -63,6 +63,7 @@ class PurposeDetailScreen extends StatelessWidget {
                     title: purpose.title,
                     body:
                         '${purpose.why}\n\nNo intention yet. Commit one — a named move with people.',
+                    accent: OColors.intention,
                     primaryLabel: 'Commit an intention',
                     onPrimary: () {
                       Navigator.of(context).push(
@@ -78,14 +79,9 @@ class PurposeDetailScreen extends StatelessWidget {
                 : ListView(
                     padding: const EdgeInsets.fromLTRB(20, 8, 20, 120),
                     children: [
-                      const Text(
+                      Text(
                         'PURPOSE',
-                        style: TextStyle(
-                          color: OColors.byzantine,
-                          letterSpacing: 1.3,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 12,
-                        ),
+                        style: OType.whisper.copyWith(color: OColors.purpose),
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -106,12 +102,9 @@ class PurposeDetailScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 24),
-                      const Text(
+                      Text(
                         'Intentions',
-                        style: TextStyle(
-                          color: OColors.jadeSoft,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: OType.whisper.copyWith(color: OColors.intentionLit),
                       ),
                       const SizedBox(height: 12),
                       for (final intention in items) ...[
