@@ -9,6 +9,7 @@ import '../widgets/o_navigator.dart';
 import '../widgets/purpose_stage.dart';
 import 'compose_intention_screen.dart';
 import 'compose_purpose_screen.dart';
+import 'intention_detail_screen.dart';
 
 /// Home lands on **New Purpose**. Purpose is the stage.
 ///

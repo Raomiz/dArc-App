@@ -58,16 +58,21 @@ class IntentionCard extends StatelessWidget {
                     intention.status.label.toUpperCase(),
                     style: OType.whisper.copyWith(color: statusColor),
                   ),
-                  const Spacer(),
-                  if (intention.whenLabel != null)
-                    Text(
-                      intention.whenLabel!,
-                      style: const TextStyle(
-                        color: OColors.muted,
-                        fontSize: 12,
-                        fontFamily: OType.uiSans,
+                  if (intention.whenLabel != null) ...[
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        intention.whenLabel!,
+                        textAlign: TextAlign.end,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: OColors.muted,
+                          fontSize: 12,
+                          fontFamily: OType.uiSans,
+                        ),
                       ),
                     ),
+                  ],
                 ],
               ),
               const SizedBox(height: 10),

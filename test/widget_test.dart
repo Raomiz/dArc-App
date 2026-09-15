@@ -268,4 +268,49 @@ void main() {
     expect(find.textContaining('plan'), findsNothing);
     expect(find.text('Sam'), findsNothing);
   });
+
+  testWidgets('expanded Purpose at phone width keeps Commit gold with no overflow', (
+    tester,
+  ) async {
+    final state = OAppState(
+      store: MemoryOStore(),
+      companion: const StubOCompanion(),
+      random: Random(11),
+    );
+    await state.hydrate();
+    await state.enterLocal(displayName: 'Joshua');
+    await state.addPurpose(
+      title: 'Get outside this week',
+      why: 'Leave the house. Not a thread — a walk.',
+    );
+    await state.addIntention(
+      purposeId: state.purposes.first.id,
+      title: 'Evening walk',
+      statement: 'Leave the house. Not a chat thread — a walk.',
+      whenLabel: 'Tonight after 18:00',
+    );
+    await state.addPurpose(
+      title: 'A table this week',
+      why: 'A table, a time, dishes that actually arrive.',
+    );
+    state.focusPurpose(state.purposes.last.id);
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(OApp(state: state));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(PurposeStage), findsOneWidget);
+    expect(find.byType(PurposeOrbit), findsOneWidget);
+    expect(find.text('Commit this intention'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    final gold = tester.widget<Material>(
+      find.descendant(
+        of: find.widgetWithText(CommitButton, 'Commit this intention'),
+        matching: find.byType(Material),
+      ),
+    );
+    expect(gold.color, OColors.commit);
+  });
 }
