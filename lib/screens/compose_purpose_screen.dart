@@ -55,7 +55,7 @@ class _ComposePurposeScreenState extends State<ComposePurposeScreen> {
               decoration: const InputDecoration(
                 labelText: 'Purpose',
                 hintText: 'Get outside this week',
-                labelStyle: TextStyle(color: OColors.byzantine),
+                labelStyle: TextStyle(color: OColors.purpose),
               ),
             ),
             const SizedBox(height: 14),
@@ -79,7 +79,7 @@ class _ComposePurposeScreenState extends State<ComposePurposeScreen> {
             FilledButton(
               onPressed: _save,
               style: FilledButton.styleFrom(
-                backgroundColor: OColors.byzantine,
+                backgroundColor: OColors.purpose,
                 foregroundColor: OColors.paper,
                 minimumSize: const Size.fromHeight(54),
                 shape: RoundedRectangleBorder(

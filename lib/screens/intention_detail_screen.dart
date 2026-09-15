@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../data/o_app_state.dart';
 import '../models/intention.dart';
 import '../theme/o_theme.dart';
+import '../widgets/commit_button.dart';
 import '../widgets/companion_sheet.dart';
 import '../widgets/night_backdrop.dart';
 
@@ -53,8 +54,8 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     final purpose = state.purposeById(intention.purposeId);
     final statusColor = switch (intention.status) {
-      IntentionStatus.brewing => OColors.gold,
-      IntentionStatus.committed => OColors.jadeSoft,
+      IntentionStatus.brewing => OColors.commit,
+      IntentionStatus.committed => OColors.intentionLit,
       IntentionStatus.done => OColors.muted,
     };
 
@@ -64,23 +65,13 @@ class _Body extends StatelessWidget {
         if (purpose != null) ...[
           Text(
             purpose.title.toUpperCase(),
-            style: const TextStyle(
-              color: OColors.byzantine,
-              letterSpacing: 1.3,
-              fontWeight: FontWeight.w700,
-              fontSize: 12,
-            ),
+            style: OType.whisper.copyWith(color: OColors.purpose),
           ),
           const SizedBox(height: 8),
         ],
         Text(
           intention.status.label.toUpperCase(),
-          style: TextStyle(
-            color: statusColor,
-            letterSpacing: 1.3,
-            fontWeight: FontWeight.w700,
-            fontSize: 12,
-          ),
+          style: OType.whisper.copyWith(color: statusColor),
         ),
         const SizedBox(height: 8),
         Text(
@@ -94,7 +85,7 @@ class _Body extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             intention.whenLabel!,
-            style: const TextStyle(color: OColors.goldSoft, fontSize: 15),
+            style: const TextStyle(color: OColors.commitSoft, fontSize: 15),
           ),
         ],
         const SizedBox(height: 16),
@@ -103,9 +94,9 @@ class _Body extends StatelessWidget {
           style: const TextStyle(height: 1.5, fontSize: 16, color: OColors.paper),
         ),
         const SizedBox(height: 20),
-        const Text(
+        Text(
           'People',
-          style: TextStyle(color: OColors.muted, fontSize: 13, letterSpacing: 0.6),
+          style: OType.whisper.copyWith(color: OColors.muted),
         ),
         const SizedBox(height: 8),
         Wrap(
@@ -123,17 +114,9 @@ class _Body extends StatelessWidget {
         ),
         const SizedBox(height: 28),
         if (intention.status == IntentionStatus.brewing) ...[
-          FilledButton(
+          CommitButton(
+            label: 'Commit this intention',
             onPressed: () => state.commitIntention(intention.id),
-            style: FilledButton.styleFrom(
-              backgroundColor: OColors.jade,
-              foregroundColor: OColors.night,
-              minimumSize: const Size.fromHeight(54),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-            ),
-            child: const Text('Commit this intention'),
           ),
           const SizedBox(height: 10),
         ],
@@ -145,8 +128,8 @@ class _Body extends StatelessWidget {
             purpose: purpose,
           ),
           style: FilledButton.styleFrom(
-            backgroundColor: OColors.gold,
-            foregroundColor: OColors.night,
+            backgroundColor: OColors.commit,
+            foregroundColor: OColors.ground,
             minimumSize: const Size.fromHeight(54),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
@@ -166,7 +149,7 @@ class _Body extends StatelessWidget {
           style: OutlinedButton.styleFrom(
             foregroundColor: OColors.paper,
             minimumSize: const Size.fromHeight(50),
-            side: const BorderSide(color: Color(0xFF3D3450)),
+            side: const BorderSide(color: OColors.outline),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),

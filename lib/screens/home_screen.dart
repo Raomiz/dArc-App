@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
           title: const Text(
             'ō',
             style: TextStyle(
-              color: OColors.gold,
+              color: OColors.commit,
               fontSize: 32,
               fontWeight: FontWeight.w600,
             ),
@@ -48,7 +48,7 @@ class HomeScreen extends StatelessWidget {
               ),
             );
           },
-          backgroundColor: OColors.byzantine,
+          backgroundColor: OColors.purpose,
           foregroundColor: OColors.paper,
           icon: const Icon(Icons.add),
           label: const Text('Name a purpose'),
@@ -62,6 +62,7 @@ class HomeScreen extends StatelessWidget {
                 body:
                     'Name a purpose — why you want to act with other people. '
                     'Then commit an intention. ō coordinates. This is not a feed.',
+                accent: OColors.purpose,
                 primaryLabel: 'Name a purpose',
                 onPrimary: () {
                   Navigator.of(context).push(

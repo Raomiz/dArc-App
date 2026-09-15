@@ -32,7 +32,14 @@ Joshua (founder) uses ō later as a person in the app, not as atlas-owner chrome
 - User-facing words: **Purpose**, **Intention**, **Commit**. Never “plan”.
 - **Sam** is the in-app navigator for the user — not a game creature, not Raz, not a person on an intention unless the user types that name.
 - In-app chat is **Grok**. Do not wire OpenAI / GPT.
-- Visuals when you touch UI: night `#050505`, gold, Byzantine purple (Purpose), jade (Commit / Intention).
+- Visuals when you touch UI — Dennis locks, do not invent a grey dark mode:
+  - Ground (obsidian vault): `#0c0712` — never `#050505` or flat dark-mode grey
+  - Surfaces step up: `#160b1e`
+  - Purpose: Byzantine `#702963` / deep `#3a1540`
+  - Intention: jade `#2f6f5e` / lit `#7dba9a`
+  - Commit: gold threshold `#c9a227` / soft `#e6d08a` — burst + haptic, not a bland submit
+  - Sam: ambient gold-soft wisp, not a chat destination
+  - Type: system UI sans for chrome; whisper tracked labels; big contrast on Commit
 
 ## Stack
 

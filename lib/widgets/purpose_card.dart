@@ -22,7 +22,7 @@ class PurposeCard extends StatelessWidget {
         : '$intentionCount intentions';
 
     return Material(
-      color: OColors.field,
+      color: OColors.surface,
       borderRadius: BorderRadius.circular(20),
       child: InkWell(
         onTap: onTap,
@@ -30,21 +30,16 @@ class PurposeCard extends StatelessWidget {
         child: Ink(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: OColors.byzantineDeep),
+            border: Border.all(color: OColors.purposeDeep),
           ),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(18, 16, 18, 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'PURPOSE',
-                  style: TextStyle(
-                    color: OColors.byzantine,
-                    fontSize: 11,
-                    letterSpacing: 1.2,
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: OType.whisper.copyWith(color: OColors.purpose),
                 ),
                 const SizedBox(height: 10),
                 Text(
@@ -52,6 +47,7 @@ class PurposeCard extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w600,
                     letterSpacing: -0.3,
+                    fontFamily: OType.uiSans,
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -62,15 +58,17 @@ class PurposeCard extends StatelessWidget {
                   style: const TextStyle(
                     color: OColors.muted,
                     height: 1.4,
+                    fontFamily: OType.uiSans,
                   ),
                 ),
                 const SizedBox(height: 12),
                 Text(
                   countLabel,
                   style: const TextStyle(
-                    color: OColors.jadeSoft,
+                    color: OColors.intentionLit,
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
+                    fontFamily: OType.uiSans,
                   ),
                 ),
               ],

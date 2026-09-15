@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../theme/o_theme.dart';
 
-/// Sam is the in-app navigator for the user.
+/// Sam is an ambient gold-soft wisp — the in-app navigator.
 ///
-/// Not a Raz creature. Not a person on an intention. Opens a map of ō.
+/// Not a Raz creature. Not a person on an intention. Not a chat destination
+/// (ō coordinates; live chat is Grok). Opens a brief map of ō, not a thread.
 Future<void> openSamNavigator(BuildContext context) {
   return showModalBottomSheet<void>(
     context: context,
-    backgroundColor: OColors.field,
+    backgroundColor: OColors.surface,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
@@ -21,13 +22,65 @@ class SamNavigatorButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () => openSamNavigator(context),
-      child: const Text(
-        'Sam',
-        style: TextStyle(
-          color: OColors.goldSoft,
-          fontWeight: FontWeight.w600,
+    return Semantics(
+      button: true,
+      label: 'Sam',
+      child: InkWell(
+        onTap: () => openSamNavigator(context),
+        borderRadius: BorderRadius.circular(24),
+        child: const Padding(
+          padding: EdgeInsets.fromLTRB(8, 6, 12, 6),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SamWisp(size: 22),
+              SizedBox(width: 8),
+              Text(
+                'Sam',
+                style: TextStyle(
+                  color: OColors.commitSoft,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: OType.uiSans,
+                  letterSpacing: 0.4,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Ambient gold-soft wisp. Presence, not a chat orb.
+class SamWisp extends StatelessWidget {
+  const SamWisp({super.key, this.size = 22});
+
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: size,
+      height: size,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          gradient: RadialGradient(
+            colors: [
+              OColors.commitSoft,
+              OColors.commit.withValues(alpha: 0.85),
+              OColors.commit.withValues(alpha: 0.15),
+            ],
+            stops: const [0.0, 0.42, 1.0],
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: OColors.commitSoft.withValues(alpha: 0.45),
+              blurRadius: size * 0.7,
+              spreadRadius: 1,
+            ),
+          ],
         ),
       ),
     );
@@ -51,45 +104,55 @@ class SamNavigatorSheet extends StatelessWidget {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF3D3450),
+                  color: OColors.outline,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
             ),
             const SizedBox(height: 18),
-            Text(
-              'Sam',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: OColors.gold,
-                fontWeight: FontWeight.w600,
-              ),
+            const Row(
+              children: [
+                SamWisp(size: 28),
+                SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'Sam',
+                    style: TextStyle(
+                      color: OColors.commitSoft,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 26,
+                      fontFamily: OType.uiSans,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 6),
-            const Text(
+            const SizedBox(height: 8),
+            Text(
               'In-app navigator',
-              style: TextStyle(color: OColors.muted, fontSize: 14),
+              style: OType.whisper.copyWith(color: OColors.commitSoft),
             ),
             const SizedBox(height: 16),
             const Text(
               'I am Sam. I help you find your way through ō. '
-              'I am not a game creature, and I do not belong to Raz.',
-              style: TextStyle(height: 1.45, fontSize: 16),
+              'I am a wisp, not a chat. I am not a game creature, and I do not belong to Raz.',
+              style: TextStyle(height: 1.45, fontSize: 16, fontFamily: OType.uiSans),
             ),
             const SizedBox(height: 20),
             const _MapRow(
-              color: OColors.byzantine,
+              color: OColors.purpose,
               title: 'Purpose',
               body: 'Why you act with other people.',
             ),
             const SizedBox(height: 12),
             const _MapRow(
-              color: OColors.jade,
+              color: OColors.intention,
               title: 'Intention',
               body: 'What you commit to do. A named move with people.',
             ),
             const SizedBox(height: 12),
             const _MapRow(
-              color: OColors.gold,
+              color: OColors.commit,
               title: 'ō',
               body:
                   'Coordinates. When live, in-app chat is Grok — not OpenAI. This build is a stub.',
@@ -139,6 +202,7 @@ class _MapRow extends StatelessWidget {
                   color: color,
                   fontWeight: FontWeight.w700,
                   letterSpacing: 0.2,
+                  fontFamily: OType.uiSans,
                 ),
               ),
               const SizedBox(height: 2),

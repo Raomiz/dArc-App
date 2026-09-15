@@ -52,7 +52,7 @@ class _GateScreenState extends State<GateScreen> {
                         Text(
                           'ō',
                           style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                            color: OColors.gold,
+                            color: OColors.commit,
                             fontWeight: FontWeight.w600,
                             letterSpacing: -1.2,
                           ),
@@ -78,14 +78,9 @@ class _GateScreenState extends State<GateScreen> {
                         ),
                         const Spacer(),
                         const SizedBox(height: 28),
-                        const Text(
+                        Text(
                           'Placeholder session',
-                          style: TextStyle(
-                            color: OColors.goldSoft,
-                            fontSize: 12,
-                            letterSpacing: 1.1,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: OType.whisper.copyWith(color: OColors.commitSoft),
                         ),
                         const SizedBox(height: 8),
                         const Text(
@@ -106,8 +101,8 @@ class _GateScreenState extends State<GateScreen> {
                         FilledButton(
                           onPressed: _busy ? null : _enter,
                           style: FilledButton.styleFrom(
-                            backgroundColor: OColors.gold,
-                            foregroundColor: OColors.night,
+                            backgroundColor: OColors.commit,
+                            foregroundColor: OColors.ground,
                             minimumSize: const Size.fromHeight(54),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
