@@ -6,7 +6,7 @@ import '../theme/o_theme.dart';
 import '../widgets/empty_state.dart';
 import '../widgets/field_backdrop.dart';
 import '../widgets/intention_card.dart';
-import '../widgets/sam_navigator.dart';
+import '../widgets/o_navigator.dart';
 import 'compose_intention_screen.dart';
 import 'intention_detail_screen.dart';
 
@@ -33,7 +33,7 @@ class PurposeDetailScreen extends StatelessWidget {
             backgroundColor: Colors.transparent,
             appBar: AppBar(
               title: const Text('Purpose'),
-              actions: const [SamNavigatorButton()],
+              actions: const [ONavigatorButton()],
             ),
             floatingActionButton: purpose == null
                 ? null

@@ -31,7 +31,7 @@ class FieldBackdrop extends StatelessWidget {
           const Positioned(
             right: 22,
             top: 64,
-            child: IgnorePointer(child: _AmbientSamWisp()),
+            child: IgnorePointer(child: _AmbientOWisp()),
           ),
           child,
         ],
@@ -40,9 +40,9 @@ class FieldBackdrop extends StatelessWidget {
   }
 }
 
-/// Soft gold wisp on the field — Sam is present, not a destination.
-class _AmbientSamWisp extends StatelessWidget {
-  const _AmbientSamWisp();
+/// Soft gold wisp on the field — ō is present, not a destination.
+class _AmbientOWisp extends StatelessWidget {
+  const _AmbientOWisp();
 
   @override
   Widget build(BuildContext context) {

@@ -6,14 +6,14 @@ import '../theme/o_theme.dart';
 import '../widgets/empty_state.dart';
 import '../widgets/field_backdrop.dart';
 import '../widgets/intention_card.dart';
-import '../widgets/sam_navigator.dart';
+import '../widgets/o_navigator.dart';
 import 'compose_intention_screen.dart';
 import 'compose_purpose_screen.dart';
 import 'intention_detail_screen.dart';
 
 /// Intention is the main stage.
 ///
-/// Dennis lock: Purpose, Commit, Sam, and feed evidence are here or
+/// Dennis lock: Purpose, Commit, ō, and feed evidence are here or
 /// one sheet out — never a fourth pace.
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key, required this.state});
@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           actions: [
-            const SamNavigatorButton(),
+            const ONavigatorButton(),
             TextButton(
               onPressed: () => state.leave(),
               child: const Text(

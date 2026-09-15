@@ -24,7 +24,7 @@ A thin vertical slice, not a social network:
 2. **Purpose** — quiet north star (Byzantine purple). Why you act.
 3. **Intention** — the main stage (jade). What you commit to do. Never “plan”.
 4. **Commit** — gold threshold (`#c9a227`), burst + haptic. Not a bland submit.
-5. **Sam** — ambient gold-soft wisp navigator. Not a game creature. Not Raz. Not a chat destination.
+5. **ō** — ambient gold-soft wisp navigator and coordinator. Not a game creature. Not Raz. Not a chat destination. Not named Sam on screen.
 6. **ō coordinator** — `OCompanion` interface with `StubOCompanion`. Replies are mock and labeled **STUB**. When live, in-app chat is **Grok**. No API keys. No OpenAI / GPT.
 
 Package / application id: `io.darc.o`  
@@ -89,7 +89,7 @@ Shortest judge path (doctor → device → tap): **[DEVICE_RUN.md](DEVICE_RUN.md
    flutter run -d android
    ```
 
-First launch: enter a local name → open field (empty, personal) → **Name a purpose** (quiet north star, one sheet) → **Commit an intention** (the stage, one sheet) → gold **Commit this intention** → back on the stage, already committed. **Coordinate with ō** and **Sam** are on that stage — never a fourth tap. Nobody else is invented. The ō panel is a stub. That is honest.
+First launch: enter a local name → open field (empty, personal) → **Name a purpose** (quiet north star, one sheet) → **Commit an intention** (the stage, one sheet) → gold **Commit this intention** → back on the stage, already committed. **Coordinate with ō** and the **ō** wisp are on that stage — never a fourth tap. Nobody else is invented. The ō panel is a stub. That is honest.
 
 Dennis lock: everything useful is **2–3 paces from the Intention stage**. Secondary is one sheet. A fourth pace fails.
 

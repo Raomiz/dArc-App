@@ -30,7 +30,7 @@ Joshua (founder) uses ō later as a person in the app, not as atlas-owner chrome
 ## Language
 
 - User-facing words: **Purpose**, **Intention**, **Commit**. Never “plan”.
-- **Sam** is the in-app navigator for the user — not a game creature, not Raz, not a person on an intention unless the user types that name.
+- **ō** is the in-app navigator (ambient gold-soft wisp) and the coordinator. Not a game creature, not Raz, not a person on an intention unless the user types that name. Never show **Sam** as chrome.
 - In-app chat is **Grok**. Do not wire OpenAI / GPT.
 - Visuals when you touch UI — Dennis locks, do not invent a grey dark mode:
   - Field (living wash): jade `#2f6f5e` → baby blue `#A8D4E8` → near-white `#F7FBFD`
@@ -39,10 +39,10 @@ Joshua (founder) uses ō later as a person in the app, not as atlas-owner chrome
   - Purpose: Byzantine `#702963` / deep `#3a1540` — quiet north star, accent only
   - Intention: jade `#2f6f5e` / lit `#7dba9a` — the main stage
   - Commit: gold threshold `#c9a227` / soft `#e6d08a` — burst + haptic, not a bland submit
-  - Sam: ambient gold-soft wisp, not a chat destination
+  - ō: ambient gold-soft wisp, not a chat destination. User-facing presence is **ō**, not Sam.
   - Type: system UI sans for chrome; whisper tracked labels; big contrast on Commit
   - No placeholder humans / fake cast. Empty or the local session name until real presence exists.
-  - **2–3 paces from main:** Intention is the stage. Purpose, Commit, Sam, and feed evidence must be reachable in at most three taps. Secondary is one sheet out. A fourth pace fails. No deeper stacks. No buried settings for primary actions.
+  - **2–3 paces from main:** Intention is the stage. Purpose, Commit, ō, and feed evidence must be reachable in at most three taps. Secondary is one sheet out. A fourth pace fails. No deeper stacks. No buried settings for primary actions.
 
 ## Stack
 
