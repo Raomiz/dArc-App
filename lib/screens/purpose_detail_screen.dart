@@ -10,7 +10,7 @@ import '../widgets/o_navigator.dart';
 import 'compose_intention_screen.dart';
 import 'intention_detail_screen.dart';
 
-/// Quiet purpose view. Not the main path — home is the Intention stage.
+/// Quiet purpose view. Home lands on New Purpose.
 class PurposeDetailScreen extends StatelessWidget {
   const PurposeDetailScreen({
     super.key,
@@ -43,8 +43,8 @@ class PurposeDetailScreen extends StatelessWidget {
                       state: state,
                       purposeId: purposeId,
                     ),
-                    backgroundColor: OColors.intention,
-                    foregroundColor: OColors.paper,
+                    backgroundColor: OColors.commit,
+                    foregroundColor: OColors.ink,
                     icon: const Icon(Icons.how_to_reg_outlined),
                     label: const Text('Commit an intention'),
                   ),
@@ -60,7 +60,7 @@ class PurposeDetailScreen extends StatelessWidget {
                     title: purpose.title,
                     body:
                         '${purpose.why}\n\nNo intention yet. Commit one — the move that achieves this purpose.',
-                    accent: OColors.intention,
+                    accent: OColors.commit,
                     primaryLabel: 'Commit an intention',
                     onPrimary: () => openComposeIntentionSheet(
                       context: context,

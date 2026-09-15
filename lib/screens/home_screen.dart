@@ -165,7 +165,7 @@ class HomeScreen extends StatelessWidget {
                     body:
                         'Commit an intention that achieves this purpose. '
                         'ō coordinates when you ask. Nobody else is here yet.',
-                    accent: OColors.intention,
+                    accent: OColors.commit,
                     primaryLabel: 'Commit an intention',
                     onPrimary: () => openComposeIntentionSheet(
                       context: context,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/o_theme.dart';
+import 'commit_button.dart';
 
 class EmptyState extends StatelessWidget {
   const EmptyState({
@@ -60,22 +61,24 @@ class EmptyState extends StatelessWidget {
           ),
           const SizedBox(height: 28),
           if (primaryLabel != null && onPrimary != null)
-            FilledButton(
-              onPressed: onPrimary,
-              style: FilledButton.styleFrom(
-                backgroundColor: accentColor,
-                foregroundColor: onAccent,
-                minimumSize: const Size.fromHeight(52),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                textStyle: const TextStyle(
-                  fontFamily: OType.uiSans,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              child: Text(primaryLabel!),
-            ),
+            accentColor == OColors.commit
+                ? CommitButton(label: primaryLabel!, onPressed: onPrimary)
+                : FilledButton(
+                    onPressed: onPrimary,
+                    style: FilledButton.styleFrom(
+                      backgroundColor: accentColor,
+                      foregroundColor: onAccent,
+                      minimumSize: const Size.fromHeight(52),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      textStyle: const TextStyle(
+                        fontFamily: OType.uiSans,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    child: Text(primaryLabel!),
+                  ),
           if (secondaryLabel != null && onSecondary != null) ...[
             const SizedBox(height: 12),
             OutlinedButton(

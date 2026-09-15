@@ -144,8 +144,8 @@ ThemeData buildOTheme() {
       ),
     ),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: OColors.intention,
-      foregroundColor: OColors.paper,
+      backgroundColor: OColors.commit,
+      foregroundColor: OColors.ink,
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,

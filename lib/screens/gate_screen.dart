@@ -69,7 +69,7 @@ class _GateScreenState extends State<GateScreen> {
                         const SizedBox(height: 16),
                         const Text(
                           'Name a purpose. Commit an intention. '
-                          'ō coordinates — lock a time, gather people, move.',
+                          'ō coordinating: lock a time, gather people, move.',
                           style: TextStyle(
                             color: OColors.muted,
                             height: 1.5,

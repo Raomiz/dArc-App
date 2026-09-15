@@ -6,6 +6,8 @@ import 'package:darc_o/data/o_companion.dart';
 import 'package:darc_o/data/o_store.dart';
 import 'package:darc_o/nav/o_paces.dart';
 import 'package:darc_o/screens/intention_detail_screen.dart';
+import 'package:darc_o/theme/o_theme.dart';
+import 'package:darc_o/widgets/commit_button.dart';
 import 'package:darc_o/widgets/o_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -23,6 +25,7 @@ void main() {
 
     await tester.pumpWidget(OApp(state: state));
     expect(find.text('Act with others.'), findsOneWidget);
+    expect(find.textContaining('ō coordinating:'), findsOneWidget);
     expect(find.textContaining('On this device'), findsOneWidget);
     expect(find.textContaining('Placeholder session'), findsNothing);
     expect(find.textContaining('atlas'), findsNothing);
@@ -68,6 +71,14 @@ void main() {
     expect(find.text('INTENTIONS'), findsOneWidget);
     expect(find.text('Intention follows'), findsOneWidget);
     expect(find.text('The stage is yours'), findsNothing);
+    final commitCta = tester.widget<Material>(
+      find.descendant(
+        of: find.widgetWithText(CommitButton, 'Commit an intention'),
+        matching: find.byType(Material),
+      ),
+    );
+    expect(commitCta.color, OColors.commit);
+    expect(commitCta.color, isNot(OColors.intention));
     expect(find.text('New Purpose'), findsWidgets);
     expect(find.text('Load sample purposes'), findsNothing);
     expect(find.text('Rin'), findsNothing);
