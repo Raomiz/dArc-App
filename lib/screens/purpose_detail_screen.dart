@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/o_app_state.dart';
+import '../nav/o_paces.dart';
 import '../theme/o_theme.dart';
 import '../widgets/empty_state.dart';
 import '../widgets/field_backdrop.dart';
@@ -9,7 +10,7 @@ import '../widgets/sam_navigator.dart';
 import 'compose_intention_screen.dart';
 import 'intention_detail_screen.dart';
 
-/// Quiet purpose view. Home is the Intention stage; this is not the maze.
+/// Quiet purpose view. Not the main path — home is the Intention stage.
 class PurposeDetailScreen extends StatelessWidget {
   const PurposeDetailScreen({
     super.key,
@@ -37,16 +38,11 @@ class PurposeDetailScreen extends StatelessWidget {
             floatingActionButton: purpose == null
                 ? null
                 : FloatingActionButton.extended(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => ComposeIntentionScreen(
-                            state: state,
-                            purposeId: purposeId,
-                          ),
-                        ),
-                      );
-                    },
+                    onPressed: () => openComposeIntentionSheet(
+                      context: context,
+                      state: state,
+                      purposeId: purposeId,
+                    ),
                     backgroundColor: OColors.intention,
                     foregroundColor: OColors.paper,
                     icon: const Icon(Icons.how_to_reg_outlined),
@@ -66,16 +62,11 @@ class PurposeDetailScreen extends StatelessWidget {
                         '${purpose.why}\n\nNo intention yet. Commit one — the move that achieves this purpose.',
                     accent: OColors.intention,
                     primaryLabel: 'Commit an intention',
-                    onPrimary: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => ComposeIntentionScreen(
-                            state: state,
-                            purposeId: purposeId,
-                          ),
-                        ),
-                      );
-                    },
+                    onPrimary: () => openComposeIntentionSheet(
+                      context: context,
+                      state: state,
+                      purposeId: purposeId,
+                    ),
                   )
                 : ListView(
                     padding: const EdgeInsets.fromLTRB(20, 8, 20, 120),
@@ -112,16 +103,17 @@ class PurposeDetailScreen extends StatelessWidget {
                       for (final intention in items) ...[
                         IntentionCard(
                           intention: intention,
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                builder: (_) => IntentionDetailScreen(
-                                  state: state,
-                                  intentionId: intention.id,
-                                ),
-                              ),
-                            );
-                          },
+                          onCommit: () => state.commitIntention(intention.id),
+                          onCoordinate: () => openCompanionFromStage(
+                            context: context,
+                            state: state,
+                            intention: intention,
+                          ),
+                          onMore: () => openIntentionMoreSheet(
+                            context: context,
+                            state: state,
+                            intentionId: intention.id,
+                          ),
                         ),
                         const SizedBox(height: 12),
                       ],

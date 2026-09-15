@@ -117,6 +117,7 @@ class OAppState extends ChangeNotifier {
     required String statement,
     String? whenLabel,
     List<String> people = const [],
+    bool commit = false,
   }) async {
     final trimmedTitle = title.trim();
     final trimmedStatement = statement.trim();
@@ -133,7 +134,7 @@ class OAppState extends ChangeNotifier {
       statement: trimmedStatement,
       whenLabel: whenLabel?.trim().isEmpty ?? true ? null : whenLabel!.trim(),
       people: housePresence(people: people, sessionName: sessionName),
-      status: IntentionStatus.brewing,
+      status: commit ? IntentionStatus.committed : IntentionStatus.brewing,
       createdAt: DateTime.now(),
     );
     intentions = [intention, ...intentions];

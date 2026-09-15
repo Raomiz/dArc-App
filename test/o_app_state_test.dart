@@ -141,4 +141,19 @@ void main() {
     );
     expect(state.intentions.single.people, ['Joshua', 'Maya']);
   });
+
+  test('addIntention can cross the Commit threshold in one write', () async {
+    final state = build();
+    await state.hydrate();
+    await state.enterLocal(displayName: 'Joshua');
+    await state.addPurpose(title: 'Get outside', why: 'Walk.');
+    await state.addIntention(
+      purposeId: state.purposes.first.id,
+      title: 'Evening walk',
+      statement: 'Leave the house.',
+      commit: true,
+    );
+    expect(state.intentions.single.status, IntentionStatus.committed);
+    expect(state.intentions.single.people, ['Joshua']);
+  });
 }

@@ -42,6 +42,7 @@ Joshua (founder) uses ō later as a person in the app, not as atlas-owner chrome
   - Sam: ambient gold-soft wisp, not a chat destination
   - Type: system UI sans for chrome; whisper tracked labels; big contrast on Commit
   - No placeholder humans / fake cast. Empty or the local session name until real presence exists.
+  - **2–3 paces from main:** Intention is the stage. Purpose, Commit, Sam, and feed evidence must be reachable in at most three taps. Secondary is one sheet out. A fourth pace fails. No deeper stacks. No buried settings for primary actions.
 
 ## Stack
 

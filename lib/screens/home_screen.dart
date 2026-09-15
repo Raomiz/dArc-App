@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/o_app_state.dart';
+import '../nav/o_paces.dart';
 import '../theme/o_theme.dart';
 import '../widgets/empty_state.dart';
 import '../widgets/field_backdrop.dart';
@@ -10,6 +11,10 @@ import 'compose_intention_screen.dart';
 import 'compose_purpose_screen.dart';
 import 'intention_detail_screen.dart';
 
+/// Intention is the main stage.
+///
+/// Dennis lock: Purpose, Commit, Sam, and feed evidence are here or
+/// one sheet out — never a fourth pace.
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key, required this.state});
 
@@ -47,7 +52,10 @@ class HomeScreen extends StatelessWidget {
             final purpose = state.focusedPurpose;
             if (purpose == null) {
               return FloatingActionButton.extended(
-                onPressed: () => _openPurpose(context),
+                onPressed: () => openComposePurposeSheet(
+                  context: context,
+                  state: state,
+                ),
                 backgroundColor: OColors.purpose,
                 foregroundColor: OColors.paper,
                 icon: const Icon(Icons.add),
@@ -55,7 +63,11 @@ class HomeScreen extends StatelessWidget {
               );
             }
             return FloatingActionButton.extended(
-              onPressed: () => _openIntention(context, purpose.id),
+              onPressed: () => openComposeIntentionSheet(
+                context: context,
+                state: state,
+                purposeId: purpose.id,
+              ),
               backgroundColor: OColors.intention,
               foregroundColor: OColors.paper,
               icon: const Icon(Icons.how_to_reg_outlined),
@@ -75,7 +87,10 @@ class HomeScreen extends StatelessWidget {
                     'Then commit an intention and move. Nobody else is here yet.',
                 accent: OColors.purpose,
                 primaryLabel: 'Name a purpose',
-                onPrimary: () => _openPurpose(context),
+                onPrimary: () => openComposePurposeSheet(
+                  context: context,
+                  state: state,
+                ),
               );
             }
 
@@ -142,7 +157,10 @@ class HomeScreen extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: TextButton(
-                    onPressed: () => _openPurpose(context),
+                    onPressed: () => openComposePurposeSheet(
+                      context: context,
+                      state: state,
+                    ),
                     child: const Text(
                       'Name another purpose',
                       style: TextStyle(color: OColors.purpose),
@@ -171,47 +189,33 @@ class HomeScreen extends StatelessWidget {
                         'ō coordinates when you ask. Nobody else is here yet.',
                     accent: OColors.intention,
                     primaryLabel: 'Commit an intention',
-                    onPrimary: () => _openIntention(context, purpose.id),
+                    onPrimary: () => openComposeIntentionSheet(
+                      context: context,
+                      state: state,
+                      purposeId: purpose.id,
+                    ),
                   )
                 else
                   for (final intention in items) ...[
                     IntentionCard(
                       intention: intention,
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) => IntentionDetailScreen(
-                              state: state,
-                              intentionId: intention.id,
-                            ),
-                          ),
-                        );
-                      },
+                      onCommit: () => state.commitIntention(intention.id),
+                      onCoordinate: () => openCompanionFromStage(
+                        context: context,
+                        state: state,
+                        intention: intention,
+                      ),
+                      onMore: () => openIntentionMoreSheet(
+                        context: context,
+                        state: state,
+                        intentionId: intention.id,
+                      ),
                     ),
                     const SizedBox(height: 12),
                   ],
               ],
             );
           },
-        ),
-      ),
-    );
-  }
-
-  void _openPurpose(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => ComposePurposeScreen(state: state),
-      ),
-    );
-  }
-
-  void _openIntention(BuildContext context, String purposeId) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => ComposeIntentionScreen(
-          state: state,
-          purposeId: purposeId,
         ),
       ),
     );

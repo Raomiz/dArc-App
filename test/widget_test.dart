@@ -4,11 +4,13 @@ import 'package:darc_o/app.dart';
 import 'package:darc_o/data/o_app_state.dart';
 import 'package:darc_o/data/o_companion.dart';
 import 'package:darc_o/data/o_store.dart';
+import 'package:darc_o/nav/o_paces.dart';
+import 'package:darc_o/screens/intention_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('gate, purpose north star, intention stage, stub ō, Sam', (
+  testWidgets('stage keeps Purpose, Commit, Sam, ō within 2–3 paces', (
     tester,
   ) async {
     final state = OAppState(
@@ -72,24 +74,19 @@ void main() {
       intentionFields.at(1),
       'Leave the house. Not a chat thread — a walk.',
     );
-    await tester.tap(find.text('Hold this intention'));
+    await tester.ensureVisible(find.text('Commit this intention'));
+    await tester.tap(find.text('Commit this intention'));
     await tester.pumpAndSettle();
 
     expect(find.text('Evening walk'), findsOneWidget);
+    expect(find.text('COMMITTED'), findsOneWidget);
     expect(find.text('Joshua'), findsWidgets);
+    expect(find.text('Coordinate with ō'), findsOneWidget);
+    expect(find.byType(IntentionMorePanel), findsNothing);
     expect(find.text('You · Rin'), findsNothing);
     expect(find.text('Rin'), findsNothing);
     expect(find.text('Ade'), findsNothing);
-
-    await tester.tap(find.text('Evening walk'));
-    await tester.pumpAndSettle();
-    expect(find.text('Commit this intention'), findsOneWidget);
-    expect(find.text('Coordinate with ō'), findsOneWidget);
-    expect(find.text('Joshua'), findsWidgets);
-
-    await tester.tap(find.text('Commit this intention'));
-    await tester.pumpAndSettle();
-    expect(find.text('COMMITTED'), findsOneWidget);
+    expect(maxPacesFromStage, 3);
 
     await tester.tap(find.text('Coordinate with ō'));
     await tester.pumpAndSettle();
@@ -98,6 +95,42 @@ void main() {
     expect(find.textContaining('Stub ·'), findsWidgets);
     expect(find.textContaining('plan'), findsNothing);
     expect(find.textContaining('OpenAI'), findsOneWidget);
+    expect(find.text('Rin'), findsNothing);
+  });
+
+  testWidgets('held intention commits from the stage card — no fourth pace', (
+    tester,
+  ) async {
+    final state = OAppState(
+      store: MemoryOStore(),
+      companion: const StubOCompanion(),
+      random: Random(5),
+    );
+    await state.hydrate();
+    await state.enterLocal(displayName: 'Joshua');
+    await state.addPurpose(
+      title: 'Get outside this week',
+      why: 'Leave the house.',
+    );
+    await state.addIntention(
+      purposeId: state.purposes.first.id,
+      title: 'Evening walk',
+      statement: 'Leave the house.',
+    );
+
+    await tester.pumpWidget(OApp(state: state));
+    await tester.pumpAndSettle();
+
+    expect(find.text('BREWING'), findsOneWidget);
+    expect(find.text('Get outside this week'), findsOneWidget);
+    expect(find.text('Commit this intention'), findsOneWidget);
+    expect(find.text('Coordinate with ō'), findsOneWidget);
+    expect(find.text('Sam'), findsOneWidget);
+
+    await tester.tap(find.text('Commit this intention'));
+    await tester.pumpAndSettle();
+    expect(find.text('COMMITTED'), findsOneWidget);
+    expect(find.byType(IntentionMorePanel), findsNothing);
     expect(find.text('Rin'), findsNothing);
   });
 }
