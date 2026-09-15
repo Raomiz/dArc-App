@@ -9,11 +9,12 @@ import 'package:darc_o/screens/intention_detail_screen.dart';
 import 'package:darc_o/theme/o_theme.dart';
 import 'package:darc_o/widgets/commit_button.dart';
 import 'package:darc_o/widgets/o_navigator.dart';
+import 'package:darc_o/widgets/purpose_stage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('home lands on New Purpose; Intention follows within 2–3 paces', (
+  testWidgets('home lands on New Purpose; Intention follows inside the stage', (
     tester,
   ) async {
     final state = OAppState(
@@ -66,14 +67,24 @@ void main() {
     await tester.tap(find.text('Hold this purpose'));
     await tester.pumpAndSettle();
 
+    expect(find.byKey(const Key('purpose-stage')), findsOneWidget);
+    expect(find.byType(PurposeStage), findsOneWidget);
     expect(find.text('PURPOSE'), findsOneWidget);
     expect(find.text('Get outside this week'), findsOneWidget);
-    expect(find.text('INTENTIONS'), findsOneWidget);
+    expect(find.text('Intentions'), findsOneWidget);
+    expect(find.text('Brewing'), findsOneWidget);
+    expect(find.text('People'), findsOneWidget);
+    expect(find.text('Evidence'), findsOneWidget);
     expect(find.text('Intention follows'), findsOneWidget);
+    expect(find.byType(ChoiceChip), findsNothing);
+    expect(find.byType(PurposeOrbit), findsNothing);
     expect(find.text('The stage is yours'), findsNothing);
     final commitCta = tester.widget<Material>(
       find.descendant(
-        of: find.widgetWithText(CommitButton, 'Commit an intention'),
+        of: find.descendant(
+          of: find.byKey(const Key('purpose-stage')),
+          matching: find.widgetWithText(CommitButton, 'Commit an intention'),
+        ),
         matching: find.byType(Material),
       ),
     );
@@ -100,6 +111,13 @@ void main() {
     expect(find.text('COMMITTED'), findsOneWidget);
     expect(find.text('Joshua'), findsWidgets);
     expect(find.text('Coordinate with ō'), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('purpose-stage')),
+        matching: find.text('Coordinate with ō'),
+      ),
+      findsOneWidget,
+    );
     expect(find.byType(IntentionMorePanel), findsNothing);
     expect(find.text('You · Rin'), findsNothing);
     expect(find.text('Rin'), findsNothing);
@@ -116,7 +134,7 @@ void main() {
     expect(find.text('Rin'), findsNothing);
   });
 
-  testWidgets('held intention commits from the stage card — no fourth pace', (
+  testWidgets('held intention commits from inside the expanded Purpose', (
     tester,
   ) async {
     final state = OAppState(
@@ -139,6 +157,7 @@ void main() {
     await tester.pumpWidget(OApp(state: state));
     await tester.pumpAndSettle();
 
+    expect(find.byType(PurposeStage), findsOneWidget);
     expect(find.text('BREWING'), findsOneWidget);
     expect(find.text('Get outside this week'), findsOneWidget);
     expect(find.text('PURPOSE'), findsOneWidget);
@@ -147,11 +166,151 @@ void main() {
     expect(find.text('Coordinate with ō'), findsOneWidget);
     expect(find.byType(ONavigatorButton), findsOneWidget);
     expect(find.text('Sam'), findsNothing);
+    expect(find.byType(ChoiceChip), findsNothing);
+
+    final gold = tester.widget<Material>(
+      find.descendant(
+        of: find.descendant(
+          of: find.byKey(const Key('purpose-stage')),
+          matching: find.widgetWithText(
+            CommitButton,
+            'Commit this intention',
+          ),
+        ),
+        matching: find.byType(Material),
+      ),
+    );
+    expect(gold.color, OColors.commit);
 
     await tester.tap(find.text('Commit this intention'));
     await tester.pumpAndSettle();
     expect(find.text('COMMITTED'), findsOneWidget);
     expect(find.byType(IntentionMorePanel), findsNothing);
     expect(find.text('Rin'), findsNothing);
+  });
+
+  testWidgets('satellites switch Purpose; manners stay inside the stage', (
+    tester,
+  ) async {
+    final state = OAppState(
+      store: MemoryOStore(),
+      companion: const StubOCompanion(),
+      random: Random(9),
+    );
+    await state.hydrate();
+    await state.enterLocal(displayName: 'Joshua');
+    await state.addPurpose(
+      title: 'Get outside this week',
+      why: 'Leave the house.',
+    );
+    final outsideId = state.purposes.first.id;
+    await state.addIntention(
+      purposeId: outsideId,
+      title: 'Evening walk',
+      statement: 'Leave the house.',
+    );
+    await state.addPurpose(
+      title: 'A table this week',
+      why: 'A table, a time, dishes that actually arrive.',
+    );
+
+    await tester.pumpWidget(OApp(state: state));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(PurposeOrbit), findsOneWidget);
+    expect(find.byType(ChoiceChip), findsNothing);
+    expect(find.text('A table this week'), findsWidgets);
+    expect(find.text('Intention follows'), findsOneWidget);
+    expect(find.text('Evening walk'), findsNothing);
+
+    await tester.tap(find.byKey(Key('purpose-satellite-$outsideId')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Evening walk'), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byKey(const Key('purpose-stage')),
+        matching: find.text('Evening walk'),
+      ),
+      findsOneWidget,
+    );
+    expect(find.text('Commit this intention'), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('purpose-manner-people')));
+    await tester.pumpAndSettle();
+    expect(
+      find.text('People named on this purpose. No invented cast.'),
+      findsOneWidget,
+    );
+    expect(find.text('Joshua'), findsWidgets);
+    expect(find.text('Nobody else is here yet.'), findsNothing);
+    expect(find.text('Rin'), findsNothing);
+    expect(find.text('Evening walk'), findsNothing);
+
+    await tester.tap(find.byKey(const Key('purpose-manner-evidence')));
+    await tester.pumpAndSettle();
+    expect(
+      find.text('No evidence yet. Commit an intention and it will hold here.'),
+      findsOneWidget,
+    );
+
+    await tester.tap(find.byKey(const Key('purpose-manner-brewing')));
+    await tester.pumpAndSettle();
+    expect(find.text('Evening walk'), findsOneWidget);
+    expect(find.text('Commit this intention'), findsOneWidget);
+
+    await tester.tap(find.text('Commit this intention'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('purpose-manner-evidence')));
+    await tester.pumpAndSettle();
+    expect(find.text('Evening walk'), findsOneWidget);
+    expect(find.text('COMMITTED'), findsOneWidget);
+    expect(find.textContaining('plan'), findsNothing);
+    expect(find.text('Sam'), findsNothing);
+  });
+
+  testWidgets('expanded Purpose at phone width keeps Commit gold with no overflow', (
+    tester,
+  ) async {
+    final state = OAppState(
+      store: MemoryOStore(),
+      companion: const StubOCompanion(),
+      random: Random(11),
+    );
+    await state.hydrate();
+    await state.enterLocal(displayName: 'Joshua');
+    await state.addPurpose(
+      title: 'Get outside this week',
+      why: 'Leave the house. Not a thread — a walk.',
+    );
+    await state.addIntention(
+      purposeId: state.purposes.first.id,
+      title: 'Evening walk',
+      statement: 'Leave the house. Not a chat thread — a walk.',
+      whenLabel: 'Tonight after 18:00',
+    );
+    await state.addPurpose(
+      title: 'A table this week',
+      why: 'A table, a time, dishes that actually arrive.',
+    );
+    state.focusPurpose(state.purposes.last.id);
+
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(OApp(state: state));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(PurposeStage), findsOneWidget);
+    expect(find.byType(PurposeOrbit), findsOneWidget);
+    expect(find.text('Commit this intention'), findsOneWidget);
+    expect(tester.takeException(), isNull);
+    final gold = tester.widget<Material>(
+      find.descendant(
+        of: find.widgetWithText(CommitButton, 'Commit this intention'),
+        matching: find.byType(Material),
+      ),
+    );
+    expect(gold.color, OColors.commit);
   });
 }

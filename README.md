@@ -21,8 +21,8 @@ A TanStack / Grok atlas export landed here by mistake. That tree is gone. Do not
 A thin vertical slice, not a social network:
 
 1. **Local session** — a name on this device. No accounts, no auth backend. No fake cast.
-2. **Purpose** — home land (**New Purpose**, Byzantine purple). Why you act.
-3. **Intention** — follows from that north star (jade). What you commit to do. Never “plan”.
+2. **Purpose** — the stage (**New Purpose**, Byzantine purple). Selected Purpose expands at centre and holds its work inside. Unselected Purposes are satellites.
+3. **Intention** — follows from that north star (jade), inside the expanded Purpose. What you commit to do. Never “plan”.
 4. **Commit** — gold threshold (`#c9a227`), burst + haptic. Not a bland submit.
 5. **ō** — ambient gold-soft wisp navigator and coordinator. Not a game creature. Not Raz. Not a chat destination. Not named Sam on screen.
 6. **ō coordinator** — `OCompanion` interface with `StubOCompanion`. Replies are mock and labeled **STUB**. When live, in-app chat is **Grok**. No API keys. No OpenAI / GPT.
@@ -40,7 +40,7 @@ Locked colour (Dennis — Day 2 field is living wash, not a vault):
 | Field air | `#F7FBFD` | Near-white air |
 | Surface | `#ffffff` | Light airy cards on the field |
 | Purpose | `#702963` / `#3a1540` | Byzantine / deep — accent, north star |
-| Intention | `#2f6f5e` / `#7dba9a` | Jade / lit — main stage |
+| Intention | `#2f6f5e` / `#7dba9a` | Jade / lit — lives inside the Purpose |
 | Commit | `#c9a227` / `#e6d08a` | Gold threshold / soft |
 
 iOS project files exist because Flutter generates them. **Android is the ship target.**
@@ -89,9 +89,9 @@ Shortest judge path (doctor → device → tap): **[DEVICE_RUN.md](DEVICE_RUN.md
    flutter run -d android
    ```
 
-First launch: enter a local name → **New Purpose** (the land, one sheet) → **Commit an intention** (follows the north star, one sheet) → gold **Commit this intention**. **Coordinate with ō** and the **ō** wisp stay within three taps. Nobody else is invented. The ō panel is a stub. That is honest.
+First launch: enter a local name → **New Purpose** (the land, one sheet) → the Purpose expands at centre → **Commit an intention** (inside that Purpose, one sheet) → gold **Commit this intention**. **Coordinate with ō** and the **ō** wisp stay within three taps. Other Purposes sit as satellites. Nobody else is invented. The ō panel is a stub. That is honest.
 
-Dennis lock: home lands on New Purpose. Intention follows. Everything useful is **2–3 paces**. A fourth pace fails.
+Dennis lock: Purpose is the stage. Intention follows inside it. Everything useful is **2–3 paces**. A fourth pace fails.
 
 Release / Play / payments are out of scope. Do not invent a store backend here.
 

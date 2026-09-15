@@ -7,11 +7,12 @@ import '../widgets/companion_sheet.dart';
 
 /// Dennis lock — **2–3 paces from main**.
 ///
-/// Home lands on New Purpose. Intention follows from that north star.
-/// Commit, ō, and feed evidence must be reachable in at most three taps.
-/// Secondary lives one step out (a sheet). Rarely anything at three.
-/// A fourth pace fails. No deeper stacks. No buried settings for
-/// primary actions.
+/// Home lands on New Purpose. Purpose is the stage: the selected
+/// Purpose expands at centre and holds Intentions, Commit,
+/// Coordinate, More, and the other manners inside it.
+/// Unselected Purposes are satellites — one pace to switch.
+/// Commit, ō, and evidence stay reachable in at most three taps.
+/// Secondary lives one step out (a sheet). A fourth pace fails.
 const int maxPacesFromStage = 3;
 
 Future<void> showOSheet({
