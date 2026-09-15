@@ -66,6 +66,8 @@ All three should be clean.
 
 ## Run on Android
 
+Shortest judge path (doctor → device → tap): **[DEVICE_RUN.md](DEVICE_RUN.md)**.
+
 1. Start an emulator from Android Studio **or** plug in a device and accept debugging.
 2. Confirm Flutter can see it:
 
@@ -107,6 +109,7 @@ ios/                 generated; not the ship target
 test/                companion stub, local state, gate → purpose → intention → ō
 AGENTS.md            law for agents: this repo is ō, atlas lives elsewhere
 docs/ATLAS.md        why the web atlas was removed
+DEVICE_RUN.md        shortest path to judge ō on a phone
 ```
 
 ## House
