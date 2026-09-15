@@ -1,41 +1,41 @@
 import 'package:flutter/material.dart';
 
 import '../data/o_app_state.dart';
-import '../models/action_intent.dart';
+import '../models/intention.dart';
 import '../theme/o_theme.dart';
 import '../widgets/companion_sheet.dart';
-import '../widgets/field_backdrop.dart';
+import '../widgets/night_backdrop.dart';
 
-class ActionDetailScreen extends StatelessWidget {
-  const ActionDetailScreen({
+class IntentionDetailScreen extends StatelessWidget {
+  const IntentionDetailScreen({
     super.key,
     required this.state,
-    required this.actionId,
+    required this.intentionId,
   });
 
   final OAppState state;
-  final String actionId;
+  final String intentionId;
 
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
       listenable: state,
       builder: (context, _) {
-        final action = state.byId(actionId);
-        return FieldBackdrop(
+        final intention = state.intentionById(intentionId);
+        return NightBackdrop(
           child: Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-              title: const Text('Action'),
+              title: const Text('Intention'),
             ),
-            body: action == null
+            body: intention == null
                 ? const Center(
                     child: Text(
-                      'This action is gone.',
+                      'This intention is gone.',
                       style: TextStyle(color: OColors.muted),
                     ),
                   )
-                : _Body(state: state, action: action),
+                : _Body(state: state, intention: intention),
           ),
         );
       },
@@ -44,24 +44,37 @@ class ActionDetailScreen extends StatelessWidget {
 }
 
 class _Body extends StatelessWidget {
-  const _Body({required this.state, required this.action});
+  const _Body({required this.state, required this.intention});
 
   final OAppState state;
-  final ActionIntent action;
+  final Intention intention;
 
   @override
   Widget build(BuildContext context) {
-    final statusColor = switch (action.status) {
-      ActionStatus.brewing => OColors.gold,
-      ActionStatus.inMotion => OColors.jadeSoft,
-      ActionStatus.done => OColors.muted,
+    final purpose = state.purposeById(intention.purposeId);
+    final statusColor = switch (intention.status) {
+      IntentionStatus.brewing => OColors.gold,
+      IntentionStatus.committed => OColors.jadeSoft,
+      IntentionStatus.done => OColors.muted,
     };
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
       children: [
+        if (purpose != null) ...[
+          Text(
+            purpose.title.toUpperCase(),
+            style: const TextStyle(
+              color: OColors.byzantine,
+              letterSpacing: 1.3,
+              fontWeight: FontWeight.w700,
+              fontSize: 12,
+            ),
+          ),
+          const SizedBox(height: 8),
+        ],
         Text(
-          action.status.label.toUpperCase(),
+          intention.status.label.toUpperCase(),
           style: TextStyle(
             color: statusColor,
             letterSpacing: 1.3,
@@ -71,22 +84,22 @@ class _Body extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          action.title,
+          intention.title,
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
             fontWeight: FontWeight.w600,
             letterSpacing: -0.6,
           ),
         ),
-        if (action.whenLabel != null) ...[
+        if (intention.whenLabel != null) ...[
           const SizedBox(height: 8),
           Text(
-            action.whenLabel!,
+            intention.whenLabel!,
             style: const TextStyle(color: OColors.goldSoft, fontSize: 15),
           ),
         ],
         const SizedBox(height: 16),
         Text(
-          action.intent,
+          intention.statement,
           style: const TextStyle(height: 1.5, fontSize: 16, color: OColors.paper),
         ),
         const SizedBox(height: 20),
@@ -99,7 +112,7 @@ class _Body extends StatelessWidget {
           spacing: 8,
           runSpacing: 8,
           children: [
-            for (final person in action.people)
+            for (final person in intention.people)
               Chip(
                 label: Text(person),
                 backgroundColor: OColors.ridge,
@@ -109,11 +122,27 @@ class _Body extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 28),
+        if (intention.status == IntentionStatus.brewing) ...[
+          FilledButton(
+            onPressed: () => state.commitIntention(intention.id),
+            style: FilledButton.styleFrom(
+              backgroundColor: OColors.jade,
+              foregroundColor: OColors.night,
+              minimumSize: const Size.fromHeight(54),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+            ),
+            child: const Text('Commit this intention'),
+          ),
+          const SizedBox(height: 10),
+        ],
         FilledButton.icon(
           onPressed: () => openCompanionSheet(
             context: context,
             state: state,
-            action: action,
+            intention: intention,
+            purpose: purpose,
           ),
           style: FilledButton.styleFrom(
             backgroundColor: OColors.gold,
@@ -128,12 +157,12 @@ class _Body extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         const Text(
-          'ō drafts next moves. The stub does not message anyone or call a model.',
+          'ō drafts next moves. When live, chat is Grok. This stub does not message anyone.',
           style: TextStyle(color: OColors.muted, fontSize: 13, height: 1.35),
         ),
         const SizedBox(height: 20),
         OutlinedButton(
-          onPressed: () => state.cycleStatus(action.id),
+          onPressed: () => state.cycleStatus(intention.id),
           style: OutlinedButton.styleFrom(
             foregroundColor: OColors.paper,
             minimumSize: const Size.fromHeight(50),
@@ -142,16 +171,16 @@ class _Body extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
           ),
-          child: Text('Mark as ${action.status.next.label.toLowerCase()}'),
+          child: Text('Mark as ${intention.status.next.label.toLowerCase()}'),
         ),
         const SizedBox(height: 10),
         TextButton(
           onPressed: () async {
-            await state.removeAction(action.id);
+            await state.removeIntention(intention.id);
             if (context.mounted) Navigator.of(context).pop();
           },
           child: const Text(
-            'Remove this action',
+            'Remove this intention',
             style: TextStyle(color: Color(0xFFCF6679)),
           ),
         ),

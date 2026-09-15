@@ -2,20 +2,25 @@ import 'package:flutter/material.dart';
 
 import '../data/o_app_state.dart';
 import '../theme/o_theme.dart';
-import '../widgets/field_backdrop.dart';
+import '../widgets/night_backdrop.dart';
 
-class ComposeActionScreen extends StatefulWidget {
-  const ComposeActionScreen({super.key, required this.state});
+class ComposeIntentionScreen extends StatefulWidget {
+  const ComposeIntentionScreen({
+    super.key,
+    required this.state,
+    required this.purposeId,
+  });
 
   final OAppState state;
+  final String purposeId;
 
   @override
-  State<ComposeActionScreen> createState() => _ComposeActionScreenState();
+  State<ComposeIntentionScreen> createState() => _ComposeIntentionScreenState();
 }
 
-class _ComposeActionScreenState extends State<ComposeActionScreen> {
+class _ComposeIntentionScreenState extends State<ComposeIntentionScreen> {
   final _title = TextEditingController();
-  final _intent = TextEditingController();
+  final _statement = TextEditingController();
   final _when = TextEditingController();
   final _people = TextEditingController();
   String? _error;
@@ -23,7 +28,7 @@ class _ComposeActionScreenState extends State<ComposeActionScreen> {
   @override
   void dispose() {
     _title.dispose();
-    _intent.dispose();
+    _statement.dispose();
     _when.dispose();
     _people.dispose();
     super.dispose();
@@ -36,9 +41,10 @@ class _ComposeActionScreenState extends State<ComposeActionScreen> {
           .map((p) => p.trim())
           .where((p) => p.isNotEmpty)
           .toList();
-      await widget.state.addAction(
+      await widget.state.addIntention(
+        purposeId: widget.purposeId,
         title: _title.text,
-        intent: _intent.text,
+        statement: _statement.text,
         whenLabel: _when.text,
         people: people,
       );
@@ -50,35 +56,38 @@ class _ComposeActionScreenState extends State<ComposeActionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FieldBackdrop(
+    final purpose = widget.state.purposeById(widget.purposeId);
+    return NightBackdrop(
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        appBar: AppBar(title: const Text('Start an action')),
+        appBar: AppBar(title: const Text('Commit an intention')),
         body: ListView(
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
           children: [
-            const Text(
-              'Name the thing you will do with other people. ō coordinates. It does not post.',
-              style: TextStyle(color: OColors.muted, height: 1.45),
+            Text(
+              purpose == null
+                  ? 'Name the move you will do with other people.'
+                  : 'Under “${purpose.title}”. Name the move. ō coordinates. It does not post.',
+              style: const TextStyle(color: OColors.muted, height: 1.45),
             ),
             const SizedBox(height: 20),
             TextField(
               controller: _title,
               textCapitalization: TextCapitalization.sentences,
               decoration: const InputDecoration(
-                labelText: 'Action',
+                labelText: 'Intention',
                 hintText: 'Evening walk',
-                labelStyle: TextStyle(color: OColors.muted),
+                labelStyle: TextStyle(color: OColors.jadeSoft),
               ),
             ),
             const SizedBox(height: 14),
             TextField(
-              controller: _intent,
+              controller: _statement,
               minLines: 3,
               maxLines: 6,
               textCapitalization: TextCapitalization.sentences,
               decoration: const InputDecoration(
-                labelText: 'Intent',
+                labelText: 'What has to happen',
                 hintText: 'What has to happen for this to be real?',
                 labelStyle: TextStyle(color: OColors.muted),
                 alignLabelWithHint: true,
@@ -100,7 +109,7 @@ class _ComposeActionScreenState extends State<ComposeActionScreen> {
               textCapitalization: TextCapitalization.words,
               decoration: const InputDecoration(
                 labelText: 'Who else (optional)',
-                hintText: 'Sam, Rin',
+                hintText: 'Rin, Ade',
                 labelStyle: TextStyle(color: OColors.muted),
               ),
             ),
@@ -112,14 +121,14 @@ class _ComposeActionScreenState extends State<ComposeActionScreen> {
             FilledButton(
               onPressed: _save,
               style: FilledButton.styleFrom(
-                backgroundColor: OColors.gold,
+                backgroundColor: OColors.jade,
                 foregroundColor: OColors.night,
                 minimumSize: const Size.fromHeight(54),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
               ),
-              child: const Text('Put it in motion'),
+              child: const Text('Hold this intention'),
             ),
           ],
         ),

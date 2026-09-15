@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../data/o_app_state.dart';
 import '../theme/o_theme.dart';
-import '../widgets/action_card.dart';
 import '../widgets/empty_state.dart';
-import '../widgets/field_backdrop.dart';
-import 'action_detail_screen.dart';
-import 'compose_action_screen.dart';
+import '../widgets/night_backdrop.dart';
+import '../widgets/purpose_card.dart';
+import '../widgets/sam_navigator.dart';
+import 'compose_purpose_screen.dart';
+import 'purpose_detail_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key, required this.state});
@@ -16,7 +17,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final name = state.session?.displayName ?? 'You';
-    return FieldBackdrop(
+    return NightBackdrop(
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
@@ -29,6 +30,7 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           actions: [
+            const SamNavigatorButton(),
             TextButton(
               onPressed: () => state.leave(),
               child: const Text(
@@ -42,31 +44,33 @@ class HomeScreen extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute<void>(
-                builder: (_) => ComposeActionScreen(state: state),
+                builder: (_) => ComposePurposeScreen(state: state),
               ),
             );
           },
+          backgroundColor: OColors.byzantine,
+          foregroundColor: OColors.paper,
           icon: const Icon(Icons.add),
-          label: const Text('Start an action'),
+          label: const Text('Name a purpose'),
         ),
         body: ListenableBuilder(
           listenable: state,
           builder: (context, _) {
-            if (state.actions.isEmpty) {
+            if (state.purposes.isEmpty) {
               return EmptyState(
-                title: 'Nothing in motion yet',
+                title: 'No purpose yet',
                 body:
-                    'Start an action — a walk, a meal, a thing that needs other people. '
-                    'ō will help you coordinate. This is not a feed.',
-                primaryLabel: 'Start an action',
+                    'Name a purpose — why you want to act with other people. '
+                    'Then commit an intention. ō coordinates. This is not a feed.',
+                primaryLabel: 'Name a purpose',
                 onPrimary: () {
                   Navigator.of(context).push(
                     MaterialPageRoute<void>(
-                      builder: (_) => ComposeActionScreen(state: state),
+                      builder: (_) => ComposePurposeScreen(state: state),
                     ),
                   );
                 },
-                secondaryLabel: 'Load sample actions',
+                secondaryLabel: 'Load sample purposes',
                 onSecondary: () => state.loadSamples(),
               );
             }
@@ -79,7 +83,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'What are we doing?',
+                  'What is the purpose?',
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.w600,
                     letterSpacing: -0.4,
@@ -87,19 +91,20 @@ class HomeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 const Text(
-                  'Actions and intents — not posts. Open one and ask ō to help you move.',
+                  'Purpose is why. Intention is what you commit. Open one and move.',
                   style: TextStyle(color: OColors.muted, height: 1.4),
                 ),
                 const SizedBox(height: 20),
-                for (final action in state.actions) ...[
-                  ActionCard(
-                    action: action,
+                for (final purpose in state.purposes) ...[
+                  PurposeCard(
+                    purpose: purpose,
+                    intentionCount: state.intentionsFor(purpose.id).length,
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute<void>(
-                          builder: (_) => ActionDetailScreen(
+                          builder: (_) => PurposeDetailScreen(
                             state: state,
-                            actionId: action.id,
+                            purposeId: purpose.id,
                           ),
                         ),
                       );

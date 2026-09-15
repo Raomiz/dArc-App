@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-import '../models/action_intent.dart';
+import '../models/intention.dart';
 import '../theme/o_theme.dart';
 
-class ActionCard extends StatelessWidget {
-  const ActionCard({super.key, required this.action, required this.onTap});
+class IntentionCard extends StatelessWidget {
+  const IntentionCard({super.key, required this.intention, required this.onTap});
 
-  final ActionIntent action;
+  final Intention intention;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final statusColor = switch (action.status) {
-      ActionStatus.brewing => OColors.gold,
-      ActionStatus.inMotion => OColors.jadeSoft,
-      ActionStatus.done => OColors.muted,
+    final statusColor = switch (intention.status) {
+      IntentionStatus.brewing => OColors.gold,
+      IntentionStatus.committed => OColors.jadeSoft,
+      IntentionStatus.done => OColors.muted,
     };
 
     return Material(
@@ -45,7 +45,7 @@ class ActionCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      action.status.label.toUpperCase(),
+                      intention.status.label.toUpperCase(),
                       style: TextStyle(
                         color: statusColor,
                         fontSize: 11,
@@ -54,9 +54,9 @@ class ActionCard extends StatelessWidget {
                       ),
                     ),
                     const Spacer(),
-                    if (action.whenLabel != null)
+                    if (intention.whenLabel != null)
                       Text(
-                        action.whenLabel!,
+                        intention.whenLabel!,
                         style: const TextStyle(
                           color: OColors.muted,
                           fontSize: 12,
@@ -66,7 +66,7 @@ class ActionCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  action.title,
+                  intention.title,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.w600,
                     letterSpacing: -0.3,
@@ -74,7 +74,7 @@ class ActionCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  action.intent,
+                  intention.statement,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
@@ -84,9 +84,9 @@ class ActionCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 Text(
-                  action.people.isEmpty
+                  intention.people.isEmpty
                       ? 'No one named yet'
-                      : action.people.join(' · '),
+                      : intention.people.join(' · '),
                   style: const TextStyle(
                     color: OColors.goldSoft,
                     fontSize: 13,

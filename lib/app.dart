@@ -4,7 +4,7 @@ import 'data/o_app_state.dart';
 import 'screens/gate_screen.dart';
 import 'screens/home_screen.dart';
 import 'theme/o_theme.dart';
-import 'widgets/field_backdrop.dart';
+import 'widgets/night_backdrop.dart';
 import 'widgets/o_mark.dart';
 
 class OApp extends StatelessWidget {
@@ -22,7 +22,7 @@ class OApp extends StatelessWidget {
         listenable: state,
         builder: (context, _) {
           if (!state.ready) {
-            return const FieldBackdrop(
+            return const NightBackdrop(
               child: Center(child: OMark(size: 88)),
             );
           }

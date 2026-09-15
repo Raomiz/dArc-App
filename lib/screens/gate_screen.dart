@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/o_app_state.dart';
 import '../theme/o_theme.dart';
-import '../widgets/field_backdrop.dart';
+import '../widgets/night_backdrop.dart';
 import '../widgets/o_mark.dart';
 
 class GateScreen extends StatefulWidget {
@@ -33,7 +33,7 @@ class _GateScreenState extends State<GateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FieldBackdrop(
+    return NightBackdrop(
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(
@@ -68,7 +68,8 @@ class _GateScreenState extends State<GateScreen> {
                         const SizedBox(height: 16),
                         const Text(
                           'ō is a native social app centred on action. '
-                          'ō is also the companion that helps you coordinate — lock a time, gather people, move.',
+                          'Name a purpose. Commit an intention. '
+                          'ō coordinates — lock a time, gather people, move.',
                           style: TextStyle(
                             color: OColors.muted,
                             height: 1.5,

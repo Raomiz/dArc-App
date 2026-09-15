@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../theme/o_theme.dart';
 
-/// Distant dusk field — aerial, not a desk.
-class FieldBackdrop extends StatelessWidget {
-  const FieldBackdrop({super.key, required this.child});
+/// Night ground — #050505, not an atlas Field watch.
+class NightBackdrop extends StatelessWidget {
+  const NightBackdrop({super.key, required this.child});
 
   final Widget child;
 
@@ -18,7 +18,7 @@ class FieldBackdrop extends StatelessWidget {
           colors: [
             Color(0xFF1A1430),
             OColors.night,
-            Color(0xFF07060A),
+            Color(0xFF050505),
           ],
           stops: [0.0, 0.45, 1.0],
         ),
@@ -49,7 +49,7 @@ class _HorizonPainter extends CustomPainter {
       ..shader = const LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        colors: [Color(0x337A3BA8), Color(0x000C0A12)],
+        colors: [Color(0x337A3BA8), Color(0x00050505)],
       ).createShader(Rect.fromLTWH(0, size.height * 0.28, size.width, size.height * 0.4));
     canvas.drawRect(
       Rect.fromLTWH(0, size.height * 0.28, size.width, size.height * 0.4),
