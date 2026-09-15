@@ -31,7 +31,7 @@ void main() {
     expect(theme.colorScheme.secondary, OColors.intention);
     expect(theme.colorScheme.tertiary, OColors.purpose);
     expect(theme.colorScheme.surface, OColors.surface);
-    expect(theme.fontFamily, OType.uiSans);
+    expect(theme.textTheme.bodyMedium?.fontFamily, OType.uiSans);
   });
 
   test('whisper labels are tracked; Commit type is high contrast', () {

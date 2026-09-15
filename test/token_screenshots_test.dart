@@ -56,10 +56,11 @@ void main() {
 }
 
 Future<void> _write(WidgetTester tester, Directory out, String name) async {
+  await tester.pump();
   final boundary = tester.renderObject<RenderRepaintBoundary>(
     find.byType(RepaintBoundary).first,
   );
-  final image = await boundary.toImage(pixelRatio: 2);
+  final image = await boundary.toImage(pixelRatio: 1.5);
   final bytes = await image.toByteData(format: ui.ImageByteFormat.png);
   File('${out.path}/$name').writeAsBytesSync(bytes!.buffer.asUint8List());
 }

@@ -41,7 +41,8 @@ class _CommitButtonState extends State<CommitButton>
   Future<void> _cross() async {
     if (widget.onPressed == null || _crossing) return;
     setState(() => _crossing = true);
-    await HapticFeedback.heavyImpact();
+    // Fire-and-forget: awaiting the platform channel hangs widget tests.
+    HapticFeedback.heavyImpact();
     if (!mounted) return;
     await _burst.forward(from: 0);
     if (!mounted) return;
