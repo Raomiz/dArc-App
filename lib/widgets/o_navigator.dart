@@ -2,43 +2,43 @@ import 'package:flutter/material.dart';
 
 import '../theme/o_theme.dart';
 
-/// Sam is an ambient gold-soft wisp — the in-app navigator.
+/// ō is an ambient gold-soft wisp — the in-app navigator.
 ///
 /// Not a Raz creature. Not a person on an intention. Not a chat destination
-/// (ō coordinates; live chat is Grok). Opens a brief map of ō, not a thread.
-Future<void> openSamNavigator(BuildContext context) {
+/// (ō also coordinates; live chat is Grok). Opens a brief map of ō, not a thread.
+Future<void> openONavigator(BuildContext context) {
   return showModalBottomSheet<void>(
     context: context,
     backgroundColor: OColors.surface,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
-    builder: (context) => const SamNavigatorSheet(),
+    builder: (context) => const ONavigatorSheet(),
   );
 }
 
-class SamNavigatorButton extends StatelessWidget {
-  const SamNavigatorButton({super.key});
+class ONavigatorButton extends StatelessWidget {
+  const ONavigatorButton({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Semantics(
       button: true,
-      label: 'Sam',
+      label: 'ō',
       child: InkWell(
-        onTap: () => openSamNavigator(context),
+        onTap: () => openONavigator(context),
         borderRadius: BorderRadius.circular(24),
         child: const Padding(
           padding: EdgeInsets.fromLTRB(8, 6, 12, 6),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              SamWisp(size: 22),
+              OWisp(size: 22),
               SizedBox(width: 8),
               Text(
-                'Sam',
+                'ō',
                 style: TextStyle(
-                  color: OColors.commitSoft,
+                  color: OColors.commit,
                   fontWeight: FontWeight.w600,
                   fontFamily: OType.uiSans,
                   letterSpacing: 0.4,
@@ -53,8 +53,8 @@ class SamNavigatorButton extends StatelessWidget {
 }
 
 /// Ambient gold-soft wisp. Presence, not a chat orb.
-class SamWisp extends StatelessWidget {
-  const SamWisp({super.key, this.size = 22});
+class OWisp extends StatelessWidget {
+  const OWisp({super.key, this.size = 22});
 
   final double size;
 
@@ -87,8 +87,8 @@ class SamWisp extends StatelessWidget {
   }
 }
 
-class SamNavigatorSheet extends StatelessWidget {
-  const SamNavigatorSheet({super.key});
+class ONavigatorSheet extends StatelessWidget {
+  const ONavigatorSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -112,13 +112,13 @@ class SamNavigatorSheet extends StatelessWidget {
             const SizedBox(height: 18),
             const Row(
               children: [
-                SamWisp(size: 28),
+                OWisp(size: 28),
                 SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'Sam',
+                    'ō',
                     style: TextStyle(
-                      color: OColors.commitSoft,
+                      color: OColors.commit,
                       fontWeight: FontWeight.w600,
                       fontSize: 26,
                       fontFamily: OType.uiSans,
@@ -130,13 +130,18 @@ class SamNavigatorSheet extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               'In-app navigator',
-              style: OType.whisper.copyWith(color: OColors.commitSoft),
+              style: OType.whisper.copyWith(color: OColors.commit),
             ),
             const SizedBox(height: 16),
             const Text(
-              'I am Sam. I help you find your way through ō. '
+              'I am ō. I help you find your way. '
               'I am a wisp, not a chat. I am not a game creature, and I do not belong to Raz.',
-              style: TextStyle(height: 1.45, fontSize: 16, fontFamily: OType.uiSans),
+              style: TextStyle(
+                height: 1.45,
+                fontSize: 16,
+                fontFamily: OType.uiSans,
+                color: OColors.ink,
+              ),
             ),
             const SizedBox(height: 20),
             const _MapRow(
@@ -208,7 +213,7 @@ class _MapRow extends StatelessWidget {
               const SizedBox(height: 2),
               Text(
                 body,
-                style: const TextStyle(color: OColors.paper, height: 1.4),
+                style: const TextStyle(color: OColors.ink, height: 1.4),
               ),
             ],
           ),

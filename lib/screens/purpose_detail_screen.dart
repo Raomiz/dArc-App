@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
 import '../data/o_app_state.dart';
+import '../nav/o_paces.dart';
 import '../theme/o_theme.dart';
 import '../widgets/empty_state.dart';
+import '../widgets/field_backdrop.dart';
 import '../widgets/intention_card.dart';
-import '../widgets/night_backdrop.dart';
-import '../widgets/sam_navigator.dart';
+import '../widgets/o_navigator.dart';
 import 'compose_intention_screen.dart';
 import 'intention_detail_screen.dart';
 
+/// Quiet purpose view. Home lands on New Purpose.
 class PurposeDetailScreen extends StatelessWidget {
   const PurposeDetailScreen({
     super.key,
@@ -26,28 +28,23 @@ class PurposeDetailScreen extends StatelessWidget {
       builder: (context, _) {
         final purpose = state.purposeById(purposeId);
         final items = state.intentionsFor(purposeId);
-        return NightBackdrop(
+        return FieldBackdrop(
           child: Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
               title: const Text('Purpose'),
-              actions: const [SamNavigatorButton()],
+              actions: const [ONavigatorButton()],
             ),
             floatingActionButton: purpose == null
                 ? null
                 : FloatingActionButton.extended(
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => ComposeIntentionScreen(
-                            state: state,
-                            purposeId: purposeId,
-                          ),
-                        ),
-                      );
-                    },
-                    backgroundColor: OColors.intention,
-                    foregroundColor: OColors.ground,
+                    onPressed: () => openComposeIntentionSheet(
+                      context: context,
+                      state: state,
+                      purposeId: purposeId,
+                    ),
+                    backgroundColor: OColors.commit,
+                    foregroundColor: OColors.ink,
                     icon: const Icon(Icons.how_to_reg_outlined),
                     label: const Text('Commit an intention'),
                   ),
@@ -62,19 +59,14 @@ class PurposeDetailScreen extends StatelessWidget {
                 ? EmptyState(
                     title: purpose.title,
                     body:
-                        '${purpose.why}\n\nNo intention yet. Commit one — a named move with people.',
-                    accent: OColors.intention,
+                        '${purpose.why}\n\nNo intention yet. Commit one — the move that achieves this purpose.',
+                    accent: OColors.commit,
                     primaryLabel: 'Commit an intention',
-                    onPrimary: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (_) => ComposeIntentionScreen(
-                            state: state,
-                            purposeId: purposeId,
-                          ),
-                        ),
-                      );
-                    },
+                    onPrimary: () => openComposeIntentionSheet(
+                      context: context,
+                      state: state,
+                      purposeId: purposeId,
+                    ),
                   )
                 : ListView(
                     padding: const EdgeInsets.fromLTRB(20, 8, 20, 120),
@@ -90,6 +82,7 @@ class PurposeDetailScreen extends StatelessWidget {
                             ?.copyWith(
                               fontWeight: FontWeight.w600,
                               letterSpacing: -0.6,
+                              color: OColors.purposeDeep,
                             ),
                       ),
                       const SizedBox(height: 8),
@@ -104,22 +97,23 @@ class PurposeDetailScreen extends StatelessWidget {
                       const SizedBox(height: 24),
                       Text(
                         'Intentions',
-                        style: OType.whisper.copyWith(color: OColors.intentionLit),
+                        style: OType.whisper.copyWith(color: OColors.intention),
                       ),
                       const SizedBox(height: 12),
                       for (final intention in items) ...[
                         IntentionCard(
                           intention: intention,
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute<void>(
-                                builder: (_) => IntentionDetailScreen(
-                                  state: state,
-                                  intentionId: intention.id,
-                                ),
-                              ),
-                            );
-                          },
+                          onCommit: () => state.commitIntention(intention.id),
+                          onCoordinate: () => openCompanionFromStage(
+                            context: context,
+                            state: state,
+                            intention: intention,
+                          ),
+                          onMore: () => openIntentionMoreSheet(
+                            context: context,
+                            state: state,
+                            intentionId: intention.id,
+                          ),
                         ),
                         const SizedBox(height: 12),
                       ],

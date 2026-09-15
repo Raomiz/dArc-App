@@ -10,7 +10,7 @@ class OMark extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = gold ? OColors.commit : OColors.paper;
+    final color = gold ? OColors.commit : OColors.ink;
     return Semantics(
       label: 'ō',
       child: SizedBox(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/o_app_state.dart';
 import '../theme/o_theme.dart';
-import '../widgets/night_backdrop.dart';
+import '../widgets/field_backdrop.dart';
 import '../widgets/o_mark.dart';
 
 class GateScreen extends StatefulWidget {
@@ -33,7 +33,7 @@ class _GateScreenState extends State<GateScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return NightBackdrop(
+    return FieldBackdrop(
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(
@@ -63,13 +63,13 @@ class _GateScreenState extends State<GateScreen> {
                           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                             fontWeight: FontWeight.w500,
                             letterSpacing: -0.4,
+                            color: OColors.ink,
                           ),
                         ),
                         const SizedBox(height: 16),
                         const Text(
-                          'ō is a native social app centred on action. '
                           'Name a purpose. Commit an intention. '
-                          'ō coordinates — lock a time, gather people, move.',
+                          'ō coordinating: lock a time, gather people, move.',
                           style: TextStyle(
                             color: OColors.muted,
                             height: 1.5,
@@ -79,12 +79,12 @@ class _GateScreenState extends State<GateScreen> {
                         const Spacer(),
                         const SizedBox(height: 28),
                         Text(
-                          'Placeholder session',
-                          style: OType.whisper.copyWith(color: OColors.commitSoft),
+                          'On this device',
+                          style: OType.whisper.copyWith(color: OColors.purpose),
                         ),
                         const SizedBox(height: 8),
                         const Text(
-                          'No accounts. No server. A name stays on this device.',
+                          'No accounts. No server. A name stays here.',
                           style: TextStyle(color: OColors.muted, fontSize: 13),
                         ),
                         const SizedBox(height: 14),
@@ -102,7 +102,7 @@ class _GateScreenState extends State<GateScreen> {
                           onPressed: _busy ? null : _enter,
                           style: FilledButton.styleFrom(
                             backgroundColor: OColors.commit,
-                            foregroundColor: OColors.ground,
+                            foregroundColor: OColors.ink,
                             minimumSize: const Size.fromHeight(54),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
@@ -113,7 +113,7 @@ class _GateScreenState extends State<GateScreen> {
                         const SizedBox(height: 18),
                         const Text(
                           'd’ Arc house · Android first · Raz is a sibling product, not this app.',
-                          style: TextStyle(color: Color(0xFF6E657C), fontSize: 12),
+                          style: TextStyle(color: Color(0xFF5A6B74), fontSize: 12),
                         ),
                       ],
                     ),

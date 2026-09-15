@@ -22,7 +22,7 @@ class PurposeCard extends StatelessWidget {
         : '$intentionCount intentions';
 
     return Material(
-      color: OColors.surface,
+      color: OColors.surface.withValues(alpha: 0.88),
       borderRadius: BorderRadius.circular(20),
       child: InkWell(
         onTap: onTap,
@@ -30,7 +30,7 @@ class PurposeCard extends StatelessWidget {
         child: Ink(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: OColors.purposeDeep),
+            border: Border.all(color: OColors.purpose.withValues(alpha: 0.28)),
           ),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(18, 16, 18, 16),
@@ -48,6 +48,7 @@ class PurposeCard extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     letterSpacing: -0.3,
                     fontFamily: OType.uiSans,
+                    color: OColors.purposeDeep,
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -65,7 +66,7 @@ class PurposeCard extends StatelessWidget {
                 Text(
                   countLabel,
                   style: const TextStyle(
-                    color: OColors.intentionLit,
+                    color: OColors.intention,
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                     fontFamily: OType.uiSans,
