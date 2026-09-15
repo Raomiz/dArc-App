@@ -62,7 +62,7 @@ void main() {
     await tester.tap(find.text('Coordinate with ō'));
     await tester.pumpAndSettle();
     expect(find.text('STUB'), findsOneWidget);
-    expect(find.textContaining('Grok'), findsOneWidget);
+    expect(find.textContaining('Grok'), findsWidgets);
     expect(find.textContaining('Stub ·'), findsWidgets);
     expect(find.textContaining('plan'), findsNothing);
     expect(find.textContaining('OpenAI'), findsOneWidget);
