@@ -11,7 +11,7 @@ import 'compose_intention_screen.dart';
 import 'compose_purpose_screen.dart';
 import 'intention_detail_screen.dart';
 
-/// Intention is the main stage.
+/// Home lands on **New Purpose**. Intention follows from that north star.
 ///
 /// Dennis lock: Purpose, Commit, ō, and feed evidence are here or
 /// one sheet out — never a fourth pace.
@@ -46,34 +46,15 @@ class HomeScreen extends StatelessWidget {
             ),
           ],
         ),
-        floatingActionButton: ListenableBuilder(
-          listenable: state,
-          builder: (context, _) {
-            final purpose = state.focusedPurpose;
-            if (purpose == null) {
-              return FloatingActionButton.extended(
-                onPressed: () => openComposePurposeSheet(
-                  context: context,
-                  state: state,
-                ),
-                backgroundColor: OColors.purpose,
-                foregroundColor: OColors.paper,
-                icon: const Icon(Icons.add),
-                label: const Text('Name a purpose'),
-              );
-            }
-            return FloatingActionButton.extended(
-              onPressed: () => openComposeIntentionSheet(
-                context: context,
-                state: state,
-                purposeId: purpose.id,
-              ),
-              backgroundColor: OColors.intention,
-              foregroundColor: OColors.paper,
-              icon: const Icon(Icons.how_to_reg_outlined),
-              label: const Text('Commit an intention'),
-            );
-          },
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () => openComposePurposeSheet(
+            context: context,
+            state: state,
+          ),
+          backgroundColor: OColors.purpose,
+          foregroundColor: OColors.paper,
+          icon: const Icon(Icons.add),
+          label: const Text('New Purpose'),
         ),
         body: ListenableBuilder(
           listenable: state,
@@ -81,12 +62,12 @@ class HomeScreen extends StatelessWidget {
             final purpose = state.focusedPurpose;
             if (purpose == null) {
               return EmptyState(
-                title: 'The field is open',
+                title: 'New Purpose',
                 body:
-                    'Hello, $name. Name a purpose — a quiet north star. '
-                    'Then commit an intention and move. Nobody else is here yet.',
+                    'Hello, $name. This is the land — name a purpose. '
+                    'Intentions follow from that north star. Nobody else is here yet.',
                 accent: OColors.purpose,
-                primaryLabel: 'Name a purpose',
+                primaryLabel: 'New Purpose',
                 onPrimary: () => openComposePurposeSheet(
                   context: context,
                   state: state,
@@ -162,28 +143,25 @@ class HomeScreen extends StatelessWidget {
                       state: state,
                     ),
                     child: const Text(
-                      'Name another purpose',
+                      'New Purpose',
                       style: TextStyle(color: OColors.purpose),
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 18),
                 Text(
                   'INTENTIONS',
                   style: OType.whisper.copyWith(color: OColors.intention),
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  'What you commit to do.',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: -0.35,
-                  ),
+                const SizedBox(height: 6),
+                const Text(
+                  'What follows this purpose.',
+                  style: TextStyle(color: OColors.muted, fontSize: 15),
                 ),
                 const SizedBox(height: 16),
                 if (items.isEmpty)
                   EmptyState(
-                    title: 'The stage is yours',
+                    title: 'Intention follows',
                     body:
                         'Commit an intention that achieves this purpose. '
                         'ō coordinates when you ask. Nobody else is here yet.',

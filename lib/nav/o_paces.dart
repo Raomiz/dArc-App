@@ -7,8 +7,8 @@ import '../widgets/companion_sheet.dart';
 
 /// Dennis lock — **2–3 paces from main**.
 ///
-/// The main space is the Intention stage. Purpose (north star), Commit,
-/// ō, and feed evidence must be reachable in at most three taps.
+/// Home lands on New Purpose. Intention follows from that north star.
+/// Commit, ō, and feed evidence must be reachable in at most three taps.
 /// Secondary lives one step out (a sheet). Rarely anything at three.
 /// A fourth pace fails. No deeper stacks. No buried settings for
 /// primary actions.

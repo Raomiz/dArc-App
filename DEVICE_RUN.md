@@ -42,11 +42,11 @@ First install takes a minute. Then ō opens on the living wash — jade `#2f6f5e
 
 ## 4. Tap path (what you should see)
 
-Dennis lock: **2–3 paces from the Intention stage**. A fourth tap fails.
+Dennis lock: home lands on **New Purpose**. Intention follows. **2–3 paces**. A fourth tap fails.
 
 1. **Name** — type a local name → **Enter ō locally**. No account. No server. No fake people.
-2. **Open field** — empty and personal. **Name a purpose** (one sheet). Quiet Byzantine north star. Nobody else is here. No “Load sample purposes.”
-3. **Intention stage** — **Commit an intention** (one sheet) → gold **Commit this intention**. You land back on the stage, already committed. Purpose stays above as the north star.
+2. **New Purpose** — the land. One sheet. Byzantine north star. Nobody else is here. No “Load sample purposes.”
+3. **Intention follows** — **Commit an intention** (one sheet) → gold **Commit this intention**. Purpose stays the land above.
 4. **On the card** — status, statement, your name only. Gold Commit if you only Held. **Coordinate with ō** is on the card (one tap). The **ō** wisp is in the chrome (one tap). `More` is optional, not required to act.
 5. **ō wisp** — gold-soft glow. Tap **ō** for a brief map. ō is not a chat destination. Not named Sam.
 6. **Stub ō** — replies are labeled **STUB**. Live chat will be Grok. Not OpenAI.

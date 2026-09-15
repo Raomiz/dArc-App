@@ -62,12 +62,21 @@ class _ComposePurposePanelState extends State<ComposePurposePanel> {
         ),
         const SizedBox(height: 16),
         Text(
-          'PURPOSE',
+          'NEW PURPOSE',
           style: OType.whisper.copyWith(color: OColors.purpose),
         ),
         const SizedBox(height: 8),
+        Text(
+          'New Purpose',
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+            fontWeight: FontWeight.w600,
+            color: OColors.purposeDeep,
+            letterSpacing: -0.4,
+          ),
+        ),
+        const SizedBox(height: 8),
         const Text(
-          'A quiet north star. Intentions come after — what you commit to do.',
+          'The north star. Intentions follow from here — what you commit to do.',
           style: TextStyle(color: OColors.muted, height: 1.45),
         ),
         const SizedBox(height: 20),

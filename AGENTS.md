@@ -36,13 +36,13 @@ Joshua (founder) uses ō later as a person in the app, not as atlas-owner chrome
   - Field (living wash): jade `#2f6f5e` → baby blue `#A8D4E8` → near-white `#F7FBFD`
   - Not an obsidian vault. Never `#050505`, `#0c0712`, or flat dark-mode grey
   - Surfaces/cards: light and airy on that field
-  - Purpose: Byzantine `#702963` / deep `#3a1540` — quiet north star, accent only
-  - Intention: jade `#2f6f5e` / lit `#7dba9a` — the main stage
+  - Purpose: Byzantine `#702963` / deep `#3a1540` — home lands here (**New Purpose**)
+  - Intention: jade `#2f6f5e` / lit `#7dba9a` — follows from that north star
   - Commit: gold threshold `#c9a227` / soft `#e6d08a` — burst + haptic, not a bland submit
   - ō: ambient gold-soft wisp, not a chat destination. User-facing presence is **ō**, not Sam.
   - Type: system UI sans for chrome; whisper tracked labels; big contrast on Commit
   - No placeholder humans / fake cast. Empty or the local session name until real presence exists.
-  - **2–3 paces from main:** Intention is the stage. Purpose, Commit, ō, and feed evidence must be reachable in at most three taps. Secondary is one sheet out. A fourth pace fails. No deeper stacks. No buried settings for primary actions.
+  - **2–3 paces from main:** Home lands on New Purpose. Intention follows. Commit, ō, and feed evidence must be reachable in at most three taps. Secondary is one sheet out. A fourth pace fails. No deeper stacks. No buried settings for primary actions.
 
 ## Stack
 

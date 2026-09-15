@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('stage keeps Purpose, Commit, ō within 2–3 paces', (
+  testWidgets('home lands on New Purpose; Intention follows within 2–3 paces', (
     tester,
   ) async {
     final state = OAppState(
@@ -33,8 +33,9 @@ void main() {
     await tester.tap(find.text('Enter ō locally'));
     await tester.pumpAndSettle();
 
-    expect(find.text('The field is open'), findsOneWidget);
+    expect(find.text('New Purpose'), findsWidgets);
     expect(find.textContaining('north star'), findsOneWidget);
+    expect(find.text('The field is open'), findsNothing);
     expect(find.textContaining('plan'), findsNothing);
     expect(find.text('Sam'), findsNothing);
     expect(find.byType(ONavigatorButton), findsOneWidget);
@@ -51,7 +52,7 @@ void main() {
     Navigator.of(tester.element(find.text('In-app navigator'))).pop();
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Name a purpose').first);
+    await tester.tap(find.widgetWithText(FilledButton, 'New Purpose'));
     await tester.pumpAndSettle();
     final purposeFields = find.byType(TextField);
     await tester.enterText(purposeFields.at(0), 'Get outside this week');
@@ -65,7 +66,9 @@ void main() {
     expect(find.text('PURPOSE'), findsOneWidget);
     expect(find.text('Get outside this week'), findsOneWidget);
     expect(find.text('INTENTIONS'), findsOneWidget);
-    expect(find.text('The stage is yours'), findsOneWidget);
+    expect(find.text('Intention follows'), findsOneWidget);
+    expect(find.text('The stage is yours'), findsNothing);
+    expect(find.text('New Purpose'), findsWidgets);
     expect(find.text('Load sample purposes'), findsNothing);
     expect(find.text('Rin'), findsNothing);
     expect(find.text('Ade'), findsNothing);
@@ -127,6 +130,8 @@ void main() {
 
     expect(find.text('BREWING'), findsOneWidget);
     expect(find.text('Get outside this week'), findsOneWidget);
+    expect(find.text('PURPOSE'), findsOneWidget);
+    expect(find.text('New Purpose'), findsWidgets);
     expect(find.text('Commit this intention'), findsOneWidget);
     expect(find.text('Coordinate with ō'), findsOneWidget);
     expect(find.byType(ONavigatorButton), findsOneWidget);
