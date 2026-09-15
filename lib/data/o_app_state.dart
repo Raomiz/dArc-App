@@ -3,13 +3,15 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 
-import '../models/action_intent.dart';
+import '../models/intention.dart';
+import '../models/purpose.dart';
 import '../models/session.dart';
 import 'o_companion.dart';
 import 'o_store.dart';
 
 const sessionKey = 'o.session';
-const actionsKey = 'o.actions';
+const purposesKey = 'o.purposes';
+const intentionsKey = 'o.intentions';
 
 class OAppState extends ChangeNotifier {
   OAppState({required this.store, required this.companion, Random? random})
@@ -21,20 +23,28 @@ class OAppState extends ChangeNotifier {
 
   bool ready = false;
   LocalSession? session;
-  List<ActionIntent> actions = const [];
+  List<Purpose> purposes = const [];
+  List<Intention> intentions = const [];
 
   Future<void> hydrate() async {
     final rawSession = await store.read(sessionKey);
-    final rawActions = await store.read(actionsKey);
+    final rawPurposes = await store.read(purposesKey);
+    final rawIntentions = await store.read(intentionsKey);
     if (rawSession != null) {
       session = LocalSession.fromJson(
         jsonDecode(rawSession) as Map<String, dynamic>,
       );
     }
-    if (rawActions != null) {
-      final list = jsonDecode(rawActions) as List<dynamic>;
-      actions = list
-          .map((row) => ActionIntent.fromJson(row as Map<String, dynamic>))
+    if (rawPurposes != null) {
+      final list = jsonDecode(rawPurposes) as List<dynamic>;
+      purposes = list
+          .map((row) => Purpose.fromJson(row as Map<String, dynamic>))
+          .toList();
+    }
+    if (rawIntentions != null) {
+      final list = jsonDecode(rawIntentions) as List<dynamic>;
+      intentions = list
+          .map((row) => Intention.fromJson(row as Map<String, dynamic>))
           .toList();
     }
     ready = true;
@@ -58,67 +68,121 @@ class OAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addAction({
+  Future<void> addPurpose({required String title, required String why}) async {
+    final trimmedTitle = title.trim();
+    final trimmedWhy = why.trim();
+    if (trimmedTitle.isEmpty || trimmedWhy.isEmpty) {
+      throw ArgumentError('A purpose needs a name and a why.');
+    }
+    final purpose = Purpose(
+      id: _id('pur'),
+      title: trimmedTitle,
+      why: trimmedWhy,
+      createdAt: DateTime.now(),
+    );
+    purposes = [purpose, ...purposes];
+    await _persistPurposes();
+  }
+
+  Future<void> addIntention({
+    required String purposeId,
     required String title,
-    required String intent,
+    required String statement,
     String? whenLabel,
     List<String> people = const [],
   }) async {
     final trimmedTitle = title.trim();
-    final trimmedIntent = intent.trim();
-    if (trimmedTitle.isEmpty || trimmedIntent.isEmpty) {
-      throw ArgumentError('An action needs a title and an intent.');
+    final trimmedStatement = statement.trim();
+    if (trimmedTitle.isEmpty || trimmedStatement.isEmpty) {
+      throw ArgumentError('An intention needs a title and a statement.');
+    }
+    if (purposeById(purposeId) == null) {
+      throw ArgumentError('An intention belongs to a purpose.');
     }
     final you = session?.displayName ?? 'You';
     final named = [
       you,
       ...people.map((p) => p.trim()).where((p) => p.isNotEmpty && p != you),
     ];
-    final action = ActionIntent(
-      id: _id('act'),
+    final intention = Intention(
+      id: _id('int'),
+      purposeId: purposeId,
       title: trimmedTitle,
-      intent: trimmedIntent,
+      statement: trimmedStatement,
       whenLabel: whenLabel?.trim().isEmpty ?? true ? null : whenLabel!.trim(),
       people: named,
-      status: ActionStatus.brewing,
+      status: IntentionStatus.brewing,
       createdAt: DateTime.now(),
     );
-    actions = [action, ...actions];
-    await _persistActions();
+    intentions = [intention, ...intentions];
+    await _persistIntentions();
+  }
+
+  Future<void> commitIntention(String id) async {
+    intentions = [
+      for (final intention in intentions)
+        if (intention.id == id && intention.status == IntentionStatus.brewing)
+          intention.copyWith(status: IntentionStatus.committed)
+        else
+          intention,
+    ];
+    await _persistIntentions();
   }
 
   Future<void> cycleStatus(String id) async {
-    actions = [
-      for (final action in actions)
-        if (action.id == id)
-          action.copyWith(status: action.status.next)
+    intentions = [
+      for (final intention in intentions)
+        if (intention.id == id)
+          intention.copyWith(status: intention.status.next)
         else
-          action,
+          intention,
     ];
-    await _persistActions();
+    await _persistIntentions();
   }
 
-  Future<void> removeAction(String id) async {
-    actions = actions.where((action) => action.id != id).toList();
-    await _persistActions();
+  Future<void> removeIntention(String id) async {
+    intentions = intentions.where((item) => item.id != id).toList();
+    await _persistIntentions();
   }
 
   Future<void> loadSamples() async {
-    actions = sampleActions(now: DateTime.now());
-    await _persistActions();
+    final now = DateTime.now();
+    purposes = samplePurposes(now: now);
+    intentions = sampleIntentions(now: now);
+    await _persistPurposes();
+    await _persistIntentions();
   }
 
-  ActionIntent? byId(String id) {
-    for (final action in actions) {
-      if (action.id == id) return action;
+  Purpose? purposeById(String id) {
+    for (final purpose in purposes) {
+      if (purpose.id == id) return purpose;
     }
     return null;
   }
 
-  Future<void> _persistActions() async {
+  Intention? intentionById(String id) {
+    for (final intention in intentions) {
+      if (intention.id == id) return intention;
+    }
+    return null;
+  }
+
+  List<Intention> intentionsFor(String purposeId) {
+    return intentions.where((item) => item.purposeId == purposeId).toList();
+  }
+
+  Future<void> _persistPurposes() async {
     await store.write(
-      actionsKey,
-      jsonEncode(actions.map((a) => a.toJson()).toList()),
+      purposesKey,
+      jsonEncode(purposes.map((p) => p.toJson()).toList()),
+    );
+    notifyListeners();
+  }
+
+  Future<void> _persistIntentions() async {
+    await store.write(
+      intentionsKey,
+      jsonEncode(intentions.map((i) => i.toJson()).toList()),
     );
     notifyListeners();
   }

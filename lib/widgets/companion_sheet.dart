@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../data/o_app_state.dart';
-import '../models/action_intent.dart';
 import '../models/companion_reply.dart';
+import '../models/intention.dart';
+import '../models/purpose.dart';
 import '../theme/o_theme.dart';
 
 class ThreadTurn {
@@ -16,7 +17,8 @@ class ThreadTurn {
 Future<void> openCompanionSheet({
   required BuildContext context,
   required OAppState state,
-  required ActionIntent action,
+  required Intention intention,
+  Purpose? purpose,
 }) {
   return showModalBottomSheet<void>(
     context: context,
@@ -32,7 +34,11 @@ Future<void> openCompanionSheet({
         ),
         child: SizedBox(
           height: MediaQuery.sizeOf(context).height * 0.86,
-          child: CompanionPanel(state: state, action: action),
+          child: CompanionPanel(
+            state: state,
+            intention: intention,
+            purpose: purpose,
+          ),
         ),
       );
     },
@@ -43,11 +49,13 @@ class CompanionPanel extends StatefulWidget {
   const CompanionPanel({
     super.key,
     required this.state,
-    required this.action,
+    required this.intention,
+    this.purpose,
   });
 
   final OAppState state;
-  final ActionIntent action;
+  final Intention intention;
+  final Purpose? purpose;
 
   @override
   State<CompanionPanel> createState() => _CompanionPanelState();
@@ -60,7 +68,7 @@ class _CompanionPanelState extends State<CompanionPanel> {
   bool _busy = false;
 
   OAppState get state => widget.state;
-  ActionIntent get action => widget.action;
+  Intention get intention => widget.intention;
 
   @override
   void initState() {
@@ -89,7 +97,8 @@ class _CompanionPanelState extends State<CompanionPanel> {
       }
     });
     final CompanionReply reply = await state.companion.assist(
-      action: action,
+      intention: intention,
+      purpose: widget.purpose,
       fromName: from,
       userNote: note,
     );
@@ -121,7 +130,7 @@ class _CompanionPanelState extends State<CompanionPanel> {
 
   @override
   Widget build(BuildContext context) {
-    final prompts = state.companion.suggestedPrompts(action);
+    final prompts = state.companion.suggestedPrompts(intention);
     return Column(
       children: [
         const SizedBox(height: 10),
@@ -171,11 +180,12 @@ class _CompanionPanelState extends State<CompanionPanel> {
             ],
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.fromLTRB(20, 0, 20, 12),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
           child: Text(
-            'Mock replies, labeled stub. No live model. No API key in this app.',
-            style: TextStyle(color: OColors.muted, fontSize: 13, height: 1.35),
+            'Mock replies, labeled stub. Live chat will be ${state.companion.liveChatLabel}. '
+            'No API key. Not OpenAI.',
+            style: const TextStyle(color: OColors.muted, fontSize: 13, height: 1.35),
           ),
         ),
         SizedBox(

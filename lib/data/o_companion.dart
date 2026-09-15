@@ -1,18 +1,24 @@
-import '../models/action_intent.dart';
+import '../models/intention.dart';
 import '../models/companion_reply.dart';
+import '../models/purpose.dart';
 
 /// ō, the in-app coordinator.
 ///
+/// Live chat, when wired, is **Grok**. Do not wire OpenAI / GPT.
 /// A live model belongs behind this interface and must be user-initiated.
 /// Do not commit API keys. The shipped implementation is [StubOCompanion].
 abstract class OCompanion {
   String get id;
   bool get isStub;
 
-  List<String> suggestedPrompts(ActionIntent action);
+  /// Intended live provider. Stub still reports this so the UI can be honest.
+  String get liveChatLabel => 'Grok';
+
+  List<String> suggestedPrompts(Intention intention);
 
   Future<CompanionReply> assist({
-    required ActionIntent action,
+    required Intention intention,
+    Purpose? purpose,
     required String fromName,
     required String userNote,
   });
@@ -29,12 +35,15 @@ class StubOCompanion implements OCompanion {
   bool get isStub => true;
 
   @override
-  List<String> suggestedPrompts(ActionIntent action) {
+  String get liveChatLabel => 'Grok';
+
+  @override
+  List<String> suggestedPrompts(Intention intention) {
     final prompts = <String>[
       'Who still needs a yes?',
       'Propose a concrete time.',
     ];
-    if (action.people.length < 3) {
+    if (intention.people.length < 3) {
       prompts.add('Draft a short invite.');
     } else {
       prompts.add('What is the next physical step?');
@@ -44,41 +53,45 @@ class StubOCompanion implements OCompanion {
 
   @override
   Future<CompanionReply> assist({
-    required ActionIntent action,
+    required Intention intention,
+    Purpose? purpose,
     required String fromName,
     required String userNote,
   }) async {
     final note = userNote.trim();
-    final names = action.people.isEmpty
+    final names = intention.people.isEmpty
         ? 'just $fromName for now'
-        : action.people.join(', ');
-    final when = action.whenLabel ?? 'a time you have not locked';
+        : intention.people.join(', ');
+    final when = intention.whenLabel ?? 'a time you have not locked';
+    final purposeTitle = purpose?.title ?? 'this purpose';
 
     final focused = note.isEmpty
-        ? _open(action, fromName, names, when)
-        : _fromNote(action, fromName, names, when, note);
+        ? _open(intention, purposeTitle, fromName, names, when)
+        : _fromNote(intention, purposeTitle, fromName, names, when, note);
 
     return CompanionReply(
       text: focused,
-      nextMoves: _moves(action, note),
+      nextMoves: _moves(intention, note),
       source: id,
       stub: true,
     );
   }
 
   String _open(
-    ActionIntent action,
+    Intention intention,
+    String purposeTitle,
     String fromName,
     String names,
     String when,
   ) {
-    return 'Stub · $fromName, “${action.title}” is ${action.status.label.toLowerCase()}. '
-        'People on it: $names. Window: $when. '
-        'I will not invent a live plan — pick a next move and I will draft around it.';
+    return 'Stub · $fromName, “${intention.title}” is ${intention.status.label.toLowerCase()}. '
+        'Purpose: $purposeTitle. People on it: $names. Window: $when. '
+        'I will not invent a live schedule — pick a next move and I will draft around it.';
   }
 
   String _fromNote(
-    ActionIntent action,
+    Intention intention,
+    String purposeTitle,
     String fromName,
     String names,
     String when,
@@ -86,26 +99,27 @@ class StubOCompanion implements OCompanion {
   ) {
     final lower = note.toLowerCase();
     if (lower.contains('invite') || lower.contains('yes')) {
-      return 'Stub · Invite draft for “${action.title}”: '
+      return 'Stub · Invite draft for “${intention.title}” under $purposeTitle: '
           '“$fromName here — we are doing this, not chatting about it. '
           'Window is $when. Who is in?” Send it to $names. '
           'This text is generated locally. No model ran.';
     }
     if (lower.contains('time') || lower.contains('when')) {
-      return 'Stub · Time lock for “${action.title}”: treat “$when” as the offer. '
+      return 'Stub · Time lock for “${intention.title}”: treat “$when” as the offer. '
           'Ask everyone to answer with one number — a clock time — not “maybe”. '
           'Local stub only.';
     }
-    return 'Stub · Heard: “$note”. For “${action.title}” with $names, '
+    return 'Stub · Heard: “$note”. For “${intention.title}” with $names, '
         'turn that into one verb you can do in the next hour. '
         'ō (stub) will not call anyone or send messages.';
   }
 
-  List<String> _moves(ActionIntent action, String note) {
+  List<String> _moves(Intention intention, String note) {
     final moves = <String>[
       'Name the first person you will actually ask.',
-      if (action.whenLabel == null) 'Put a clock time on the action.',
-      if (action.status == ActionStatus.brewing) 'Mark it in motion once someone else is in.',
+      if (intention.whenLabel == null) 'Put a clock time on the intention.',
+      if (intention.status == IntentionStatus.brewing)
+        'Commit the intention once someone else is in.',
       if (note.toLowerCase().contains('invite'))
         'Copy the draft and send it yourself — ō does not send yet.',
     ];

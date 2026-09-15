@@ -1,25 +1,28 @@
-enum ActionStatus { brewing, inMotion, done }
+/// A committed action with other people.
+///
+/// User-facing word is **Intention**. Never call this a plan.
+enum IntentionStatus { brewing, committed, done }
 
-extension ActionStatusLabel on ActionStatus {
+extension IntentionStatusLabel on IntentionStatus {
   String get label => switch (this) {
-    ActionStatus.brewing => 'Brewing',
-    ActionStatus.inMotion => 'In motion',
-    ActionStatus.done => 'Done',
+    IntentionStatus.brewing => 'Brewing',
+    IntentionStatus.committed => 'Committed',
+    IntentionStatus.done => 'Done',
   };
 
-  ActionStatus get next => switch (this) {
-    ActionStatus.brewing => ActionStatus.inMotion,
-    ActionStatus.inMotion => ActionStatus.done,
-    ActionStatus.done => ActionStatus.brewing,
+  IntentionStatus get next => switch (this) {
+    IntentionStatus.brewing => IntentionStatus.committed,
+    IntentionStatus.committed => IntentionStatus.done,
+    IntentionStatus.done => IntentionStatus.brewing,
   };
 }
 
-/// Something a person wants to do with others.
-class ActionIntent {
-  const ActionIntent({
+class Intention {
+  const Intention({
     required this.id,
+    required this.purposeId,
     required this.title,
-    required this.intent,
+    required this.statement,
     required this.people,
     required this.status,
     required this.createdAt,
@@ -27,25 +30,27 @@ class ActionIntent {
   });
 
   final String id;
+  final String purposeId;
   final String title;
-  final String intent;
+  final String statement;
   final String? whenLabel;
   final List<String> people;
-  final ActionStatus status;
+  final IntentionStatus status;
   final DateTime createdAt;
 
-  ActionIntent copyWith({
+  Intention copyWith({
     String? title,
-    String? intent,
+    String? statement,
     String? whenLabel,
     List<String>? people,
-    ActionStatus? status,
+    IntentionStatus? status,
     bool clearWhen = false,
   }) {
-    return ActionIntent(
+    return Intention(
       id: id,
+      purposeId: purposeId,
       title: title ?? this.title,
-      intent: intent ?? this.intent,
+      statement: statement ?? this.statement,
       whenLabel: clearWhen ? null : (whenLabel ?? this.whenLabel),
       people: people ?? this.people,
       status: status ?? this.status,
@@ -55,47 +60,51 @@ class ActionIntent {
 
   Map<String, Object?> toJson() => {
     'id': id,
+    'purposeId': purposeId,
     'title': title,
-    'intent': intent,
+    'statement': statement,
     'whenLabel': whenLabel,
     'people': people,
     'status': status.name,
     'createdAt': createdAt.toIso8601String(),
   };
 
-  factory ActionIntent.fromJson(Map<String, dynamic> json) {
-    return ActionIntent(
+  factory Intention.fromJson(Map<String, dynamic> json) {
+    return Intention(
       id: json['id'] as String,
+      purposeId: json['purposeId'] as String,
       title: json['title'] as String,
-      intent: json['intent'] as String,
+      statement: json['statement'] as String,
       whenLabel: json['whenLabel'] as String?,
       people: (json['people'] as List<dynamic>).cast<String>(),
-      status: ActionStatus.values.byName(json['status'] as String),
+      status: IntentionStatus.values.byName(json['status'] as String),
       createdAt: DateTime.parse(json['createdAt'] as String),
     );
   }
 }
 
-List<ActionIntent> sampleActions({required DateTime now}) {
+List<Intention> sampleIntentions({required DateTime now}) {
   return [
-    ActionIntent(
+    Intention(
       id: 'sample-walk',
+      purposeId: 'purpose-outside',
       title: 'Evening walk',
-      intent:
+      statement:
           'Find two people free after six and actually leave the house. Not a chat thread — a walk.',
       whenLabel: 'Tonight after 18:00',
-      people: const ['You', 'Sam'],
-      status: ActionStatus.brewing,
+      people: const ['You', 'Rin'],
+      status: IntentionStatus.brewing,
       createdAt: now,
     ),
-    ActionIntent(
+    Intention(
       id: 'sample-potluck',
+      purposeId: 'purpose-table',
       title: 'Saturday potluck',
-      intent:
+      statement:
           'One dish each. Lock a kitchen and a time. ō helps chase the last two yeses.',
       whenLabel: 'Saturday, late afternoon',
       people: const ['You', 'Rin', 'Ade'],
-      status: ActionStatus.inMotion,
+      status: IntentionStatus.committed,
       createdAt: now.subtract(const Duration(hours: 6)),
     ),
   ];

@@ -4,6 +4,8 @@
 
 ō is a **native Android social app centred on action**, and the **AI coordinator** inside that app. The atlas remains on `Raomiz/d-Arc` / d-arc.io.
 
-This pull request deletes that web tree on purpose. History is honest: the old files remain reachable via git. They are not the app.
+The atlas tree was deleted on purpose. History is honest: the old files remain reachable via git. They are not the app.
 
-PR #1 (“Seat ō on the Field”) named ō as a watch beside Raz. That is the wrong direction for this repository. Do not merge that product framing here.
+PR #1 (“Seat ō on the Field”) named ō as a watch beside Raz and pointed at a pocket demo of that atlas. That is the wrong direction for this repository. It is superseded by the Flutter ō path. Do not merge that product framing here.
+
+User-facing Purpose and Intention in ō are social acts with other people. They are not atlas table rows.

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
-/// House colour — dusk field, not a paper desk.
+/// House colour — night, gold, Byzantine purple, jade.
+///
+/// #050505 for night. Gold is ō. Purple is Purpose. Jade is Commit / Intention.
 abstract final class OColors {
-  static const night = Color(0xFF0C0A12);
-  static const field = Color(0xFF16121F);
-  static const ridge = Color(0xFF241C33);
+  static const night = Color(0xFF050505);
+  static const field = Color(0xFF121014);
+  static const ridge = Color(0xFF1C1824);
   static const byzantine = Color(0xFF7A3BA8);
   static const byzantineDeep = Color(0xFF4A1F6B);
   static const jade = Color(0xFF2F8B6D);
@@ -55,7 +57,7 @@ ThemeData buildOTheme() {
       centerTitle: false,
     ),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
-      backgroundColor: OColors.gold,
+      backgroundColor: OColors.jade,
       foregroundColor: OColors.night,
     ),
     inputDecorationTheme: InputDecorationTheme(
