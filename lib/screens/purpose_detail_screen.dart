@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import '../data/o_app_state.dart';
 import '../theme/o_theme.dart';
 import '../widgets/empty_state.dart';
+import '../widgets/field_backdrop.dart';
 import '../widgets/intention_card.dart';
-import '../widgets/night_backdrop.dart';
 import '../widgets/sam_navigator.dart';
 import 'compose_intention_screen.dart';
 import 'intention_detail_screen.dart';
 
+/// Quiet purpose view. Home is the Intention stage; this is not the maze.
 class PurposeDetailScreen extends StatelessWidget {
   const PurposeDetailScreen({
     super.key,
@@ -26,7 +27,7 @@ class PurposeDetailScreen extends StatelessWidget {
       builder: (context, _) {
         final purpose = state.purposeById(purposeId);
         final items = state.intentionsFor(purposeId);
-        return NightBackdrop(
+        return FieldBackdrop(
           child: Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
@@ -47,7 +48,7 @@ class PurposeDetailScreen extends StatelessWidget {
                       );
                     },
                     backgroundColor: OColors.intention,
-                    foregroundColor: OColors.ground,
+                    foregroundColor: OColors.paper,
                     icon: const Icon(Icons.how_to_reg_outlined),
                     label: const Text('Commit an intention'),
                   ),
@@ -62,7 +63,7 @@ class PurposeDetailScreen extends StatelessWidget {
                 ? EmptyState(
                     title: purpose.title,
                     body:
-                        '${purpose.why}\n\nNo intention yet. Commit one — a named move with people.',
+                        '${purpose.why}\n\nNo intention yet. Commit one — the move that achieves this purpose.',
                     accent: OColors.intention,
                     primaryLabel: 'Commit an intention',
                     onPrimary: () {
@@ -90,6 +91,7 @@ class PurposeDetailScreen extends StatelessWidget {
                             ?.copyWith(
                               fontWeight: FontWeight.w600,
                               letterSpacing: -0.6,
+                              color: OColors.purposeDeep,
                             ),
                       ),
                       const SizedBox(height: 8),
@@ -104,7 +106,7 @@ class PurposeDetailScreen extends StatelessWidget {
                       const SizedBox(height: 24),
                       Text(
                         'Intentions',
-                        style: OType.whisper.copyWith(color: OColors.intentionLit),
+                        style: OType.whisper.copyWith(color: OColors.intention),
                       ),
                       const SizedBox(height: 12),
                       for (final intention in items) ...[

@@ -66,13 +66,13 @@ class _CommitButtonState extends State<CommitButton>
           borderRadius: BorderRadius.circular(18),
           boxShadow: [
             BoxShadow(
-              color: OColors.commitSoft.withValues(alpha: 0.28),
+              color: OColors.commitSoft.withValues(alpha: 0.42),
               blurRadius: 22,
               spreadRadius: 1,
               offset: const Offset(0, 6),
             ),
             BoxShadow(
-              color: OColors.commit.withValues(alpha: 0.35),
+              color: OColors.commit.withValues(alpha: 0.28),
               blurRadius: 8,
               spreadRadius: -1,
               offset: const Offset(0, 2),

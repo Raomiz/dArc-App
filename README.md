@@ -20,9 +20,9 @@ A TanStack / Grok atlas export landed here by mistake. That tree is gone. Do not
 
 A thin vertical slice, not a social network:
 
-1. **Placeholder session** — a local name on device. No accounts, no auth backend.
-2. **Purpose** — why you act with other people (Byzantine purple).
-3. **Intention** — what you commit to do with them (jade). User-facing word is Intention / Purpose, never “plan”.
+1. **Local session** — a name on this device. No accounts, no auth backend. No fake cast.
+2. **Purpose** — quiet north star (Byzantine purple). Why you act.
+3. **Intention** — the main stage (jade). What you commit to do. Never “plan”.
 4. **Commit** — gold threshold (`#c9a227`), burst + haptic. Not a bland submit.
 5. **Sam** — ambient gold-soft wisp navigator. Not a game creature. Not Raz. Not a chat destination.
 6. **ō coordinator** — `OCompanion` interface with `StubOCompanion`. Replies are mock and labeled **STUB**. When live, in-app chat is **Grok**. No API keys. No OpenAI / GPT.
@@ -31,14 +31,16 @@ Package / application id: `io.darc.o`
 Dart package name: `darc_o`  
 UI copy uses **ō**.
 
-Locked colour (Dennis — do not swap for grey dark mode or `#050505`):
+Locked colour (Dennis — Day 2 field is living wash, not a vault):
 
 | Token | Hex | Use |
 | --- | --- | --- |
-| Ground | `#0c0712` | Obsidian vault, not flat dark-mode grey |
-| Surface | `#160b1e` | Cards, sheets, stepped surfaces |
-| Purpose | `#702963` / `#3a1540` | Byzantine / deep |
-| Intention | `#2f6f5e` / `#7dba9a` | Jade / lit |
+| Field jade | `#2f6f5e` | Living wash start |
+| Field blue | `#A8D4E8` | Soft baby blue wash |
+| Field air | `#F7FBFD` | Near-white air |
+| Surface | `#ffffff` | Light airy cards on the field |
+| Purpose | `#702963` / `#3a1540` | Byzantine / deep — accent, north star |
+| Intention | `#2f6f5e` / `#7dba9a` | Jade / lit — main stage |
 | Commit | `#c9a227` / `#e6d08a` | Gold threshold / soft |
 
 iOS project files exist because Flutter generates them. **Android is the ship target.**
@@ -87,7 +89,9 @@ Shortest judge path (doctor → device → tap): **[DEVICE_RUN.md](DEVICE_RUN.md
    flutter run -d android
    ```
 
-First launch: enter a local name → empty home → **Name a purpose** or **Load sample purposes** → open a purpose → **Commit an intention** or open a sample → **Commit this intention** → **Coordinate with ō**. Ask **Sam** if you need the map. The ō panel is a stub. That is honest.
+First launch: enter a local name → open field (empty, personal) → **Name a purpose** (quiet north star, one sheet) → **Commit an intention** (the stage, one sheet) → gold **Commit this intention** → back on the stage, already committed. **Coordinate with ō** and **Sam** are on that stage — never a fourth tap. Nobody else is invented. The ō panel is a stub. That is honest.
+
+Dennis lock: everything useful is **2–3 paces from the Intention stage**. Secondary is one sheet. A fourth pace fails.
 
 Release / Play / payments are out of scope. Do not invent a store backend here.
 

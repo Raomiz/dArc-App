@@ -38,7 +38,7 @@ class SamNavigatorButton extends StatelessWidget {
               Text(
                 'Sam',
                 style: TextStyle(
-                  color: OColors.commitSoft,
+                  color: OColors.commit,
                   fontWeight: FontWeight.w600,
                   fontFamily: OType.uiSans,
                   letterSpacing: 0.4,
@@ -118,7 +118,7 @@ class SamNavigatorSheet extends StatelessWidget {
                   child: Text(
                     'Sam',
                     style: TextStyle(
-                      color: OColors.commitSoft,
+                      color: OColors.commit,
                       fontWeight: FontWeight.w600,
                       fontSize: 26,
                       fontFamily: OType.uiSans,
@@ -130,13 +130,18 @@ class SamNavigatorSheet extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               'In-app navigator',
-              style: OType.whisper.copyWith(color: OColors.commitSoft),
+              style: OType.whisper.copyWith(color: OColors.commit),
             ),
             const SizedBox(height: 16),
             const Text(
               'I am Sam. I help you find your way through ō. '
               'I am a wisp, not a chat. I am not a game creature, and I do not belong to Raz.',
-              style: TextStyle(height: 1.45, fontSize: 16, fontFamily: OType.uiSans),
+              style: TextStyle(
+                height: 1.45,
+                fontSize: 16,
+                fontFamily: OType.uiSans,
+                color: OColors.ink,
+              ),
             ),
             const SizedBox(height: 20),
             const _MapRow(
@@ -208,7 +213,7 @@ class _MapRow extends StatelessWidget {
               const SizedBox(height: 2),
               Text(
                 body,
-                style: const TextStyle(color: OColors.paper, height: 1.4),
+                style: const TextStyle(color: OColors.ink, height: 1.4),
               ),
             ],
           ),

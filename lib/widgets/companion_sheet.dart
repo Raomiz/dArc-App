@@ -197,7 +197,7 @@ class _CompanionPanelState extends State<CompanionPanel> {
                 backgroundColor: OColors.ridge,
                 side: BorderSide.none,
                 labelStyle: const TextStyle(
-                  color: OColors.paper,
+                  color: OColors.ink,
                   fontSize: 13,
                   fontFamily: OType.uiSans,
                 ),
@@ -232,7 +232,7 @@ class _CompanionPanelState extends State<CompanionPanel> {
                   constraints: const BoxConstraints(maxWidth: 340),
                   padding: const EdgeInsets.fromLTRB(14, 10, 14, 10),
                   decoration: BoxDecoration(
-                    color: turn.fromUser ? OColors.purposeDeep : OColors.ridge,
+                    color: turn.fromUser ? OColors.purpose : OColors.ridge,
                     borderRadius: BorderRadius.circular(16),
                     border: turn.stub
                         ? Border.all(color: OColors.stub.withValues(alpha: 0.45))
@@ -240,7 +240,10 @@ class _CompanionPanelState extends State<CompanionPanel> {
                   ),
                   child: Text(
                     turn.text,
-                    style: const TextStyle(height: 1.4),
+                    style: TextStyle(
+                      height: 1.4,
+                      color: turn.fromUser ? OColors.paper : OColors.ink,
+                    ),
                   ),
                 ),
               );
@@ -268,7 +271,7 @@ class _CompanionPanelState extends State<CompanionPanel> {
                 onPressed: _busy ? null : _send,
                 style: IconButton.styleFrom(
                   backgroundColor: OColors.commit,
-                  foregroundColor: OColors.ground,
+                  foregroundColor: OColors.ink,
                   minimumSize: const Size(52, 52),
                 ),
                 icon: const Icon(Icons.arrow_upward_rounded),

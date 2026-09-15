@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/o_app_state.dart';
 import '../theme/o_theme.dart';
-import '../widgets/night_backdrop.dart';
+import '../widgets/field_backdrop.dart';
 
 class ComposeIntentionScreen extends StatefulWidget {
   const ComposeIntentionScreen({
@@ -57,7 +57,7 @@ class _ComposeIntentionScreenState extends State<ComposeIntentionScreen> {
   @override
   Widget build(BuildContext context) {
     final purpose = widget.state.purposeById(widget.purposeId);
-    return NightBackdrop(
+    return FieldBackdrop(
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(title: const Text('Commit an intention')),
@@ -66,7 +66,7 @@ class _ComposeIntentionScreenState extends State<ComposeIntentionScreen> {
           children: [
             Text(
               purpose == null
-                  ? 'Name the move you will do with other people.'
+                  ? 'Name the move you will do.'
                   : 'Under “${purpose.title}”. Name the move. ō coordinates. It does not post.',
               style: const TextStyle(color: OColors.muted, height: 1.45),
             ),
@@ -77,7 +77,7 @@ class _ComposeIntentionScreenState extends State<ComposeIntentionScreen> {
               decoration: const InputDecoration(
                 labelText: 'Intention',
                 hintText: 'Evening walk',
-                labelStyle: TextStyle(color: OColors.intentionLit),
+                labelStyle: TextStyle(color: OColors.intention),
               ),
             ),
             const SizedBox(height: 14),
@@ -109,7 +109,7 @@ class _ComposeIntentionScreenState extends State<ComposeIntentionScreen> {
               textCapitalization: TextCapitalization.words,
               decoration: const InputDecoration(
                 labelText: 'Who else (optional)',
-                hintText: 'Rin, Ade',
+                hintText: 'Leave empty until someone is real',
                 labelStyle: TextStyle(color: OColors.muted),
               ),
             ),
@@ -122,7 +122,7 @@ class _ComposeIntentionScreenState extends State<ComposeIntentionScreen> {
               onPressed: _save,
               style: FilledButton.styleFrom(
                 backgroundColor: OColors.intention,
-                foregroundColor: OColors.ground,
+                foregroundColor: OColors.paper,
                 minimumSize: const Size.fromHeight(54),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),

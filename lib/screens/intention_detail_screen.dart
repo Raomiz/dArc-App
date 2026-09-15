@@ -5,7 +5,7 @@ import '../models/intention.dart';
 import '../theme/o_theme.dart';
 import '../widgets/commit_button.dart';
 import '../widgets/companion_sheet.dart';
-import '../widgets/night_backdrop.dart';
+import '../widgets/field_backdrop.dart';
 
 class IntentionDetailScreen extends StatelessWidget {
   const IntentionDetailScreen({
@@ -23,7 +23,7 @@ class IntentionDetailScreen extends StatelessWidget {
       listenable: state,
       builder: (context, _) {
         final intention = state.intentionById(intentionId);
-        return NightBackdrop(
+        return FieldBackdrop(
           child: Scaffold(
             backgroundColor: Colors.transparent,
             appBar: AppBar(
@@ -55,7 +55,7 @@ class _Body extends StatelessWidget {
     final purpose = state.purposeById(intention.purposeId);
     final statusColor = switch (intention.status) {
       IntentionStatus.brewing => OColors.commit,
-      IntentionStatus.committed => OColors.intentionLit,
+      IntentionStatus.committed => OColors.intention,
       IntentionStatus.done => OColors.muted,
     };
 
@@ -79,19 +79,20 @@ class _Body extends StatelessWidget {
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
             fontWeight: FontWeight.w600,
             letterSpacing: -0.6,
+            color: OColors.ink,
           ),
         ),
         if (intention.whenLabel != null) ...[
           const SizedBox(height: 8),
           Text(
             intention.whenLabel!,
-            style: const TextStyle(color: OColors.commitSoft, fontSize: 15),
+            style: const TextStyle(color: OColors.purposeDeep, fontSize: 15),
           ),
         ],
         const SizedBox(height: 16),
         Text(
           intention.statement,
-          style: const TextStyle(height: 1.5, fontSize: 16, color: OColors.paper),
+          style: const TextStyle(height: 1.5, fontSize: 16, color: OColors.ink),
         ),
         const SizedBox(height: 20),
         Text(
@@ -99,19 +100,25 @@ class _Body extends StatelessWidget {
           style: OType.whisper.copyWith(color: OColors.muted),
         ),
         const SizedBox(height: 8),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            for (final person in intention.people)
-              Chip(
-                label: Text(person),
-                backgroundColor: OColors.ridge,
-                side: BorderSide.none,
-                labelStyle: const TextStyle(color: OColors.paper),
-              ),
-          ],
-        ),
+        if (intention.people.isEmpty)
+          const Text(
+            'Nobody else is here yet.',
+            style: TextStyle(color: OColors.muted, fontSize: 14),
+          )
+        else
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              for (final person in intention.people)
+                Chip(
+                  label: Text(person),
+                  backgroundColor: OColors.ridge,
+                  side: BorderSide.none,
+                  labelStyle: const TextStyle(color: OColors.ink),
+                ),
+            ],
+          ),
         const SizedBox(height: 28),
         if (intention.status == IntentionStatus.brewing) ...[
           CommitButton(
@@ -129,7 +136,7 @@ class _Body extends StatelessWidget {
           ),
           style: FilledButton.styleFrom(
             backgroundColor: OColors.commit,
-            foregroundColor: OColors.ground,
+            foregroundColor: OColors.ink,
             minimumSize: const Size.fromHeight(54),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
@@ -147,7 +154,7 @@ class _Body extends StatelessWidget {
         OutlinedButton(
           onPressed: () => state.cycleStatus(intention.id),
           style: OutlinedButton.styleFrom(
-            foregroundColor: OColors.paper,
+            foregroundColor: OColors.ink,
             minimumSize: const Size.fromHeight(50),
             side: const BorderSide(color: OColors.outline),
             shape: RoundedRectangleBorder(

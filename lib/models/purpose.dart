@@ -1,7 +1,7 @@
 /// Why people are acting together.
 ///
 /// User-facing word is **Purpose**. This is not an atlas Cycle / Site / Field
-/// row — it is a social why, held on device.
+/// row — it is a social why, held on device. Quiet north star above Intention.
 class Purpose {
   const Purpose({
     required this.id,
@@ -41,17 +41,18 @@ class Purpose {
   }
 }
 
+/// Sample purposes teach the shape. They do not invent a cast.
 List<Purpose> samplePurposes({required DateTime now}) {
   return [
     Purpose(
       id: 'purpose-outside',
       title: 'Get outside this week',
-      why: 'Leave the house with other people. Not a thread — a walk.',
+      why: 'Leave the house. Not a thread — a walk.',
       createdAt: now,
     ),
     Purpose(
       id: 'purpose-table',
-      title: 'Feed people',
+      title: 'A table this week',
       why: 'A table, a time, dishes that actually arrive.',
       createdAt: now.subtract(const Duration(hours: 8)),
     ),

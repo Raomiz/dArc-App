@@ -83,16 +83,24 @@ class Intention {
   }
 }
 
-List<Intention> sampleIntentions({required DateTime now}) {
+/// Sample intentions may exist as teaching shapes.
+/// They never invent a cast — only the local session name, or empty.
+List<Intention> sampleIntentions({
+  required DateTime now,
+  String? sessionName,
+}) {
+  final people = sessionName == null || sessionName.trim().isEmpty
+      ? const <String>[]
+      : [sessionName.trim()];
   return [
     Intention(
       id: 'sample-walk',
       purposeId: 'purpose-outside',
       title: 'Evening walk',
       statement:
-          'Find two people free after six and actually leave the house. Not a chat thread — a walk.',
+          'Leave the house. Not a chat thread — a walk.',
       whenLabel: 'Tonight after 18:00',
-      people: const ['You', 'Rin'],
+      people: people,
       status: IntentionStatus.brewing,
       createdAt: now,
     ),
@@ -101,9 +109,9 @@ List<Intention> sampleIntentions({required DateTime now}) {
       purposeId: 'purpose-table',
       title: 'Saturday potluck',
       statement:
-          'One dish each. Lock a kitchen and a time. ō helps chase the last two yeses.',
+          'One dish. Lock a kitchen and a time.',
       whenLabel: 'Saturday, late afternoon',
-      people: const ['You', 'Rin', 'Ade'],
+      people: people,
       status: IntentionStatus.committed,
       createdAt: now.subtract(const Duration(hours: 6)),
     ),

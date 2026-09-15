@@ -25,8 +25,9 @@ class EmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final accentColor = accent ?? OColors.purpose;
+    final onAccent = accentColor == OColors.commit ? OColors.ink : OColors.paper;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
+      padding: const EdgeInsets.fromLTRB(4, 8, 4, 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -45,6 +46,7 @@ class EmptyState extends StatelessWidget {
               fontWeight: FontWeight.w600,
               letterSpacing: -0.4,
               fontFamily: OType.uiSans,
+              color: OColors.ink,
             ),
           ),
           const SizedBox(height: 10),
@@ -62,9 +64,7 @@ class EmptyState extends StatelessWidget {
               onPressed: onPrimary,
               style: FilledButton.styleFrom(
                 backgroundColor: accentColor,
-                foregroundColor: accentColor == OColors.purpose
-                    ? OColors.paper
-                    : OColors.ground,
+                foregroundColor: onAccent,
                 minimumSize: const Size.fromHeight(52),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
@@ -81,7 +81,7 @@ class EmptyState extends StatelessWidget {
             OutlinedButton(
               onPressed: onSecondary,
               style: OutlinedButton.styleFrom(
-                foregroundColor: OColors.paper,
+                foregroundColor: OColors.ink,
                 minimumSize: const Size.fromHeight(52),
                 side: const BorderSide(color: OColors.outline),
                 shape: RoundedRectangleBorder(

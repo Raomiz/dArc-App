@@ -13,12 +13,13 @@ class IntentionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final statusColor = switch (intention.status) {
       IntentionStatus.brewing => OColors.commit,
-      IntentionStatus.committed => OColors.intentionLit,
+      IntentionStatus.committed => OColors.intention,
       IntentionStatus.done => OColors.muted,
     };
 
     return Material(
-      color: OColors.surface,
+      color: OColors.surface.withValues(alpha: 0.88),
+      elevation: 0,
       borderRadius: BorderRadius.circular(20),
       child: InkWell(
         onTap: onTap,
@@ -26,7 +27,7 @@ class IntentionCard extends StatelessWidget {
         child: Ink(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: OColors.intention.withValues(alpha: 0.45)),
+            border: Border.all(color: OColors.intention.withValues(alpha: 0.28)),
           ),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(18, 16, 18, 16),
@@ -67,6 +68,7 @@ class IntentionCard extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     letterSpacing: -0.3,
                     fontFamily: OType.uiSans,
+                    color: OColors.ink,
                   ),
                 ),
                 const SizedBox(height: 6),
@@ -83,10 +85,10 @@ class IntentionCard extends StatelessWidget {
                 const SizedBox(height: 12),
                 Text(
                   intention.people.isEmpty
-                      ? 'No one named yet'
+                      ? 'Nobody else is here yet'
                       : intention.people.join(' · '),
                   style: const TextStyle(
-                    color: OColors.commitSoft,
+                    color: OColors.purposeDeep,
                     fontSize: 13,
                     fontFamily: OType.uiSans,
                   ),

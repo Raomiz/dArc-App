@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/o_app_state.dart';
 import '../theme/o_theme.dart';
-import '../widgets/night_backdrop.dart';
+import '../widgets/field_backdrop.dart';
 
 class ComposePurposeScreen extends StatefulWidget {
   const ComposePurposeScreen({super.key, required this.state});
@@ -36,7 +36,7 @@ class _ComposePurposeScreenState extends State<ComposePurposeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return NightBackdrop(
+    return FieldBackdrop(
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(title: const Text('Name a purpose')),
@@ -44,8 +44,8 @@ class _ComposePurposeScreenState extends State<ComposePurposeScreen> {
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
           children: [
             const Text(
-              'Purpose is why you act with other people. '
-              'Intentions come after. ō does not post.',
+              'Purpose is the quiet north star. '
+              'Intentions come after — what you commit to do. ō does not post.',
               style: TextStyle(color: OColors.muted, height: 1.45),
             ),
             const SizedBox(height: 20),

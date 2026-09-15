@@ -9,7 +9,7 @@ void main() {
   final purpose = Purpose(
     id: 'p1',
     title: 'Get outside this week',
-    why: 'Leave the house with other people.',
+    why: 'Leave the house.',
     createdAt: DateTime.utc(2026, 9, 14),
   );
 
@@ -17,9 +17,9 @@ void main() {
     id: 't1',
     purposeId: 'p1',
     title: 'Evening walk',
-    statement: 'Leave the house with two people.',
+    statement: 'Leave the house.',
     whenLabel: 'Tonight after 18:00',
-    people: const ['You', 'Rin'],
+    people: const ['Joshua'],
     status: IntentionStatus.brewing,
     createdAt: DateTime.utc(2026, 9, 14),
   );
@@ -42,6 +42,7 @@ void main() {
     expect(reply.text.toLowerCase(), contains('stub'));
     expect(reply.text.toLowerCase(), contains('purpose'));
     expect(reply.text.toLowerCase(), isNot(contains('plan')));
+    expect(reply.text.toLowerCase(), isNot(contains('rin')));
     expect(reply.nextMoves, isNotEmpty);
   });
 

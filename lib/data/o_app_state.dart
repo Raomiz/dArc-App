@@ -8,6 +8,7 @@ import '../models/purpose.dart';
 import '../models/session.dart';
 import 'o_companion.dart';
 import 'o_store.dart';
+import 'presence.dart';
 
 const sessionKey = 'o.session';
 const purposesKey = 'o.purposes';
@@ -25,6 +26,22 @@ class OAppState extends ChangeNotifier {
   LocalSession? session;
   List<Purpose> purposes = const [];
   List<Intention> intentions = const [];
+  String? focusedPurposeId;
+
+  String? get sessionName {
+    final name = session?.displayName.trim();
+    if (name == null || name.isEmpty) return null;
+    return name;
+  }
+
+  Purpose? get focusedPurpose {
+    if (purposes.isEmpty) return null;
+    if (focusedPurposeId != null) {
+      final found = purposeById(focusedPurposeId!);
+      if (found != null) return found;
+    }
+    return purposes.first;
+  }
 
   Future<void> hydrate() async {
     final rawSession = await store.read(sessionKey);
@@ -47,7 +64,9 @@ class OAppState extends ChangeNotifier {
           .map((row) => Intention.fromJson(row as Map<String, dynamic>))
           .toList();
     }
+    focusedPurposeId = focusedPurpose?.id;
     ready = true;
+    await _scrubPresence(persist: true);
     notifyListeners();
   }
 
@@ -59,12 +78,19 @@ class OAppState extends ChangeNotifier {
       startedAt: DateTime.now(),
     );
     await store.write(sessionKey, jsonEncode(session!.toJson()));
+    await _scrubPresence(persist: true);
     notifyListeners();
   }
 
   Future<void> leave() async {
     session = null;
     await store.delete(sessionKey);
+    notifyListeners();
+  }
+
+  void focusPurpose(String id) {
+    if (purposeById(id) == null) return;
+    focusedPurposeId = id;
     notifyListeners();
   }
 
@@ -81,6 +107,7 @@ class OAppState extends ChangeNotifier {
       createdAt: DateTime.now(),
     );
     purposes = [purpose, ...purposes];
+    focusedPurposeId = purpose.id;
     await _persistPurposes();
   }
 
@@ -99,22 +126,18 @@ class OAppState extends ChangeNotifier {
     if (purposeById(purposeId) == null) {
       throw ArgumentError('An intention belongs to a purpose.');
     }
-    final you = session?.displayName ?? 'You';
-    final named = [
-      you,
-      ...people.map((p) => p.trim()).where((p) => p.isNotEmpty && p != you),
-    ];
     final intention = Intention(
       id: _id('int'),
       purposeId: purposeId,
       title: trimmedTitle,
       statement: trimmedStatement,
       whenLabel: whenLabel?.trim().isEmpty ?? true ? null : whenLabel!.trim(),
-      people: named,
+      people: housePresence(people: people, sessionName: sessionName),
       status: IntentionStatus.brewing,
       createdAt: DateTime.now(),
     );
     intentions = [intention, ...intentions];
+    focusedPurposeId = purposeId;
     await _persistIntentions();
   }
 
@@ -148,7 +171,8 @@ class OAppState extends ChangeNotifier {
   Future<void> loadSamples() async {
     final now = DateTime.now();
     purposes = samplePurposes(now: now);
-    intentions = sampleIntentions(now: now);
+    intentions = sampleIntentions(now: now, sessionName: sessionName);
+    focusedPurposeId = purposes.first.id;
     await _persistPurposes();
     await _persistIntentions();
   }
@@ -169,6 +193,26 @@ class OAppState extends ChangeNotifier {
 
   List<Intention> intentionsFor(String purposeId) {
     return intentions.where((item) => item.purposeId == purposeId).toList();
+  }
+
+  Future<void> _scrubPresence({required bool persist}) async {
+    var changed = false;
+    final cleaned = <Intention>[];
+    for (final intention in intentions) {
+      final people = housePresence(
+        people: intention.people,
+        sessionName: sessionName,
+      );
+      if (listEquals(people, intention.people)) {
+        cleaned.add(intention);
+      } else {
+        changed = true;
+        cleaned.add(intention.copyWith(people: people));
+      }
+    }
+    if (!changed) return;
+    intentions = cleaned;
+    if (persist) await _persistIntentions();
   }
 
   Future<void> _persistPurposes() async {
