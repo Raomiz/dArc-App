@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import '../models/intention.dart';
@@ -47,66 +49,61 @@ class PurposeStage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: OColors.surface.withValues(alpha: 0.94),
-        borderRadius: BorderRadius.circular(28),
-        border: Border.all(
-          color: OColors.purpose.withValues(alpha: 0.48),
-          width: 1.5,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: OColors.purpose.withValues(alpha: 0.2),
-            blurRadius: 32,
-            offset: const Offset(0, 14),
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(begin: OType.stageSettleFrom, end: 1),
+      duration: OType.stageSettle,
+      curve: Curves.easeOut,
+      builder: (context, scale, child) {
+        return Transform.scale(scale: scale, child: child);
+      },
+      child: DecoratedBox(
+        key: const Key('purpose-stage-bloom'),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(32),
+          gradient: const RadialGradient(
+            center: Alignment(0, -0.35),
+            radius: 1.05,
+            colors: [
+              OType.purposeBloom,
+              Color.fromRGBO(112, 41, 99, 0.10),
+              Color.fromRGBO(112, 41, 99, 0.00),
+            ],
+            stops: [0.0, 0.55, 1.0],
           ),
-          BoxShadow(
-            color: OColors.purposeDeep.withValues(alpha: 0.08),
-            blurRadius: 10,
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 20, 20, 18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'PURPOSE',
-              style: OType.whisper.copyWith(color: OColors.purpose),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              purpose.title,
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-                letterSpacing: -0.6,
-                color: OColors.purposeDeep,
-                height: 1.15,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              purpose.why,
-              style: const TextStyle(
-                color: OColors.muted,
-                height: 1.4,
-                fontSize: 15,
-              ),
-            ),
-            const SizedBox(height: 18),
-            _MannerRail(manner: manner, onManner: onManner),
-            const SizedBox(height: 16),
-            _MannerBody(
-              manner: manner,
-              intentions: intentions,
-              onCommitIntention: onCommitIntention,
-              onCommit: onCommit,
-              onCoordinate: onCoordinate,
-              onMore: onMore,
+          boxShadow: const [
+            BoxShadow(
+              color: OType.purposeBloom,
+              blurRadius: 52,
+              spreadRadius: 6,
             ),
           ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(18, 18, 18, 14),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'PURPOSE',
+                style: OType.whisper.copyWith(color: OColors.purpose),
+              ),
+              const SizedBox(height: 10),
+              Text(purpose.title, style: OType.purposeTitle),
+              const SizedBox(height: 8),
+              Text(purpose.why, style: OType.bodyMist),
+              const SizedBox(height: 18),
+              _MannerRail(manner: manner, onManner: onManner),
+              const SizedBox(height: 16),
+              _MannerBody(
+                manner: manner,
+                intentions: intentions,
+                onCommitIntention: onCommitIntention,
+                onCommit: onCommit,
+                onCoordinate: onCoordinate,
+                onMore: onMore,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -170,7 +167,7 @@ class _MannerMark extends StatelessWidget {
                 style: TextStyle(
                   color: color,
                   fontSize: 12,
-                  fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+                  fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
                   letterSpacing: 0.2,
                   fontFamily: OType.uiSans,
                 ),
@@ -302,15 +299,15 @@ class _PeopleManner extends StatelessWidget {
     if (names.isEmpty) {
       return const Text(
         'Nobody else is here yet.',
-        style: TextStyle(color: OColors.muted, height: 1.45, fontSize: 15),
+        style: OType.bodyMist,
       );
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'People named on this purpose. No invented cast.',
-          style: TextStyle(color: OColors.muted, height: 1.4, fontSize: 14),
+          style: OType.bodyMist.copyWith(fontSize: 14),
         ),
         const SizedBox(height: 14),
         for (final name in names) ...[
@@ -327,12 +324,7 @@ class _PeopleManner extends StatelessWidget {
               const SizedBox(width: 10),
               Text(
                 name,
-                style: const TextStyle(
-                  color: OColors.purposeDeep,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                  fontFamily: OType.uiSans,
-                ),
+                style: OType.intentionTitle.copyWith(color: OColors.purposeDeep),
               ),
             ],
           ),
@@ -356,7 +348,7 @@ class _EvidenceManner extends StatelessWidget {
     if (items.isEmpty) {
       return const Text(
         'No evidence yet. Commit an intention and it will hold here.',
-        style: TextStyle(color: OColors.muted, height: 1.45, fontSize: 15),
+        style: OType.bodyMist,
       );
     }
     return Column(
@@ -364,36 +356,21 @@ class _EvidenceManner extends StatelessWidget {
         for (final intention in items) ...[
           DecoratedBox(
             decoration: BoxDecoration(
-              color: OColors.ridge.withValues(alpha: 0.55),
+              color: OColors.fieldAir.withValues(alpha: 0.28),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: OColors.intention.withValues(alpha: 0.22)),
             ),
             child: Padding(
               padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    intention.status.label.toUpperCase(),
-                    style: OType.whisper.copyWith(color: OColors.intention),
-                  ),
-                  const SizedBox(height: 6),
-                  Text(
-                    intention.title,
-                    style: const TextStyle(
-                      color: OColors.ink,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
-                  ),
+                  Text(intention.title, style: OType.intentionTitle),
                   const SizedBox(height: 4),
                   Text(
-                    intention.statement,
-                    style: const TextStyle(
-                      color: OColors.muted,
-                      height: 1.4,
-                      fontSize: 14,
-                    ),
+                    '${intention.status.label} · ${intention.statement}',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: OType.bodyMist.copyWith(fontSize: 14),
                   ),
                 ],
               ),
@@ -455,7 +432,7 @@ class PurposeSatellite extends StatelessWidget {
                       initial,
                       style: const TextStyle(
                         color: OColors.purpose,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w600,
                         fontSize: 18,
                         fontFamily: OType.uiSans,
                       ),
@@ -469,12 +446,10 @@ class PurposeSatellite extends StatelessWidget {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: OType.whisper.copyWith(
                   color: OColors.purposeDeep,
                   fontSize: 11,
-                  height: 1.2,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: OType.uiSans,
+                  letterSpacing: 0.2,
                 ),
               ),
             ],
@@ -500,24 +475,34 @@ class PurposeOrbit extends StatelessWidget {
   Widget build(BuildContext context) {
     if (satellites.isEmpty) return const SizedBox.shrink();
     return SizedBox(
-      height: 96,
-      child: CustomPaint(
-        painter: _OrbitPainter(),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            for (var i = 0; i < satellites.length; i++) ...[
-              if (i > 0) const SizedBox(width: 12),
-              Transform.translate(
-                offset: Offset(0, i.isEven ? -6 : 8),
-                child: PurposeSatellite(
-                  key: Key('purpose-satellite-${satellites[i].id}'),
-                  purpose: satellites[i],
-                  onTap: () => onSelect(satellites[i]),
-                ),
-              ),
-            ],
-          ],
+      key: const Key('purpose-orbit-dim'),
+      height: 108,
+      child: ImageFiltered(
+        imageFilter: ImageFilter.blur(
+          sigmaX: OType.satelliteBlur,
+          sigmaY: OType.satelliteBlur,
+        ),
+        child: Opacity(
+          opacity: 0.44,
+          child: CustomPaint(
+            painter: _OrbitPainter(),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                for (var i = 0; i < satellites.length; i++) ...[
+                  if (i > 0) const SizedBox(width: 12),
+                  Transform.translate(
+                    offset: Offset(0, i.isEven ? -6 : 8),
+                    child: PurposeSatellite(
+                      key: Key('purpose-satellite-${satellites[i].id}'),
+                      purpose: satellites[i],
+                      onTap: () => onSelect(satellites[i]),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
         ),
       ),
     );

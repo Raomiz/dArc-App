@@ -41,24 +41,9 @@ class EmptyState extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 20),
-          Text(
-            title,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.w600,
-              letterSpacing: -0.4,
-              fontFamily: OType.uiSans,
-              color: OColors.ink,
-            ),
-          ),
+          Text(title, style: OType.purposeTitle.copyWith(fontSize: 22)),
           const SizedBox(height: 10),
-          Text(
-            body,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: OColors.muted,
-              height: 1.45,
-              fontFamily: OType.uiSans,
-            ),
-          ),
+          Text(body, style: OType.bodyMist),
           const SizedBox(height: 28),
           if (primaryLabel != null && onPrimary != null)
             accentColor == OColors.commit

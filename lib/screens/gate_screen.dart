@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/o_app_state.dart';
 import '../theme/o_theme.dart';
+import '../widgets/commit_button.dart';
 import '../widgets/field_backdrop.dart';
 import '../widgets/o_mark.dart';
 
@@ -60,9 +61,8 @@ class _GateScreenState extends State<GateScreen> {
                         const SizedBox(height: 8),
                         Text(
                           'Act with others.',
-                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          style: OType.purposeTitle.copyWith(
                             fontWeight: FontWeight.w500,
-                            letterSpacing: -0.4,
                             color: OColors.ink,
                           ),
                         ),
@@ -70,11 +70,7 @@ class _GateScreenState extends State<GateScreen> {
                         const Text(
                           'Name a purpose. Commit an intention. '
                           'ō coordinating: lock a time, gather people, move.',
-                          style: TextStyle(
-                            color: OColors.muted,
-                            height: 1.5,
-                            fontSize: 16,
-                          ),
+                          style: OType.bodyMist,
                         ),
                         const Spacer(),
                         const SizedBox(height: 28),
@@ -98,17 +94,10 @@ class _GateScreenState extends State<GateScreen> {
                           ),
                         ),
                         const SizedBox(height: 14),
-                        FilledButton(
+                        CommitButton(
+                          key: const Key('gate-enter'),
+                          label: _busy ? 'Entering…' : 'Enter ō locally',
                           onPressed: _busy ? null : _enter,
-                          style: FilledButton.styleFrom(
-                            backgroundColor: OColors.commit,
-                            foregroundColor: OColors.ink,
-                            minimumSize: const Size.fromHeight(54),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                          ),
-                          child: Text(_busy ? 'Entering…' : 'Enter ō locally'),
                         ),
                         const SizedBox(height: 18),
                         const Text(

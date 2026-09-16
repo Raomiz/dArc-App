@@ -5,29 +5,37 @@ import '../theme/o_theme.dart';
 /// Living wash — jade `#2f6f5e` → baby blue `#A8D4E8` → air `#F7FBFD`.
 ///
 /// Inspired field, not an obsidian vault and not grey dark-mode chrome.
+/// When [deepened], the wash leans further into jade for an expanded Purpose.
 class FieldBackdrop extends StatelessWidget {
-  const FieldBackdrop({super.key, required this.child});
+  const FieldBackdrop({
+    super.key,
+    required this.child,
+    this.deepened = false,
+  });
 
   final Widget child;
+  final bool deepened;
 
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.bottomLeft,
           end: Alignment.topRight,
-          colors: [
+          colors: const [
             OColors.fieldJade,
             OColors.fieldBlue,
             OColors.fieldAir,
           ],
-          stops: [0.0, 0.42, 1.0],
+          stops: deepened ? const [0.0, 0.55, 1.0] : const [0.0, 0.42, 1.0],
         ),
       ),
       child: Stack(
         children: [
           const Positioned.fill(child: IgnorePointer(child: _AirWash())),
+          if (deepened)
+            const Positioned.fill(child: IgnorePointer(child: _DeepJade())),
           const Positioned(
             right: 22,
             top: 64,
@@ -35,6 +43,28 @@ class FieldBackdrop extends StatelessWidget {
           ),
           child,
         ],
+      ),
+    );
+  }
+}
+
+/// Extra jade when a Purpose holds the stage.
+class _DeepJade extends StatelessWidget {
+  const _DeepJade();
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.bottomLeft,
+          end: Alignment.topRight,
+          colors: [
+            OColors.fieldJade.withValues(alpha: 0.32),
+            OColors.fieldBlue.withValues(alpha: 0.10),
+            const Color(0x00F7FBFD),
+          ],
+        ),
       ),
     );
   }

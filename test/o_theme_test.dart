@@ -42,12 +42,17 @@ void main() {
     expect(theme.textTheme.bodyMedium?.fontFamily, OType.uiSans);
   });
 
-  test('whisper labels are tracked; Commit type is high contrast ink on gold', () {
+  test('whisper labels are tracked; Commit type is medium on gold', () {
     expect(OType.whisper.letterSpacing, greaterThan(2));
     expect(OType.whisper.fontFamily, OType.uiSans);
+    expect(OType.uiSans, 'Inter');
     expect(OType.commit.color, OColors.ink);
-    expect(OType.commit.fontWeight, FontWeight.w800);
-    expect(OType.commit.fontSize, greaterThan(OType.whisper.fontSize!));
+    expect(OType.commit.fontWeight, FontWeight.w600);
+    expect(OType.commit.letterSpacing, greaterThan(1.2));
+    expect(OType.purposeTitle.fontSize, 23);
+    expect(OType.purposeTitle.color, OColors.purposeDeep);
+    expect(OType.intentionTitle.fontSize, 16.5);
+    expect(OType.bodyMist.color, OColors.muted);
   });
 
   testWidgets('Commit button is gold threshold, not a bland submit', (tester) async {
@@ -77,5 +82,48 @@ void main() {
     await tester.tap(find.text('Commit this intention'));
     await tester.pumpAndSettle();
     expect(pressed, 1);
+  });
+
+  testWidgets('Commit press is soft gold with a 0.97 downscale', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: buildOTheme(),
+        home: Scaffold(
+          backgroundColor: OColors.fieldAir,
+          body: CommitButton(label: 'Commit this intention', onPressed: () {}),
+        ),
+      ),
+    );
+
+    final rest = tester.widget<Material>(
+      find.descendant(
+        of: find.byType(CommitButton),
+        matching: find.byType(Material),
+      ),
+    );
+    expect(rest.color, OColors.commit);
+
+    final gesture = await tester.press(find.text('Commit this intention'));
+    await tester.pump(OType.commitPress);
+
+    final pressed = tester.widget<Material>(
+      find.descendant(
+        of: find.byType(CommitButton),
+        matching: find.byType(Material),
+      ),
+    );
+    expect(pressed.color, OColors.commitSoft);
+
+    final scale = tester.widget<AnimatedScale>(
+      find.descendant(
+        of: find.byType(CommitButton),
+        matching: find.byType(AnimatedScale),
+      ),
+    );
+    expect(scale.scale, OType.commitPressScale);
+    expect(scale.duration, OType.commitPress);
+
+    await gesture.up();
+    await tester.pumpAndSettle();
   });
 }

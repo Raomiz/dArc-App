@@ -37,8 +37,11 @@ void main() {
     await tester.tap(find.text('Enter ō locally'));
     await tester.pumpAndSettle();
 
-    expect(find.text('New Purpose'), findsWidgets);
-    expect(find.textContaining('north star'), findsOneWidget);
+    expect(find.text('New Purpose'), findsOneWidget);
+    expect(find.byKey(const Key('new-purpose-fab')), findsOneWidget);
+    expect(find.byKey(const Key('empty-field')), findsOneWidget);
+    expect(find.widgetWithText(FilledButton, 'New Purpose'), findsNothing);
+    expect(find.textContaining('north star'), findsNothing);
     expect(find.text('The field is open'), findsNothing);
     expect(find.textContaining('plan'), findsNothing);
     expect(find.text('Sam'), findsNothing);
@@ -56,7 +59,7 @@ void main() {
     Navigator.of(tester.element(find.text('In-app navigator'))).pop();
     await tester.pumpAndSettle();
 
-    await tester.tap(find.widgetWithText(FilledButton, 'New Purpose'));
+    await tester.tap(find.byKey(const Key('new-purpose-fab')));
     await tester.pumpAndSettle();
     final purposeFields = find.byType(TextField);
     await tester.enterText(purposeFields.at(0), 'Get outside this week');
@@ -90,7 +93,8 @@ void main() {
     );
     expect(commitCta.color, OColors.commit);
     expect(commitCta.color, isNot(OColors.intention));
-    expect(find.text('New Purpose'), findsWidgets);
+    expect(find.text('New Purpose'), findsOneWidget);
+    expect(find.byKey(const Key('purpose-stage-bloom')), findsOneWidget);
     expect(find.text('Load sample purposes'), findsNothing);
     expect(find.text('Rin'), findsNothing);
     expect(find.text('Ade'), findsNothing);
@@ -108,7 +112,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Evening walk'), findsOneWidget);
-    expect(find.text('COMMITTED'), findsOneWidget);
+    expect(find.textContaining('Committed'), findsWidgets);
     expect(find.text('Joshua'), findsWidgets);
     expect(find.text('Coordinate with ō'), findsOneWidget);
     expect(
@@ -158,10 +162,10 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(PurposeStage), findsOneWidget);
-    expect(find.text('BREWING'), findsOneWidget);
+    expect(find.textContaining('Brewing'), findsWidgets);
     expect(find.text('Get outside this week'), findsOneWidget);
     expect(find.text('PURPOSE'), findsOneWidget);
-    expect(find.text('New Purpose'), findsWidgets);
+    expect(find.text('New Purpose'), findsOneWidget);
     expect(find.text('Commit this intention'), findsOneWidget);
     expect(find.text('Coordinate with ō'), findsOneWidget);
     expect(find.byType(ONavigatorButton), findsOneWidget);
@@ -184,7 +188,7 @@ void main() {
 
     await tester.tap(find.text('Commit this intention'));
     await tester.pumpAndSettle();
-    expect(find.text('COMMITTED'), findsOneWidget);
+    expect(find.textContaining('Committed'), findsWidgets);
     expect(find.byType(IntentionMorePanel), findsNothing);
     expect(find.text('Rin'), findsNothing);
   });
@@ -264,7 +268,7 @@ void main() {
     await tester.tap(find.byKey(const Key('purpose-manner-evidence')));
     await tester.pumpAndSettle();
     expect(find.text('Evening walk'), findsOneWidget);
-    expect(find.text('COMMITTED'), findsOneWidget);
+    expect(find.textContaining('Committed'), findsWidgets);
     expect(find.textContaining('plan'), findsNothing);
     expect(find.text('Sam'), findsNothing);
   });
