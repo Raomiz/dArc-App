@@ -56,55 +56,55 @@ class PurposeStage extends StatelessWidget {
       builder: (context, scale, child) {
         return Transform.scale(scale: scale, child: child);
       },
-      child: DecoratedBox(
-        key: const Key('purpose-stage-bloom'),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(32),
-          gradient: const RadialGradient(
-            center: Alignment(0, -0.35),
-            radius: 1.05,
-            colors: [
-              OType.purposeBloom,
-              Color.fromRGBO(112, 41, 99, 0.10),
-              Color.fromRGBO(112, 41, 99, 0.00),
-            ],
-            stops: [0.0, 0.55, 1.0],
-          ),
-          boxShadow: const [
-            BoxShadow(
-              color: OType.purposeBloom,
-              blurRadius: 52,
-              spreadRadius: 6,
+      child: Stack(
+        children: [
+          const Positioned.fill(
+            child: IgnorePointer(
+              child: DecoratedBox(
+                key: Key('purpose-stage-bloom'),
+                decoration: BoxDecoration(
+                  gradient: RadialGradient(
+                    center: Alignment(0, -0.15),
+                    radius: 1.15,
+                    colors: [
+                      OType.purposeBloom,
+                      Color.fromRGBO(112, 41, 99, 0.10),
+                      Color.fromRGBO(112, 41, 99, 0.00),
+                    ],
+                    stops: [0.0, 0.48, 1.0],
+                  ),
+                ),
+              ),
             ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(18, 18, 18, 14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'PURPOSE',
-                style: OType.whisper.copyWith(color: OColors.purpose),
-              ),
-              const SizedBox(height: 10),
-              Text(purpose.title, style: OType.purposeTitle),
-              const SizedBox(height: 8),
-              Text(purpose.why, style: OType.bodyMist),
-              const SizedBox(height: 18),
-              _MannerRail(manner: manner, onManner: onManner),
-              const SizedBox(height: 16),
-              _MannerBody(
-                manner: manner,
-                intentions: intentions,
-                onCommitIntention: onCommitIntention,
-                onCommit: onCommit,
-                onCoordinate: onCoordinate,
-                onMore: onMore,
-              ),
-            ],
           ),
-        ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 18, 8, 14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'PURPOSE',
+                  style: OType.whisper.copyWith(color: OColors.purpose),
+                ),
+                const SizedBox(height: 10),
+                Text(purpose.title, style: OType.purposeTitle),
+                const SizedBox(height: 8),
+                Text(purpose.why, style: OType.bodyMist),
+                const SizedBox(height: 18),
+                _MannerRail(manner: manner, onManner: onManner),
+                const SizedBox(height: 16),
+                _MannerBody(
+                  manner: manner,
+                  intentions: intentions,
+                  onCommitIntention: onCommitIntention,
+                  onCommit: onCommit,
+                  onCoordinate: onCoordinate,
+                  onMore: onMore,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -297,10 +297,7 @@ class _PeopleManner extends StatelessWidget {
   Widget build(BuildContext context) {
     final names = peopleOnPurpose(intentions);
     if (names.isEmpty) {
-      return const Text(
-        'Nobody else is here yet.',
-        style: OType.bodyMist,
-      );
+      return const Text('Nobody else is here yet.', style: OType.bodyMist);
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -324,7 +321,9 @@ class _PeopleManner extends StatelessWidget {
               const SizedBox(width: 10),
               Text(
                 name,
-                style: OType.intentionTitle.copyWith(color: OColors.purposeDeep),
+                style: OType.intentionTitle.copyWith(
+                  color: OColors.purposeDeep,
+                ),
               ),
             ],
           ),
@@ -354,26 +353,20 @@ class _EvidenceManner extends StatelessWidget {
     return Column(
       children: [
         for (final intention in items) ...[
-          DecoratedBox(
-            decoration: BoxDecoration(
-              color: OColors.fieldAir.withValues(alpha: 0.28),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(intention.title, style: OType.intentionTitle),
-                  const SizedBox(height: 4),
-                  Text(
-                    '${intention.status.label} · ${intention.statement}',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: OType.bodyMist.copyWith(fontSize: 14),
-                  ),
-                ],
-              ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(intention.title, style: OType.intentionTitle),
+                const SizedBox(height: 4),
+                Text(
+                  '${intention.status.label} · ${intention.statement}',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: OType.bodyMist.copyWith(fontSize: 14),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 10),
@@ -474,33 +467,36 @@ class PurposeOrbit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (satellites.isEmpty) return const SizedBox.shrink();
-    return SizedBox(
-      key: const Key('purpose-orbit-dim'),
-      height: 108,
-      child: ImageFiltered(
-        imageFilter: ImageFilter.blur(
-          sigmaX: OType.satelliteBlur,
-          sigmaY: OType.satelliteBlur,
-        ),
-        child: Opacity(
-          opacity: 0.44,
-          child: CustomPaint(
-            painter: _OrbitPainter(),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                for (var i = 0; i < satellites.length; i++) ...[
-                  if (i > 0) const SizedBox(width: 12),
-                  Transform.translate(
-                    offset: Offset(0, i.isEven ? -6 : 8),
-                    child: PurposeSatellite(
-                      key: Key('purpose-satellite-${satellites[i].id}'),
-                      purpose: satellites[i],
-                      onTap: () => onSelect(satellites[i]),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 14, 0, 18),
+      child: SizedBox(
+        key: const Key('purpose-orbit-dim'),
+        height: 100,
+        child: ImageFiltered(
+          imageFilter: ImageFilter.blur(
+            sigmaX: OType.satelliteBlur,
+            sigmaY: OType.satelliteBlur,
+          ),
+          child: Opacity(
+            opacity: 0.58,
+            child: CustomPaint(
+              painter: _OrbitPainter(),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  for (var i = 0; i < satellites.length; i++) ...[
+                    if (i > 0) const SizedBox(width: 12),
+                    Transform.translate(
+                      offset: Offset(0, i.isEven ? -6 : 8),
+                      child: PurposeSatellite(
+                        key: Key('purpose-satellite-${satellites[i].id}'),
+                        purpose: satellites[i],
+                        onTap: () => onSelect(satellites[i]),
+                      ),
                     ),
-                  ),
+                  ],
                 ],
-              ],
+              ),
             ),
           ),
         ),

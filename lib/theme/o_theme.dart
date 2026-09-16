@@ -92,8 +92,8 @@ abstract final class OType {
     fontFamily: uiSans,
     fontSize: 23,
     fontWeight: FontWeight.w600,
-    letterSpacing: -0.55,
-    height: 1.15,
+    letterSpacing: -0.2,
+    height: 1.18,
     color: OColors.purposeDeep,
   );
 
@@ -102,7 +102,6 @@ abstract final class OType {
     fontFamily: uiSans,
     fontSize: 16.5,
     fontWeight: FontWeight.w600,
-    letterSpacing: -0.2,
     height: 1.25,
     color: OColors.ink,
   );
@@ -112,7 +111,6 @@ abstract final class OType {
     fontFamily: uiSans,
     fontSize: 15,
     fontWeight: FontWeight.w400,
-    letterSpacing: 0.02,
     height: 1.45,
     color: OColors.muted,
   );
@@ -122,7 +120,7 @@ abstract final class OType {
     fontFamily: uiSans,
     fontSize: 13,
     fontWeight: FontWeight.w600,
-    letterSpacing: 1.7,
+    letterSpacing: 1.2,
     height: 1.1,
     color: OColors.ink,
   );
@@ -134,7 +132,7 @@ abstract final class OType {
   static const Duration commitPress = Duration(milliseconds: 100);
   static const double stageSettleFrom = 1.04;
   static const double commitPressScale = 0.97;
-  static const double satelliteBlur = 10;
+  static const double satelliteBlur = 8;
 }
 
 ThemeData buildOTheme() {
@@ -184,7 +182,13 @@ ThemeData buildOTheme() {
     ),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: OColors.commit,
-      foregroundColor: OColors.ink,
+      foregroundColor: OColors.purposeDeep,
+      elevation: 0,
+      focusElevation: 0,
+      hoverElevation: 0,
+      highlightElevation: 0,
+      disabledElevation: 0,
+      shape: StadiumBorder(),
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
@@ -205,10 +209,7 @@ ThemeData buildOTheme() {
       disabledColor: OColors.ridge,
       selectedColor: OColors.fieldBlue,
       secondarySelectedColor: OColors.fieldBlue,
-      labelStyle: const TextStyle(
-        color: OColors.ink,
-        fontFamily: OType.uiSans,
-      ),
+      labelStyle: const TextStyle(color: OColors.ink, fontFamily: OType.uiSans),
       secondaryLabelStyle: const TextStyle(
         color: OColors.ink,
         fontFamily: OType.uiSans,

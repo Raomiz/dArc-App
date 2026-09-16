@@ -113,7 +113,7 @@ void main() {
 
     expect(find.text('Evening walk'), findsOneWidget);
     expect(find.textContaining('Committed'), findsWidgets);
-    expect(find.text('Joshua'), findsWidgets);
+    expect(find.textContaining('Joshua'), findsWidgets);
     expect(find.text('Coordinate with ō'), findsOneWidget);
     expect(
       find.descendant(

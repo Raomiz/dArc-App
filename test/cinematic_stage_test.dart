@@ -86,8 +86,8 @@ void main() {
     expect(box.border, isNull);
     expect(box.gradient, isNotNull);
     expect(
-      box.boxShadow!.any((shadow) => shadow.color == OType.purposeBloom),
-      isTrue,
+      (box.gradient! as RadialGradient).colors.first,
+      OType.purposeBloom,
     );
 
     final title = tester.widget<Text>(

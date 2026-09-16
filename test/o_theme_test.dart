@@ -48,7 +48,7 @@ void main() {
     expect(OType.uiSans, 'Inter');
     expect(OType.commit.color, OColors.ink);
     expect(OType.commit.fontWeight, FontWeight.w600);
-    expect(OType.commit.letterSpacing, greaterThan(1.2));
+    expect(OType.commit.letterSpacing, greaterThanOrEqualTo(1.2));
     expect(OType.purposeTitle.fontSize, 23);
     expect(OType.purposeTitle.color, OColors.purposeDeep);
     expect(OType.intentionTitle.fontSize, 16.5);

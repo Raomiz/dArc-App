@@ -83,13 +83,17 @@ class _HomeScreenState extends State<HomeScreen> {
               tooltip: 'New Purpose',
               backgroundColor: OColors.commit,
               foregroundColor: OColors.purposeDeep,
+              elevation: 0,
+              highlightElevation: 0,
+              focusElevation: 0,
+              hoverElevation: 0,
+              shape: const StadiumBorder(),
               icon: const Icon(Icons.add),
               label: const Text(
                 'New Purpose',
                 style: TextStyle(
                   fontFamily: OType.uiSans,
                   fontWeight: FontWeight.w600,
-                  letterSpacing: 0.3,
                 ),
               ),
             ),
@@ -180,20 +184,12 @@ class _ExpandedField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      padding: EdgeInsets.fromLTRB(
-        20,
-        satellites.isEmpty ? 28 : 4,
-        20,
-        120,
-      ),
+      padding: EdgeInsets.fromLTRB(20, satellites.isEmpty ? 28 : 4, 20, 120),
       children: [
         Text('Hello, $name', style: OType.bodyMist.copyWith(fontSize: 14)),
         if (satellites.isNotEmpty) ...[
           const SizedBox(height: 10),
-          PurposeOrbit(
-            satellites: satellites,
-            onSelect: onSelectSatellite,
-          ),
+          PurposeOrbit(satellites: satellites, onSelect: onSelectSatellite),
         ] else
           const SizedBox(height: 22),
         AnimatedSwitcher(
