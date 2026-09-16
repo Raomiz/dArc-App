@@ -134,29 +134,43 @@ void main() {
     );
   }, skip: !capture);
 
-  testWidgets('capture Commit soft press', (tester) async {
-    await tester.binding.setSurfaceSize(const Size(390, 140));
-    addTearDown(() => tester.binding.setSurfaceSize(null));
+  testWidgets('capture full-phone Commit rest and soft press', (tester) async {
+    final state = await baseState();
+    await state.enterLocal(displayName: 'Joshua');
+    await state.addPurpose(
+      title: 'Get outside this week',
+      why: 'Leave the house. Not a thread — a walk.',
+    );
+    final outsideId = state.purposes.first.id;
+    await state.addIntention(
+      purposeId: outsideId,
+      title: 'Evening walk',
+      statement: 'Leave the house. Not a chat thread — a walk.',
+      whenLabel: 'Tonight after 18:00',
+    );
+    await state.addPurpose(
+      title: 'A table this week',
+      why: 'A table, a time, dishes that actually arrive.',
+    );
+    state.focusPurpose(outsideId);
 
+    await phoneSurface(tester);
     await tester.pumpWidget(
-      MaterialApp(
-        theme: buildOTheme(),
-        home: const Scaffold(
-          backgroundColor: OColors.fieldAir,
-          body: Padding(
-            padding: EdgeInsets.all(20),
-            child: RepaintBoundary(
-              key: Key('commit-press-capture'),
-              child: CommitButton(
-                label: 'Commit this intention',
-                onPressed: _noop,
-              ),
-            ),
-          ),
-        ),
+      RepaintBoundary(
+        key: const Key('commit-press-capture'),
+        child: OApp(state: state),
       ),
     );
     await tester.pumpAndSettle();
+
+    await tester.ensureVisible(find.text('Commit this intention'));
+    final rest = tester.widget<Material>(
+      find.descendant(
+        of: find.byType(CommitButton),
+        matching: find.byType(Material),
+      ),
+    );
+    expect(rest.color, OColors.commit);
 
     await writePng(
       tester: tester,
@@ -182,5 +196,3 @@ void main() {
     await gesture.up();
   }, skip: !capture);
 }
-
-void _noop() {}
