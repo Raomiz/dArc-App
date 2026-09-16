@@ -89,7 +89,7 @@ Shortest judge path (doctor → device → tap): **[DEVICE_RUN.md](DEVICE_RUN.md
    flutter run -d android
    ```
 
-First launch: enter a local name → **New Purpose** (the land, one sheet) → the Purpose expands at centre → **Commit an intention** (inside that Purpose, one sheet) → gold **Commit this intention**. **Coordinate with ō** and the **ō** wisp stay within three taps. Other Purposes sit as satellites. Nobody else is invented. The ō panel is a stub. That is honest.
+First launch: enter a local name → empty field + one **New Purpose** FAB → the Purpose expands as the stage (not a card stack) → **Commit an intention** inside that Purpose → gold **Commit this intention** (soft press `#e6d08a`). **Coordinate with ō** and the **ō** wisp stay within three taps. Other Purposes sit as dimmed satellites. Nobody else is invented. The ō panel is a stub. That is honest.
 
 Dennis lock: Purpose is the stage. Intention follows inside it. Everything useful is **2–3 paces**. A fourth pace fails.
 

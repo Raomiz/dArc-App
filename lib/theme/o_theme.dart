@@ -65,10 +65,10 @@ abstract final class OColors {
   static const Color goldSoft = commitSoft;
 }
 
-/// Type: system UI sans for dense chrome; whisper tracked labels;
-/// big contrast on Commit.
+/// Type: Inter as the UI sans — real strings, never Ahem blocks in proofs.
+/// Purpose title 22–24sp; Intention 16–17sp; body mist; Commit tracked medium.
 abstract final class OType {
-  static const String uiSans = 'sans-serif';
+  static const String uiSans = 'Inter';
 
   static const TextStyle chrome = TextStyle(
     fontFamily: uiSans,
@@ -87,15 +87,52 @@ abstract final class OType {
     height: 1.2,
   );
 
-  /// Dark ink on Commit gold — crossing a threshold, not a caption.
+  /// Purpose title — ~23sp Byzantine-weight.
+  static const TextStyle purposeTitle = TextStyle(
+    fontFamily: uiSans,
+    fontSize: 23,
+    fontWeight: FontWeight.w600,
+    letterSpacing: -0.2,
+    height: 1.18,
+    color: OColors.purposeDeep,
+  );
+
+  /// Intention title — ~16.5sp on the stage.
+  static const TextStyle intentionTitle = TextStyle(
+    fontFamily: uiSans,
+    fontSize: 16.5,
+    fontWeight: FontWeight.w600,
+    height: 1.25,
+    color: OColors.ink,
+  );
+
+  /// Body mist — secondary copy on the field.
+  static const TextStyle bodyMist = TextStyle(
+    fontFamily: uiSans,
+    fontSize: 15,
+    fontWeight: FontWeight.w400,
+    height: 1.45,
+    color: OColors.muted,
+  );
+
+  /// Commit label — tracked medium on gold. Not a shouty caption.
   static const TextStyle commit = TextStyle(
     fontFamily: uiSans,
-    fontSize: 17,
-    fontWeight: FontWeight.w800,
-    letterSpacing: 0.7,
+    fontSize: 13,
+    fontWeight: FontWeight.w600,
+    letterSpacing: 1.2,
     height: 1.1,
     color: OColors.ink,
   );
+
+  /// Soft Byzantine bloom on the expanded Purpose stage.
+  static const Color purposeBloom = Color.fromRGBO(112, 41, 99, 0.22);
+
+  static const Duration stageSettle = Duration(milliseconds: 480);
+  static const Duration commitPress = Duration(milliseconds: 100);
+  static const double stageSettleFrom = 1.04;
+  static const double commitPressScale = 0.97;
+  static const double satelliteBlur = 8;
 }
 
 ThemeData buildOTheme() {
@@ -145,7 +182,13 @@ ThemeData buildOTheme() {
     ),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: OColors.commit,
-      foregroundColor: OColors.ink,
+      foregroundColor: OColors.purposeDeep,
+      elevation: 0,
+      focusElevation: 0,
+      hoverElevation: 0,
+      highlightElevation: 0,
+      disabledElevation: 0,
+      shape: StadiumBorder(),
     ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
@@ -166,10 +209,7 @@ ThemeData buildOTheme() {
       disabledColor: OColors.ridge,
       selectedColor: OColors.fieldBlue,
       secondarySelectedColor: OColors.fieldBlue,
-      labelStyle: const TextStyle(
-        color: OColors.ink,
-        fontFamily: OType.uiSans,
-      ),
+      labelStyle: const TextStyle(color: OColors.ink, fontFamily: OType.uiSans),
       secondaryLabelStyle: const TextStyle(
         color: OColors.ink,
         fontFamily: OType.uiSans,

@@ -45,10 +45,10 @@ First install takes a minute. Then ō opens on the living wash — jade `#2f6f5e
 Dennis lock: **Purpose is the stage**. Intention follows inside it. **2–3 paces**. A fourth tap fails.
 
 1. **Name** — type a local name → **Enter ō locally**. No account. No server. No fake people.
-2. **New Purpose** — the land. One sheet. Byzantine north star. Nobody else is here. No “Load sample purposes.”
-3. **Purpose expands at centre** — Intentions, Commit / Coordinate / More live *inside* that Purpose. Manners (Intentions, Brewing, People, Evidence) are lenses on the same Purpose, not a chip strip below.
-4. **Satellites** — other Purposes stay small. One tap switches the stage.
-5. **On the card, inside the Purpose** — status, statement, your name only. Gold Commit if you only Held. **Coordinate with ō** is one tap. The **ō** wisp is in the chrome. `More` is optional, not required to act.
+2. **New Purpose** — empty wash + one gold FAB. No demo copy. No twin text button. Nobody else is here. No “Load sample purposes.”
+3. **Purpose expands at centre** — the stage, not a white sheet. Satellites dim and blur. Intentions, Commit / Coordinate / More live *inside* that Purpose. Manners (Intentions, Brewing, People, Evidence) are lenses on the same Purpose, not a chip strip below.
+4. **Satellites** — other Purposes stay small and quiet. One tap switches the stage.
+5. **On the frost, inside the Purpose** — one status line, your name only. Gold Commit if you only Held (soft press `#e6d08a`). **Coordinate with ō** is a quiet verb. The **ō** wisp is in the chrome. `More` is optional, not required to act.
 6. **ō wisp** — gold-soft glow. Tap **ō** for a brief map. ō is not a chat destination. Not named Sam.
 7. **Stub ō** — replies are labeled **STUB**. Live chat will be Grok. Not OpenAI.
 

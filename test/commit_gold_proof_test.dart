@@ -13,7 +13,7 @@ import 'package:flutter_test/flutter_test.dart';
 /// Dennis proof: gold Commit `#c9a227` on **Purpose-stage** home.
 ///
 /// Commit lives *inside* the expanded Purpose — not on the old chip-strip
-/// home. Ahem replaces glyphs in goldens. The pill colour is the proof.
+/// home. Inter renders real strings. Rest fill is the gold proof.
 void main() {
   const phone = Size(390, 844);
 
@@ -62,7 +62,8 @@ void main() {
       expect(find.text('PURPOSE'), findsOneWidget);
       expect(find.text('Get outside this week'), findsOneWidget);
       expect(find.text('Intention follows'), findsOneWidget);
-      expect(find.text('New Purpose'), findsWidgets);
+      expect(find.text('New Purpose'), findsOneWidget);
+      expect(find.byKey(const Key('new-purpose-fab')), findsOneWidget);
       expect(find.byType(ChoiceChip), findsNothing);
       expect(find.text('The stage is yours'), findsNothing);
       expect(find.text('Sam'), findsNothing);
@@ -105,12 +106,15 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Enter ō locally'), findsOneWidget);
-    final button = tester.widget<FilledButton>(
-      find.widgetWithText(FilledButton, 'Enter ō locally'),
+    expect(find.byType(CommitButton), findsOneWidget);
+    final material = tester.widget<Material>(
+      find.descendant(
+        of: find.byType(CommitButton),
+        matching: find.byType(Material),
+      ),
     );
-    final bg = button.style?.backgroundColor?.resolve({});
-    expect(bg, OColors.commit);
-    expect(bg, const Color(0xFFC9A227));
+    expect(material.color, OColors.commit);
+    expect(material.color, const Color(0xFFC9A227));
 
     await expectLater(
       find.byKey(const Key('gate-enter-gold-proof')),

@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 
 import '../theme/o_theme.dart';
 
-/// Commit is a gold threshold — burst + haptic — never a bland submit.
+/// Commit is a gold threshold — rest `#c9a227`, press soft `#e6d08a`.
+///
+/// Downscale ~0.97 over 80–120ms + light haptic. Burst still crosses.
 class CommitButton extends StatefulWidget {
   const CommitButton({
     super.key,
@@ -22,6 +24,7 @@ class _CommitButtonState extends State<CommitButton>
     with SingleTickerProviderStateMixin {
   late final AnimationController _burst;
   bool _crossing = false;
+  bool _pressed = false;
 
   @override
   void initState() {
@@ -38,20 +41,33 @@ class _CommitButtonState extends State<CommitButton>
     super.dispose();
   }
 
+  void _setPressed(bool value) {
+    if (_pressed == value || widget.onPressed == null) return;
+    setState(() => _pressed = value);
+    if (value) {
+      // Fire-and-forget: awaiting the platform channel hangs widget tests.
+      HapticFeedback.lightImpact();
+    }
+  }
+
   Future<void> _cross() async {
     if (widget.onPressed == null || _crossing) return;
     setState(() => _crossing = true);
-    // Fire-and-forget: awaiting the platform channel hangs widget tests.
-    HapticFeedback.heavyImpact();
     if (!mounted) return;
     await _burst.forward(from: 0);
     if (!mounted) return;
     widget.onPressed!();
-    if (mounted) setState(() => _crossing = false);
+    if (mounted) {
+      setState(() {
+        _crossing = false;
+        _pressed = false;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final fill = _pressed ? OColors.commitSoft : OColors.commit;
     return AnimatedBuilder(
       animation: _burst,
       builder: (context, child) {
@@ -61,41 +77,57 @@ class _CommitButtonState extends State<CommitButton>
           child: child,
         );
       },
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(18),
-          boxShadow: [
-            BoxShadow(
-              color: OColors.commitSoft.withValues(alpha: 0.42),
-              blurRadius: 22,
-              spreadRadius: 1,
-              offset: const Offset(0, 6),
-            ),
-            BoxShadow(
-              color: OColors.commit.withValues(alpha: 0.28),
-              blurRadius: 8,
-              spreadRadius: -1,
-              offset: const Offset(0, 2),
-            ),
-          ],
-        ),
-        child: Material(
-          color: OColors.commit,
-          borderRadius: BorderRadius.circular(18),
-          child: InkWell(
-            onTap: widget.onPressed == null ? null : _cross,
+      child: AnimatedScale(
+        scale: _pressed ? OType.commitPressScale : 1,
+        duration: OType.commitPress,
+        curve: Curves.easeOut,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18),
-            splashColor: OColors.commitSoft.withValues(alpha: 0.45),
-            highlightColor: OColors.commitSoft.withValues(alpha: 0.2),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(minHeight: 58, minWidth: double.infinity),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                child: Center(
-                  child: Text(
-                    widget.label,
-                    textAlign: TextAlign.center,
-                    style: OType.commit,
+            boxShadow: [
+              BoxShadow(
+                color: OColors.commitSoft.withValues(alpha: _pressed ? 0.55 : 0.42),
+                blurRadius: _pressed ? 16 : 22,
+                spreadRadius: 1,
+                offset: const Offset(0, 6),
+              ),
+              BoxShadow(
+                color: OColors.commit.withValues(alpha: 0.28),
+                blurRadius: 8,
+                spreadRadius: -1,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Material(
+            color: fill,
+            borderRadius: BorderRadius.circular(18),
+            child: Listener(
+              onPointerDown: (_) => _setPressed(true),
+              onPointerUp: (_) => _setPressed(false),
+              onPointerCancel: (_) => _setPressed(false),
+              child: InkWell(
+                onTap: widget.onPressed == null ? null : _cross,
+                borderRadius: BorderRadius.circular(18),
+                splashColor: OColors.commitSoft.withValues(alpha: 0.45),
+                highlightColor: OColors.commitSoft.withValues(alpha: 0.2),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    minHeight: 58,
+                    minWidth: double.infinity,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 16,
+                    ),
+                    child: Center(
+                      child: Text(
+                        widget.label,
+                        textAlign: TextAlign.center,
+                        style: OType.commit,
+                      ),
+                    ),
                   ),
                 ),
               ),
