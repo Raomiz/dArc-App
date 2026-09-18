@@ -13,6 +13,7 @@ import 'presence.dart';
 const sessionKey = 'o.session';
 const purposesKey = 'o.purposes';
 const intentionsKey = 'o.intentions';
+const focusedPurposeKey = 'o.focusedPurpose';
 
 class OAppState extends ChangeNotifier {
   OAppState({required this.store, required this.companion, Random? random})
@@ -64,6 +65,7 @@ class OAppState extends ChangeNotifier {
           .map((row) => Intention.fromJson(row as Map<String, dynamic>))
           .toList();
     }
+    focusedPurposeId = await store.read(focusedPurposeKey);
     focusedPurposeId = focusedPurpose?.id;
     ready = true;
     await _scrubPresence(persist: true);
@@ -88,9 +90,10 @@ class OAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void focusPurpose(String id) {
+  Future<void> focusPurpose(String id) async {
     if (purposeById(id) == null) return;
     focusedPurposeId = id;
+    await _persistFocusedPurpose();
     notifyListeners();
   }
 
@@ -140,6 +143,7 @@ class OAppState extends ChangeNotifier {
     intentions = [intention, ...intentions];
     focusedPurposeId = purposeId;
     await _persistIntentions();
+    await _persistFocusedPurpose();
   }
 
   Future<void> commitIntention(String id) async {
@@ -221,7 +225,17 @@ class OAppState extends ChangeNotifier {
       purposesKey,
       jsonEncode(purposes.map((p) => p.toJson()).toList()),
     );
+    await _persistFocusedPurpose();
     notifyListeners();
+  }
+
+  Future<void> _persistFocusedPurpose() async {
+    final id = focusedPurpose?.id;
+    if (id == null) {
+      await store.delete(focusedPurposeKey);
+      return;
+    }
+    await store.write(focusedPurposeKey, id);
   }
 
   Future<void> _persistIntentions() async {
