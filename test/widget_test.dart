@@ -12,6 +12,7 @@ import 'package:darc_o/widgets/o_navigator.dart';
 import 'package:darc_o/widgets/purpose_stage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   testWidgets('home lands on New Purpose; Intention follows inside the stage', (
@@ -316,5 +317,65 @@ void main() {
       ),
     );
     expect(gold.color, OColors.commit);
+  });
+
+  testWidgets('name → Purpose → Commit survive PrefsOStore process restart', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    final first = OAppState(
+      store: PrefsOStore(),
+      companion: const StubOCompanion(),
+      random: Random(13),
+    );
+    await first.hydrate();
+
+    await tester.pumpWidget(OApp(state: first));
+    await tester.enterText(find.byType(TextField), 'Joshua');
+    await tester.tap(find.text('Enter ō locally'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('new-purpose-fab')));
+    await tester.pumpAndSettle();
+    final purposeFields = find.byType(TextField);
+    await tester.enterText(purposeFields.at(0), 'Get outside this week');
+    await tester.enterText(
+      purposeFields.at(1),
+      'Leave the house. Not a thread — a walk.',
+    );
+    await tester.tap(find.text('Hold this purpose'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Commit an intention').first);
+    await tester.pumpAndSettle();
+    final intentionFields = find.byType(TextField);
+    await tester.enterText(intentionFields.at(0), 'Evening walk');
+    await tester.enterText(
+      intentionFields.at(1),
+      'Leave the house. Not a chat thread — a walk.',
+    );
+    await tester.ensureVisible(find.text('Commit this intention'));
+    await tester.tap(find.text('Commit this intention'));
+    await tester.pumpAndSettle();
+    expect(find.text('Evening walk'), findsOneWidget);
+    expect(find.textContaining('Committed'), findsWidgets);
+
+    final cold = OAppState(
+      store: PrefsOStore(),
+      companion: const StubOCompanion(),
+      random: Random(14),
+    );
+    await cold.hydrate();
+    await tester.pumpWidget(OApp(state: cold));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Act with others.'), findsNothing);
+    expect(find.text('Hello, Joshua'), findsOneWidget);
+    expect(find.text('Get outside this week'), findsOneWidget);
+    expect(find.text('Evening walk'), findsOneWidget);
+    expect(find.textContaining('Committed'), findsWidgets);
+    expect(find.textContaining('plan'), findsNothing);
+    expect(find.text('Rin'), findsNothing);
+    expect(find.text('Sam'), findsNothing);
   });
 }

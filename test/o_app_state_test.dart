@@ -6,6 +6,7 @@ import 'package:darc_o/data/o_companion.dart';
 import 'package:darc_o/data/o_store.dart';
 import 'package:darc_o/models/intention.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   OAppState build() {
@@ -140,6 +141,95 @@ void main() {
       people: const ['Rin', 'Maya', 'Ade', 'Joshua'],
     );
     expect(state.intentions.single.people, ['Joshua', 'Maya']);
+  });
+
+  test('Purpose → Intention → Commit survive hydrate on the same store', () async {
+    final store = MemoryOStore();
+    final first = OAppState(
+      store: store,
+      companion: const StubOCompanion(),
+      random: Random(3),
+    );
+    await first.hydrate();
+    await first.enterLocal(displayName: 'Joshua');
+    await first.addPurpose(title: 'Get outside this week', why: 'Walk with people.');
+    await first.addIntention(
+      purposeId: first.purposes.first.id,
+      title: 'Evening walk',
+      statement: 'Leave the house.',
+      commit: true,
+    );
+
+    final second = OAppState(
+      store: store,
+      companion: const StubOCompanion(),
+      random: Random(4),
+    );
+    await second.hydrate();
+    expect(second.session!.displayName, 'Joshua');
+    expect(second.purposes.single.title, 'Get outside this week');
+    expect(second.intentions.single.title, 'Evening walk');
+    expect(second.intentions.single.status, IntentionStatus.committed);
+    expect(second.focusedPurpose?.title, 'Get outside this week');
+  });
+
+  test('PrefsOStore cold start keeps name, Purpose, committed Intention', () async {
+    SharedPreferences.setMockInitialValues({});
+    final first = OAppState(
+      store: PrefsOStore(),
+      companion: const StubOCompanion(),
+      random: Random(8),
+    );
+    await first.hydrate();
+    await first.enterLocal(displayName: 'Joshua');
+    await first.addPurpose(
+      title: 'Get outside this week',
+      why: 'Leave the house. Not a thread — a walk.',
+    );
+    await first.addIntention(
+      purposeId: first.purposes.first.id,
+      title: 'Evening walk',
+      statement: 'Leave the house.',
+      commit: true,
+    );
+
+    final cold = OAppState(
+      store: PrefsOStore(),
+      companion: const StubOCompanion(),
+      random: Random(9),
+    );
+    await cold.hydrate();
+    expect(cold.session!.displayName, 'Joshua');
+    expect(cold.purposes.single.title, 'Get outside this week');
+    expect(cold.intentions.single.title, 'Evening walk');
+    expect(cold.intentions.single.status, IntentionStatus.committed);
+    expect(cold.focusedPurpose?.id, first.purposes.single.id);
+  });
+
+  test('focused Purpose survives reload when it is not the newest', () async {
+    SharedPreferences.setMockInitialValues({});
+    final first = OAppState(
+      store: PrefsOStore(),
+      companion: const StubOCompanion(),
+      random: Random(11),
+    );
+    await first.hydrate();
+    await first.enterLocal(displayName: 'Joshua');
+    await first.addPurpose(title: 'Get outside this week', why: 'Walk.');
+    final outsideId = first.purposes.first.id;
+    await first.addPurpose(title: 'A table this week', why: 'A table.');
+    await first.focusPurpose(outsideId);
+    expect(first.focusedPurpose?.title, 'Get outside this week');
+
+    final cold = OAppState(
+      store: PrefsOStore(),
+      companion: const StubOCompanion(),
+      random: Random(12),
+    );
+    await cold.hydrate();
+    expect(cold.focusedPurpose?.id, outsideId);
+    expect(cold.focusedPurpose?.title, 'Get outside this week');
+    expect(cold.purposes, hasLength(2));
   });
 
   test('addIntention can cross the Commit threshold in one write', () async {
