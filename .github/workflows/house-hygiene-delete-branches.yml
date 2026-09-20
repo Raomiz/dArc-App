@@ -1,0 +1,106 @@
+name: house-hygiene-delete-branches
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: read
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete stale merged leftover branches
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const keep = new Set(['main']);
+            if (repo === 'd-Arc') keep.add('cursor/raz-world-zoom-frost-6d3a');
+
+            const opens = await github.paginate(github.rest.pulls.list, {
+              owner, repo, state: 'open', per_page: 100,
+            });
+            for (const pr of opens) keep.add(pr.head.ref);
+
+            const branches = await github.paginate(github.rest.repos.listBranches, {
+              owner, repo, per_page: 100,
+            });
+
+            const deleted = [];
+            const kept = [];
+            const holds = [];
+            const errors = [];
+
+            function inScope(name) {
+              if (name === 'test-schema-probe-do-not-use') return true;
+              if (name.startsWith('cursor/')) return true;
+              if (repo === 'Raz' && /gate-[ab]/i.test(name)) return true;
+              return false;
+            }
+
+            for (const b of branches) {
+              const name = b.name;
+              if (keep.has(name)) {
+                let reason = 'KEEP open PR head';
+                if (name === 'main') reason = 'KEEP main';
+                if (name === 'cursor/raz-world-zoom-frost-6d3a') reason = 'KEEP open draft PR #39';
+                kept.push({ name, reason });
+                continue;
+              }
+              if (!inScope(name)) {
+                kept.push({ name, reason: 'out of scope' });
+                continue;
+              }
+
+              let ahead = null;
+              try {
+                const cmp = await github.rest.repos.compareCommits({
+                  owner, repo, base: 'main', head: name,
+                });
+                ahead = cmp.data.ahead_by;
+              } catch (e2) {
+                errors.push({ name, error: `compare failed: ${e2.message || e2}` });
+                continue;
+              }
+
+              let merged = false;
+              let closedUnmerged = false;
+              try {
+                const prs = await github.paginate(github.rest.pulls.list, {
+                  owner, repo, state: 'closed', head: `${owner}:${name}`, per_page: 100,
+                });
+                for (const p of prs) {
+                  if (p.merged_at) merged = true;
+                  else closedUnmerged = true;
+                }
+              } catch (e) {}
+
+              let shouldDelete = false;
+              let reason = '';
+              if (name === 'test-schema-probe-do-not-use') {
+                shouldDelete = true;
+                reason = 'erase schema probe branch';
+              } else if (ahead === 0) {
+                shouldDelete = true;
+                reason = 'fully contained in main (ahead=0)';
+              } else if (merged) {
+                shouldDelete = true;
+                reason = `merged PR leftover (ahead=${ahead})`;
+              } else {
+                holds.push({ name, reason: `HOLD unique work ahead=${ahead}; closedUnmerged=${closedUnmerged}` });
+                continue;
+              }
+
+              try {
+                await github.rest.git.deleteRef({ owner, repo, ref: `heads/${name}` });
+                deleted.push({ name, reason });
+              } catch (e) {
+                errors.push({ name, error: `delete failed: ${e.message || e}` });
+              }
+            }
+
+            const report = { repo: `${owner}/${repo}`, deleted, kept, holds, errors, deleted_count: deleted.length };
+            console.log('HYGIENE_REPORT_BEGIN');
+            console.log(JSON.stringify(report, null, 2));
+            console.log('HYGIENE_REPORT_END');
+            await core.summary.addCodeBlock(JSON.stringify(report, null, 2), 'json');
